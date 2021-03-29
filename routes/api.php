@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\V1\Auth\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,9 +22,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // Route::resource('register','Api\V1\Auth\RegisterController');
 
 Route::namespace('Api\V1\Auth')->group(function () {
-    Route::resource('/register', 'RegisterController');
+    Route::post('/register', [RegisterController::class, '__invoke']);
 });
 
-Route::namespace('Api\V1')->group(function () {
+Route::middleware('auth:api')->namespace('Api\V1')->group(function () {
 
 });

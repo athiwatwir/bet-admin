@@ -5,46 +5,11 @@
 @section('content')
 <div class="row gutters-sm">
 
-    <!-- navigation -->
-    <div class="col-12 col-lg-3 col-xl-2">
-
-        <nav class="nav-deep nav-deep-light mb-2">
-
-            <!-- mobile only -->
-            <button class="clearfix btn btn-toggle btn-sm btn-block text-align-left shadow-md border rounded mb-1 d-block d-lg-none" data-target="#nav_responsive" data-toggle-container-class="d-none d-sm-block bg-white shadow-md border animate-fadein rounded p-3">
-                <span class="group-icon px-2 py-2 float-start">
-                    <i class="fi fi-bars-2"></i>
-                    <i class="fi fi-close"></i>
-                </span>
-
-                <span class="h5 py-2 m-0 float-start font-weight-light">
-                    Inbox
-                </span>
-            </button>
-
-
-            <!-- navigation -->
-            <ul id="nav_responsive" class="nav flex-column d-none d-lg-block">
-
-                <li class="nav-item active">
-                    <a class="nav-link px-0" href="{{ url('/members') }}">
-                        <i class="fi fi-arrow-end m-0 fs--12"></i> 
-                        <span class="px-2 d-inline-block">
-                            All Members
-                        </span>
-                    </a>
-                </li>
-
-            </ul>
-
-        </nav>
-
-    </div>
-    <!-- /navigation -->
+    
 
 
     <!-- inbox list -->
-    <div class="col-12 col-lg-9 col-xl-10">
+    <div class="col-12">
 
 
         <!-- portlet -->
@@ -92,18 +57,20 @@
                                             USERNAME
                                         </span>
                                     </th>
-                                    <th class="w--200 hidden-lg-down">EMAIL</th>
-                                    <th class="w--200 hidden-lg-down">STATUS</th>
+                                    <th class="w--200 hidden-lg-down text-center">PHONE</th>
+                                    <th class="w--200 hidden-lg-down text-center">LINE</th>
+                                    <th class="w--100 hidden-lg-down text-center">CURRENCY</th>
+                                    <th class="w--100 hidden-lg-down text-center">STATUS</th>
+                                    <th class="w--100 hidden-lg-down text-center">REGISTER</th>
                                     <th class="w--60">&nbsp;</th>
                                 </tr>
                             </thead>
 
                             <tbody id="item_list">
-
                                 @foreach ($members as $key => $member)
 
-                                    <!-- message -->
-                                    <tr id="message_id_{{ $key }}" class="text-dark">
+                                    <!-- member -->
+                                    <tr id="member_id_{{ $key }}" class="text-dark">
 
                                         <td class="hidden-lg-down">
                                             <label class="form-checkbox form-checkbox-secondary float-start">
@@ -112,26 +79,58 @@
                                             </label>
                                         </td>
 
-                                        <td>
+                                        <td style="line-height: 17px;">
 
-                                            <p class="mb-0"><strong>{{ $member->username }}</strong></p>
-                                            <small>{{ $member->name }}</small>
+                                            <p class="mb-0 text-dark"><strong>{{ $member->username }}</strong></p>
+                                            <small class="text-muted">{{ $member->name }}</small>
 
                                             <!-- MOBILE ONLY -->
                                             <div class="fs--13 d-block d-xl-none">
                                                 <span class="d-block text-muted">{{ $member->phone }}</span>
-                                                <span class="d-block font-weight-medium">is_status</span>
+                                                @if($member->line != '')
+                                                    <span class="d-block">{{ $member->line }}</span>
+                                                @else
+                                                    <span class="d-block">-</span>
+                                                @endif
+                                                <span class="d-block font-weight-medium">
+                                                    @if($member->is_active == 'Y')
+                                                        <span class="badge badge-success font-weight-normal mt-1">ACTIVE</span>
+                                                    @else
+                                                        <span class="badge badge-danger font-weight-normal mt-1">INACTIVE</span>
+                                                    @endif
+                                                </span>
                                             </div>
                                             <!-- /MOBILE ONLY -->
 
                                         </td>
 
-                                        <td class="hidden-lg-down">
+                                        <td class="hidden-lg-down text-center">
                                             {{ $member->phone }}
                                         </td>
 
-                                        <td class="hidden-lg-down">
-                                            is_status
+                                        <td class="hidden-lg-down text-center">
+                                            @if($member->line != '')
+                                                <span class="d-block">{{ $member->line }}</span>
+                                            @else
+                                                <span class="d-block">-</span>
+                                            @endif
+                                        </td>
+
+                                        <td class="hidden-lg-down text-center" style="line-height: 17px;">
+                                            <p class="mb-0">FLAG</th>
+                                            <small class="text-muted">({{ $member->currency }})</small>
+                                        </td>
+
+                                        <td class="hidden-lg-down text-center">
+                                            @if($member->is_active == 'Y')
+                                                <span class="badge badge-success font-weight-normal mt-1">ACTIVE</span>
+                                            @else
+                                                <span class="badge badge-danger font-weight-normal mt-1">INACTIVE</span>
+                                            @endif
+                                        </td>
+
+                                        <td class="hidden-lg-down text-center">
+                                            {{ $member->created_at->format('d/m/Y') }}
                                         </td>
 
                                         <td class="text-align-end">
@@ -148,20 +147,20 @@
 
                                                 <div class="dropdown-menu dropdown-menu-clean dropdown-click-ignore max-w-220">
 
-                                                    <a class="dropdown-item text-truncate" href="message-reply.html">
-                                                        <i class="fi fi-arrow-right-3"></i>
-                                                        Reply
+                                                    <a class="dropdown-item text-truncate" href="#!">
+                                                        <i class="fi fi-check"></i>
+                                                        Set Active
                                                     </a>
 
-                                                    <a class="dropdown-item text-truncate" href="#">
-                                                        <i class="fi fi-box"></i>
-                                                        Archive
+                                                    <a class="dropdown-item text-truncate" href="#!">
+                                                        <i class="fi fi-close"></i>
+                                                        Set Inactive
                                                     </a>
 
                                                     <a	 href="#!" 
                                                         class="dropdown-item text-truncate js-ajax-confirm" 
-                                                        data-href="message-inbox.html" 
-                                                        data-ajax-confirm-body="Delete this message?" 
+                                                        data-href="page-list.html" 
+                                                        data-ajax-confirm-body="Delete this page?" 
 
                                                         data-ajax-confirm-mode="ajax" 
                                                         data-ajax-confirm-method="GET" 
@@ -174,7 +173,7 @@
                                                         data-ajax-confirm-btn-no-text="Cancel" 
                                                         data-ajax-confirm-btn-no-icon="fi fi-close"
 
-                                                        data-ajax-confirm-success-target="#message_id_1" 
+                                                        data-ajax-confirm-success-target="#message_id_2" 
                                                         data-ajax-confirm-success-target-action="remove">
                                                         <i class="fi fi-thrash text-danger"></i>
                                                         Delete
@@ -182,14 +181,11 @@
 
                                                 </div>
 
-                                            </div>
-
                                         </td>
 
                                     </tr>
-                                    <!-- /message -->
+                                    <!-- /member -->
                                 @endforeach
-
                             </tbody>
 
                         </table>
