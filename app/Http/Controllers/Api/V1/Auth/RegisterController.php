@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use App\User;
+use App\Models\Member;
 
 class RegisterController extends Controller
 {
@@ -16,7 +16,7 @@ class RegisterController extends Controller
      */
     public function index()
     {
-        return User::all();
+        return response()->json(Member::all());
     }
 
     /**
@@ -38,13 +38,18 @@ class RegisterController extends Controller
     public function store(Request $request)
     {
         if(isset($request)) {
-            $user = new User();
-            $user->name = $request->get('name');
-            $user->email = $request->get('email');
-            $user->phone = $request->get('phone');
-            $user->password = Hash::make($request->get('password'));
-            $user->save();
-            return response()->json($user);
+            $member = new Member();
+            $member->username = $request->get('username');
+            $member->password = Hash::make($request->get('password'));
+            $member->name = $request->get('name');
+            $member->phone = $request->get('phone');
+            $member->line = $request->get('line');
+            $member->currency = $request->get('currency');
+            $member->how_to_know = $request->get('how_to_know');
+            $member->how_to_know_desc = $request->get('how_to_know_desc');
+            
+            $member->save();
+            return response()->json(['status' => 200]);
         }else{
             return abort(404);
         }

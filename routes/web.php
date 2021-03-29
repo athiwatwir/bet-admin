@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AccountSettingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\MembersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,4 +32,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/account-setting/change-password/{id}', [AccountSettingController::class , 'changePassword']);
 
     Route::get('/users', [UsersController::class, 'index'])->name('users');
+
+    Route::get('/members', [MembersController::class, 'index'])->name('members');
 });

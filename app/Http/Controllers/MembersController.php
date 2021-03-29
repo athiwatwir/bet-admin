@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\Member;
 
-class UsersController extends Controller
+class MembersController extends Controller
 {
     public function __construct()
     {
@@ -14,8 +14,8 @@ class UsersController extends Controller
 
     public function index()
     {
-        $users = User::get();
+        $members = Member::get();
 
-        return view('user.index', ['users' => $users]);
+        return view('member.index', ['members' => $members]);
     }
 }

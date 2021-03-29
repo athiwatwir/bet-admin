@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
-use App\User;
+use App\Models\User;
 
 class AccountSettingController extends Controller
 {

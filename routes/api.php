@@ -18,4 +18,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('register','Api\RegisterController');
+// Route::resource('register','Api\V1\Auth\RegisterController');
+
+Route::namespace('Api\V1\Auth')->group(function () {
+    Route::resource('/register', 'RegisterController');
+});
+
+Route::namespace('Api\V1')->group(function () {
+
+});
