@@ -5,10 +5,13 @@
 
 <!-- Dropdowns -->
 <ul class="navbar-nav align-items-center">
+    <a href="{{ url('/users') }}" class="nav-link nav-link-caret-hide" aria-haspopup="true" aria-expanded="false" id="mainNavFeatures">
+        <i class="fi fi-shield-ok float-start m-0"></i>
+        <span>Users</span> 
+    </a>
 
     <!-- Features -->
     <li class="nav-item dropdown">
-
         <a href="#" class="nav-link nav-link-caret-hide dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="mainNavFeatures">
             <i class="fi fi-shield-ok float-start m-0"></i>
             <span>Upgrade</span>

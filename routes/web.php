@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AccountSettingController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UsersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +23,12 @@ Route::get('/', function () {
 Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::get('/account-setting', 'AccountSettingController@index')->name('account-setting');
-Route::post('/account-setting/update/{id}', 'AccountSettingController@update');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/account-setting', [AccountSettingController::class, 'index'])->name('account-setting');
+    Route::post('/account-setting/update/{id}', [AccountSettingController::class, 'update']);
+    Route::post('/account-setting/change-password/{id}', [AccountSettingController::class , 'changePassword']);
+
+    Route::get('/users', [UsersController::class, 'index'])->name('users');
+});

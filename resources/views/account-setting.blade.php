@@ -63,7 +63,8 @@
                                         data-file-preview-img-height="118" 
                                         data-file-btn-clear="a.js-file-upload-avatar-circle-remove"
                                         data-file-preview-img-cover="true"
-                                        class="custom-file-input absolute-full">
+                                        class="custom-file-input absolute-full"
+                                        style="cursor: pointer;">
 
                                 <svg class="fill-gray-500 rounded-circle m-4 z-index-0" viewBox="0 0 60 60">
                                     <path d="M41.014,45.389l-9.553-4.776C30.56,40.162,30,39.256,30,38.248v-3.381c0.229-0.28,0.47-0.599,0.719-0.951c1.239-1.75,2.232-3.698,2.954-5.799C35.084,27.47,36,26.075,36,24.5v-4c0-0.963-0.36-1.896-1-2.625v-5.319c0.056-0.55,0.276-3.824-2.092-6.525C30.854,3.688,27.521,2.5,23,2.5s-7.854,1.188-9.908,3.53c-2.368,2.701-2.148,5.976-2.092,6.525v5.319c-0.64,0.729-1,1.662-1,2.625v4c0,1.217,0.553,2.352,1.497,3.109c0.916,3.627,2.833,6.36,3.503,7.237v3.309c0,0.968-0.528,1.856-1.377,2.32l-8.921,4.866C1.801,46.924,0,49.958,0,53.262V57.5h46v-4.043C46,50.018,44.089,46.927,41.014,45.389z"></path>
@@ -117,7 +118,7 @@
                                 <!-- password -->
                                 <div class="input-group-over">
                                     <div class="form-label-group mb-3">
-                                        <input placeholder="Account Password" id="account_password" name="account[password]" type="password" class="form-control">
+                                        <input placeholder="Account Password" id="account_password" name="account_email_password" type="password" class="form-control">
                                         <label for="account_password">Account Password</label>
                                     </div>
 
@@ -251,8 +252,8 @@
 
                 <div id="passwordForm" class="collapse">
 
-                    <form novalidate class="bs-validate row" method="post" action="#">
-
+                    <form novalidate class="bs-validate row" method="post" action="/account-setting/change-password/{{ Auth::user()->id }}">
+                    @csrf
                         <div class="col-12 col-md-6 mb-3">
             
                             <!-- portlet : header -->
@@ -270,9 +271,9 @@
                                     <!-- current password -->
                                     <div class="input-group-over">
                                         <div class="form-label-group mb-3">
-                                            <input required placeholder="Current Password" id="account_current_password" name="account[current_password]" type="password" class="form-control">
+                                            <input required placeholder="Current Password" id="account_current_password" name="account_current_password" type="password" class="form-control">
                                             <label for="account_current_password">
-                                                <span class="text-danger">Current</span> Password
+                                                รหัสผ่าน<span class="text-danger">เดิม</span>
                                             </label>
                                         </div>
 
@@ -293,9 +294,9 @@
                                     <!-- new password -->
                                     <div class="input-group-over">
                                         <div class="form-label-group mb-3">
-                                            <input required placeholder="New Password" id="account_new_password" name="account[current_password]" type="password" class="form-control">
+                                            <input required placeholder="New Password" id="account_new_password" name="account_new_password" type="password" class="form-control">
                                             <label for="account_new_password">
-                                                <span class="text-danger">New</span> Password
+                                                รหัสผ่าน<span class="text-danger">ใหม่</span>
                                             </label>
                                         </div>
 
