@@ -2,16 +2,14 @@
 
 namespace App\Models;
 
-use \App\Http\Traits\UsesUuid;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\Member as Authenticatable;
 
-class Member extends Model
+class Member extends Authenticatable
 {
-    use UsesUuid;
-
     protected $fillable = [
-        'username', 'password', 'name' , 'phone' , 'currency' , 'how_to_know'
+        'name', 'email', 'username', 'password',
     ];
 
     /**
@@ -50,8 +48,5 @@ class Member extends Model
      * @param $name
      * @return mixed
      */
-    public function scopePhone($query, $phone)
-    {
-        return $query->where('members.phone', 'LIKE', "%$phone%", 'or');
-    }
+    
 }

@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\V1\Auth\RegisterController;
+use App\Http\Controllers\Api\V1\Auth\PassportAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,16 +15,8 @@ use App\Http\Controllers\Api\V1\Auth\RegisterController;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
-// Route::resource('register','Api\V1\Auth\RegisterController');
-
-Route::namespace('Api\V1\Auth')->group(function () {
-    Route::post('/register', [RegisterController::class, '__invoke']);
-});
-
-Route::middleware('auth:api')->namespace('Api\V1')->group(function () {
-
-});
+Route::post('register', [PassportAuthController::class, 'register']);
