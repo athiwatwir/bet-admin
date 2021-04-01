@@ -32,6 +32,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/account-setting/change-password/{id}', [AccountSettingController::class , 'changePassword']);
 
     Route::get('/users', [UsersController::class, 'index'])->name('users');
+    Route::get('/users/active/{id}/{username}', [UsersController::class, 'active']);
+    Route::get('/users/delete/{id}/{username}', [UsersController::class, 'delete']);
 
     Route::get('/members', [MembersController::class, 'index'])->name('members');
 });

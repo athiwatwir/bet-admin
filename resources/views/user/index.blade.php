@@ -35,6 +35,15 @@
                     </a>
                 </li>
 
+                <li class="nav-item active">
+                    <a class="nav-link px-0" href="{{ url('/users') }}">
+                        <i class="fi fi-arrow-end m-0 fs--12"></i> 
+                        <span class="px-2 d-inline-block">
+                            All Admins
+                        </span>
+                    </a>
+                </li>
+
             </ul>
 
         </nav>
@@ -80,7 +89,7 @@
                         <table class="table table-align-middle border-bottom mb-6">
 
                             <thead>
-                                <tr class="text-muted fs--13">
+                                <tr class="text-muted fs--13 bg-light">
                                     <th class="w--30 hidden-lg-down">
                                         <label class="form-checkbox form-checkbox-primary float-start">
                                             <input class="checkall" data-checkall-container="#item_list" type="checkbox" name="checkbox">
@@ -92,8 +101,10 @@
                                             USERNAME
                                         </span>
                                     </th>
-                                    <th class="w--200 hidden-lg-down">EMAIL</th>
-                                    <th class="w--200 hidden-lg-down">STATUS</th>
+                                    <th class="w--200 hidden-lg-down text-center">PHONE</th>
+                                    <th class="w--100 hidden-lg-down text-center">LINE</th>
+                                    <th class="w--100 hidden-lg-down text-center">CURRENCY</th>
+                                    <th class="w--100 hidden-lg-down text-center">STATUS</th>
                                     <th class="w--60">&nbsp;</th>
                                 </tr>
                             </thead>
@@ -119,19 +130,36 @@
 
                                             <!-- MOBILE ONLY -->
                                             <div class="fs--13 d-block d-xl-none">
-                                                <span class="d-block text-muted">{{ $user->email }}</span>
-                                                <span class="d-block font-weight-medium">is_status</span>
+                                                <span class="d-block text-muted">{{ $user->phone }}</span>
+                                                <span class="d-block text-muted">{{ $user->line }}</span>
+                                                <span class="d-block font-weight-medium">{{ $user->is_active }}</span>
                                             </div>
                                             <!-- /MOBILE ONLY -->
 
                                         </td>
 
-                                        <td class="hidden-lg-down">
-                                            {{ $user->email }}
+                                        <td class="hidden-lg-down text-center">
+                                            {{ $user->phone }}
                                         </td>
 
-                                        <td class="hidden-lg-down">
-                                            is_status
+                                        <td class="hidden-lg-down text-center">
+                                            @if($user->line != '')
+                                                {{ $user->line }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
+
+                                        <td class="hidden-lg-down text-center">
+                                            {{ $user->currency }}
+                                        </td>
+
+                                        <td class="hidden-lg-down text-center">
+                                            @if($user->is_active == 'Y')
+                                                <span class="badge badge-success float-end font-weight-normal mt-1">ACTIVE</span>
+                                            @else
+                                                <span class="badge badge-danger float-end font-weight-normal mt-1">INACTIVE</span>
+                                            @endif
                                         </td>
 
                                         <td class="text-align-end">
@@ -148,20 +176,19 @@
 
                                                 <div class="dropdown-menu dropdown-menu-clean dropdown-click-ignore max-w-220">
 
-                                                    <a class="dropdown-item text-truncate" href="message-reply.html">
-                                                        <i class="fi fi-arrow-right-3"></i>
-                                                        Reply
-                                                    </a>
-
-                                                    <a class="dropdown-item text-truncate" href="#">
+                                                    <a class="dropdown-item text-truncate" href="/users/active/{{ $user->id }}/{{ $user->username }}">
                                                         <i class="fi fi-box"></i>
-                                                        Archive
+                                                        @if($user->is_active == 'Y')
+                                                            <span class="text-danger">ปิดใช้งาน</span>
+                                                        @else
+                                                            <span class="text-success">เปิดใช้งาน</span>
+                                                        @endif
                                                     </a>
 
                                                     <a	 href="#!" 
                                                         class="dropdown-item text-truncate js-ajax-confirm" 
-                                                        data-href="message-inbox.html" 
-                                                        data-ajax-confirm-body="Delete this message?" 
+                                                        data-href="/users/delete/{{ $user->id }}/{{ $user->username }}"
+                                                        data-ajax-confirm-body="ยืนยันการลบบัญชีผู้ใช้งาน {{ $user->username }} ?" 
 
                                                         data-ajax-confirm-mode="ajax" 
                                                         data-ajax-confirm-method="GET" 
@@ -174,10 +201,10 @@
                                                         data-ajax-confirm-btn-no-text="Cancel" 
                                                         data-ajax-confirm-btn-no-icon="fi fi-close"
 
-                                                        data-ajax-confirm-success-target="#message_id_1" 
+                                                        data-ajax-confirm-success-target="#message_id_{{ $key }}" 
                                                         data-ajax-confirm-success-target-action="remove">
                                                         <i class="fi fi-thrash text-danger"></i>
-                                                        Delete
+                                                        ลบผู้ใช้
                                                     </a>
 
                                                 </div>
@@ -268,27 +295,23 @@
                             <nav aria-label="pagination">
                                 <ul class="pagination pagination-pill justify-content-end justify-content-center justify-content-md-end">
 
-                                    <li class="page-item disabled btn-pill ">
-                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Prev</a>
+                                    <li class="{{ $users->onFirstPage() ? 'page-item btn-pill disabled' : 'page-item btn-pill' }}">
+                                        <a class="page-link" href="{{ $users->previousPageUrl() }}" tabindex="-1" aria-disabled="true">Prev</a>
                                     </li>
                                     
                                     <li class="page-item active" aria-current="page">
-                                        <a class="page-link" href="#">1 <span class="sr-only">(current)</span></a>
+                                        {{ $users->links() }}
                                     </li>
                                     
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">2</a>
-                                    </li>
-                                    
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">3</a>
-                                    </li>
-                                    
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">Next</a>
+                                    <li class="{{ $users->currentPage() == $users->lastPage() ? 'page-item disabled' : 'page-item' }}">
+                                        <a class="page-link" href="{{ $users->nextPageUrl() }}">Next</a>
                                     </li>
 
                                 </ul>
+
+                                <div class="justify-content-end justify-content-center justify-content-md-end text-right">
+                                    <small>หน้า : {{ $users->currentPage() }} / {{ $users->lastPage() }}</small>
+                                </div>
                             </nav>
                             <!-- pagination -->
 

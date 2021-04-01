@@ -16,14 +16,12 @@ class PassportAuthController extends Controller
     public function register(Request $request)
     {
         $this->validate($request, [
-            'username' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'alpha', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'min:10', 'max:10'],
-            'line' => ['string', 'max:255'],
             'currency' => ['required', 'string', 'max:5'],
             'how_to_know' => ['required', 'string', 'max:255'],
-            'how_to_know_desc' => ['string', 'max:255'],
         ]);
  
         $user = User::create([
@@ -35,13 +33,14 @@ class PassportAuthController extends Controller
             "currency" => $request->currency,
             "how_to_know" => $request->how_to_know,
             "how_to_know_desc" => $request->how_to_know_desc,
+            "status" => 'CO',
         ]);
 
         // Log::debug($user);
        
         $token = $user->createToken('LaravelAuthApp')->accessToken;
  
-        return response()->json(['token' => $token], 200);
+        return response()->json(['token' => $token, 'status' => 200], 200);
     }
  
     /**
