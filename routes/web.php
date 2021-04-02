@@ -24,9 +24,10 @@ Route::get('/', function () {
 Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['admin'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
     Route::get('/account-setting', [AccountSettingController::class, 'index'])->name('account-setting');
     Route::post('/account-setting/update/{id}', [AccountSettingController::class, 'update']);
     Route::post('/account-setting/change-password/{id}', [AccountSettingController::class , 'changePassword']);

@@ -16,7 +16,7 @@ class PassportAuthController extends Controller
     public function register(Request $request)
     {
         $this->validate($request, [
-            'username' => ['required', 'alpha', 'max:255', 'unique:users'],
+            'username' => ['required', 'string', 'max:255', 'regex:/(^([a-zA-Z]+)(\d+)?$)/u'],
             'password' => ['required', 'string', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'min:10', 'max:10'],
@@ -24,23 +24,33 @@ class PassportAuthController extends Controller
             'how_to_know' => ['required', 'string', 'max:255'],
         ]);
  
-        $user = User::create([
-            "username" => $request->username,
-            "password" => $request->password,
-            "name" => $request->name,
-            "phone" => $request->phone,
-            "line" => $request->line,
-            "currency" => $request->currency,
-            "how_to_know" => $request->how_to_know,
-            "how_to_know_desc" => $request->how_to_know_desc,
-            "status" => 'CO',
-        ]);
+        $checkUser = User::where('username', $request->username)
+                    ->orWhere('phone', $request->phone)
+                    ->orWhere('line', $request->line)
+                    ->where('line', '!=', null)
+                    ->first();
 
-        // Log::debug($user);
-       
-        $token = $user->createToken('LaravelAuthApp')->accessToken;
- 
-        return response()->json(['token' => $token, 'status' => 200], 200);
+        if(!isset($checkUser)){
+            $user = User::create([
+                "username" => $request->username,
+                "password" => $request->password,
+                "name" => $request->name,
+                "phone" => $request->phone,
+                "line" => $request->line,
+                "currency" => $request->currency,
+                "how_to_know" => $request->how_to_know,
+                "how_to_know_desc" => $request->how_to_know_desc,
+                "status" => 'CO',
+            ]);
+
+            // Log::debug($user);
+        
+            $token = $user->createToken('LaravelAuthApp')->accessToken;
+    
+            return response()->json(['token' => $token, 'status' => 200], 200);
+        }
+
+        return response()->json(['message' => 'มีข้อมูลซ้ำกับผู้ใช้อื่น กรุณาตรวจสอบ [ชื่อผู้ใช้] , [หมายเลขโทรศัพท์] , [Line]', 'status' => 400], 400);
     }
  
     /**

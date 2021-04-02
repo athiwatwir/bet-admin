@@ -19,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'username', 'password', 'name' , 'line' , 'phone' , 'currency' , 'how_to_know', 'how_to_know_desc' , 'status' , 'is_active'
+        'username', 'password', 'name' , 'line' , 'phone' , 'currency' , 'how_to_know', 'how_to_know_desc' , 'status' , 'is_active', 'created_at'
     ];
 
     /**
@@ -28,7 +28,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'status', 'is_active', 'is_admin', 'created_at'
     ];
 
     /**
@@ -53,5 +53,10 @@ class User extends Authenticatable
     public function scopeUsername($query, $username)
     {
         return $query->where('users.username', 'LIKE', "%$username%", 'or');
+    }
+
+    public function scopeLine($query, $username)
+    {
+        return $query->where('users.line', 'LIKE', "%$line%", 'or');
     }
 }

@@ -278,7 +278,7 @@
                                         data-js-form-advanced-bulk-submit-without-confirmation="false" 
                                         data-js-form-advanced-form-id="#form_id">
                                         <i class="fi fi-thrash text-danger"></i>
-                                        Delete
+                                        ลบที่เลือก
                                     </a>
 
                                 </div>

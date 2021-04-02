@@ -16,7 +16,10 @@ class UsersController extends Controller
 
     public function index()
     {
-        $users = User::where('status', '!=', 'DL')->paginate(5);
+        $users = User::where('status', '!=', 'DL')
+                    ->where('is_admin', '=', 'N')
+                    ->orderBy('created_at', 'desc')
+                    ->paginate(10);
 
         return view('user.index', ['users' => $users]);
     }
