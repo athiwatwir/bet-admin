@@ -35,6 +35,7 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/users', [UsersController::class, 'index'])->name('users');
     Route::get('/users/active/{id}/{username}', [UsersController::class, 'active']);
     Route::get('/users/delete/{id}/{username}', [UsersController::class, 'delete']);
+    Route::get('/users/view/{id}', [UsersController::class, 'view'])->name('view');
 
     Route::get('/members', [MembersController::class, 'index'])->name('members');
 });

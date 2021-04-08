@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\Auth\PassportAuthController;
+use App\Http\Controllers\Api\V1\UsersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,3 +21,13 @@ use App\Http\Controllers\Api\V1\Auth\PassportAuthController;
 // });
 
 Route::post('register', [PassportAuthController::class, 'register']);
+Route::post('login', [PassportAuthController::class, 'login']);
+
+Route::middleware(['auth:api'])->group(function () {
+    Route::get('logout', [PassportAuthController::class, 'logout']);
+
+    Route::prefix('user')->group(function () {
+        Route::get('view', [UsersController::class, 'view']);
+        Route::post('update', [UsersController::class, 'update']);
+    });
+});

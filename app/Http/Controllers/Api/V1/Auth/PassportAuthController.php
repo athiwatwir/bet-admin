@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class PassportAuthController extends Controller
@@ -60,14 +61,35 @@ class PassportAuthController extends Controller
     {
         $data = [
             'username' => $request->username,
-            'password' => $request->password
+            'password' => $request->password,
+            'is_active' => 'Y',
+            'is_admin' => 'N',
+            'status' => 'CO'
         ];
+
+        // Log::debug($data);
  
         if (auth()->attempt($data)) {
             $token = auth()->user()->createToken('LaravelAuthApp')->accessToken;
-            return response()->json(['token' => $token], 200);
+            $name = auth()->user()->name;
+            $id = auth()->user()->id;
+            return response()->json(['token' => $token, 'name' => $name, 'id' => $id, 'status' => 200], 200);
         } else {
-            return response()->json(['error' => 'Unauthorised'], 401);
+            return response()->json(['message' => 'ไม่สามารถเข้าสู่ระบบได้ กรุณาตรวจสอบ', 'status' => 401], 401);
         }
-    }   
+    }
+
+    public function logout()
+    {
+        $accessToken = auth()->user()->token();
+
+        DB::table('oauth_refresh_tokens')
+            ->where('access_token_id', $accessToken->id)
+            ->update([
+                'revoked' => true
+            ]);
+
+        $accessToken->revoke();
+        return response()->json(['status' => 200], 200);
+    }
 }

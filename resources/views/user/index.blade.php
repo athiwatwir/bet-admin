@@ -39,7 +39,25 @@
                     <a class="nav-link px-0" href="{{ url('/users') }}">
                         <i class="fi fi-arrow-end m-0 fs--12"></i> 
                         <span class="px-2 d-inline-block">
-                            All Admins
+                            Active Users
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link px-0" href="{{ url('/users') }}">
+                        <i class="fi fi-arrow-end m-0 fs--12"></i> 
+                        <span class="px-2 d-inline-block">
+                            InActive Users <span class="badge badge-warning float-end font-weight-normal mt-1">{{ count($inactive) }}</span>
+                        </span>
+                    </a>
+                </li>
+
+                <li class="nav-item active">
+                    <a class="nav-link px-0" href="{{ url('/users') }}">
+                        <i class="fi fi-arrow-end m-0 fs--12"></i> 
+                        <span class="px-2 d-inline-block">
+                            Deleted Users
                         </span>
                     </a>
                 </li>
@@ -123,10 +141,14 @@
                                             </label>
                                         </td>
 
-                                        <td>
-
-                                            <p class="mb-0"><strong>{{ $user->username }}</strong></p>
-                                            <small>{{ $user->name }}</small>
+                                        <td style="line-height: 17px;">
+                                            <p class="mb-0 d-flex">
+                                                <strong class="text-dark">{{ $user->username }}</strong> 
+                                                <a href="#!" data-toggle="modal" data-target="#exampleModal">
+                                                    <i class="fi fi-dots-horizontal-full d-block fs--20 ml-2" style="height: 10px; margin-top: -6px;"></i>
+                                                </a>
+                                            </p>
+                                            <small style="font-size: 70%;">{{ $user->name }}</small>
 
                                             <!-- MOBILE ONLY -->
                                             <div class="fs--13 d-block d-xl-none">
@@ -135,7 +157,6 @@
                                                 <span class="d-block font-weight-medium">{{ $user->is_active }}</span>
                                             </div>
                                             <!-- /MOBILE ONLY -->
-
                                         </td>
 
                                         <td class="hidden-lg-down text-center">
@@ -144,7 +165,7 @@
 
                                         <td class="hidden-lg-down text-center">
                                             @if($user->line != '')
-                                                {{ $user->line }}
+                                                <a href="https://line.me/R/ti/p/{{ $user->line }}" target="_blank">{{ $user->line }}</a>
                                             @else
                                                 -
                                             @endif
@@ -194,11 +215,11 @@
                                                         data-ajax-confirm-method="GET" 
 
                                                         data-ajax-confirm-btn-yes-class="btn-sm btn-danger" 
-                                                        data-ajax-confirm-btn-yes-text="Delete" 
+                                                        data-ajax-confirm-btn-yes-text="ลบข้อมูล" 
                                                         data-ajax-confirm-btn-yes-icon="fi fi-check" 
 
                                                         data-ajax-confirm-btn-no-class="btn-sm btn-light" 
-                                                        data-ajax-confirm-btn-no-text="Cancel" 
+                                                        data-ajax-confirm-btn-no-text="ยกเลิก" 
                                                         data-ajax-confirm-btn-no-icon="fi fi-close"
 
                                                         data-ajax-confirm-success-target="#message_id_{{ $key }}" 

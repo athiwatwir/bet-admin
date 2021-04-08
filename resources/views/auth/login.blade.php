@@ -11,7 +11,7 @@
                 <h1 class="d-inline-block text-align-end text-center-md text-center-xs display-4 h2-xs w-100 max-w-600 w-100-md w-100-xs">
                     Sign in
                     <span class="display-3 h1-xs d-block font-weight-medium">
-                        Smarty
+                        .......
                     </span>
                 </h1>
             </div>
@@ -57,9 +57,9 @@
                         <label for="password">Password</label>
                     </div>
 
-                    <a href="account-signin-password.html" class="btn fs--12">
+                    <!-- <a href="account-signin-password.html" class="btn fs--12">
                         FORGOT?
-                    </a>
+                    </a> -->
 
                 </div>
 
