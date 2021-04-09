@@ -97,7 +97,7 @@ class AccountSettingController extends Controller
         $user = User::find($id);
         if (Hash::check($request->account_current_password, $user->password)) {
             $user->update([
-                'password' => Hash::make($request->account_new_password)
+                'password' => $request->account_new_password,
             ]);
         }else{
             return redirect()->back()->with('error', 'รหัสผ่านไม่ถูกต้อง กรุณาตรวจสอบ...');

@@ -28,6 +28,10 @@ Route::middleware(['auth:api'])->group(function () {
 
     Route::prefix('user')->group(function () {
         Route::get('view', [UsersController::class, 'view']);
+        Route::get('user-banking', [UsersController::class, 'userBanking']);
         Route::post('update', [UsersController::class, 'update']);
+        Route::post('change-password', [UsersController::class, 'changePassword']);
+        Route::post('user-banking', [UsersController::class, 'userBankingUpdate']);
+        Route::post('user-banking-edit', [UsersController::class, 'userBankingEdit']);
     });
 });
