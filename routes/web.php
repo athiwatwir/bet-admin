@@ -5,6 +5,7 @@ use App\Http\Controllers\AccountSettingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\MembersController;
+use App\Http\Controllers\AdminsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,11 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/users/active/{id}/{username}', [UsersController::class, 'active']);
     Route::get('/users/delete/{id}/{username}', [UsersController::class, 'delete']);
     Route::get('/users/view/{id}', [UsersController::class, 'view'])->name('view');
+
+    Route::get('/admins', [AdminsController::class, 'index'])->name('admins');
+    Route::get('/admins/active/{id}/{username}', [AdminsController::class, 'active']);
+    Route::get('/admins/delete/{id}/{username}', [AdminsController::class, 'delete']);
+    Route::post('/admins/register', [AdminsController::class, 'register']);
 
     Route::get('/members', [MembersController::class, 'index'])->name('members');
 });

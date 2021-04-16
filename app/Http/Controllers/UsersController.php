@@ -37,8 +37,12 @@ class UsersController extends Controller
 
     public function active(Request $request)
     {
-        $user = User::find($request->id)->update([
-            'is_active' => 'Y'
+        $user = User::find($request->id);
+
+        $is_active = $user->is_active == 'N' ? 'Y' : 'N';
+
+        $user->update([
+            'is_active' => $is_active
         ]);
 
         return redirect()->back()->with('success', 'แก้ไขสถานะผู้ใช้งาน '. $request->username .' เรียบร้อยแล้ว');

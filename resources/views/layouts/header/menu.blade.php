@@ -35,7 +35,7 @@
                         </li>
 
                         <li class="dropdown-item text-wrap">
-                            <a href="../layout_2/index.html" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
+                            <a href="{{ url('/admins') }}" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
                                 <i class="fi fi-star-empty-radius float-start fs--25 mt--n2"></i>
                                 <span class="h5-xs d-block fs--18">All Admins</span>
                                 <span class="fs--11 text-muted text-uppercase">
