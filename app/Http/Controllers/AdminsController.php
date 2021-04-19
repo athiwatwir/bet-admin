@@ -24,6 +24,7 @@ class AdminsController extends Controller
         $inactive = [];
         $active = [];
         $deleted = [];
+        $all = [];
         foreach ($admins as $key => $admin) {
             if($admin->status == 'DL'){
                 array_push($deleted, $admin);

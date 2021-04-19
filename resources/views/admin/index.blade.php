@@ -130,8 +130,9 @@
                             <tbody id="item_list">
 
                                 @foreach ($admins as $key => $admin)
+                                    @if($admin->status != 'DL')
 
-                                    <!-- message -->
+                                    <!-- admin -->
                                     <tr id="message_id_{{ $key }}" class="text-dark">
 
                                         <td class="hidden-lg-down">
@@ -236,7 +237,8 @@
                                         </td>
 
                                     </tr>
-                                    <!-- /message -->
+                                    <!-- /admin -->
+                                    @endif
                                 @endforeach
 
                             </tbody>

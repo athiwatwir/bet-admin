@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\Auth\PassportAuthController;
 use App\Http\Controllers\Api\V1\UsersController;
+use App\Http\Controllers\Api\V1\WalletsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,9 +30,14 @@ Route::middleware(['auth:api'])->group(function () {
     Route::prefix('user')->group(function () {
         Route::get('view', [UsersController::class, 'view']);
         Route::get('user-banking', [UsersController::class, 'userBanking']);
+        Route::get('wallets', [WalletsController::class, 'userWallets']);
+
         Route::post('update', [UsersController::class, 'update']);
         Route::post('change-password', [UsersController::class, 'changePassword']);
         Route::post('user-banking', [UsersController::class, 'userBankingUpdate']);
         Route::post('user-banking-edit', [UsersController::class, 'userBankingEdit']);
+        Route::post('create-wallet', [WalletsController::class, 'createWallet']);
+        Route::post('add-wallet', [WalletsController::class, 'addWallet']);
+        Route::post('transfer-wallet', [WalletsController::class, 'transferWallet']);
     });
 });

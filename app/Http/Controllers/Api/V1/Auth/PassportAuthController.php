@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Wallet;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -44,7 +45,14 @@ class PassportAuthController extends Controller
                 "status" => 'CO',
             ]);
 
-            // Log::debug($user);
+            $wallet = Wallet::create([
+                "user_id" => $user->id,
+                "amount" => 0,
+                "currency" => $request->currency,
+                "is_default" => "Y",
+                "status" => 'CO',
+            ]);
+
         
             $token = $user->createToken('LaravelAuthApp')->accessToken;
     

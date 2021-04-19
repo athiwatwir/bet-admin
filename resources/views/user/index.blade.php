@@ -119,6 +119,7 @@
                                             USERNAME
                                         </span>
                                     </th>
+                                    <th class="w--100 hidden-lg-down text-center">WALLET</th>
                                     <th class="w--200 hidden-lg-down text-center">PHONE</th>
                                     <th class="w--100 hidden-lg-down text-center">LINE</th>
                                     <th class="w--100 hidden-lg-down text-center">CURRENCY</th>
@@ -130,8 +131,9 @@
                             <tbody id="item_list">
 
                                 @foreach ($users as $key => $user)
+                                    @if($user->status != 'DL')
 
-                                    <!-- message -->
+                                    <!-- user -->
                                     <tr id="message_id_{{ $key }}" class="text-dark">
 
                                         <td class="hidden-lg-down">
@@ -235,7 +237,8 @@
                                         </td>
 
                                     </tr>
-                                    <!-- /message -->
+                                    <!-- /user -->
+                                    @endif
                                 @endforeach
 
                             </tbody>
