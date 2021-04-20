@@ -31,6 +31,7 @@ Route::middleware(['auth:api'])->group(function () {
         Route::get('view', [UsersController::class, 'view']);
         Route::get('user-banking', [UsersController::class, 'userBanking']);
         Route::get('wallets', [WalletsController::class, 'userWallets']);
+        Route::get('delete-wallet/{id}', [WalletsController::class, 'deleteWallet']);
 
         Route::post('update', [UsersController::class, 'update']);
         Route::post('change-password', [UsersController::class, 'changePassword']);

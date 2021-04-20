@@ -28,6 +28,7 @@ class WalletsController extends Controller
 
         $wallets = Wallet::where('user_id', '=', $accessToken->user_id)
                             ->where('is_default', '=', 'N')
+                            ->where('status', '!=', 'DL')
                             ->select(['id', 'game_id', 'amount', 'currency'])
                             ->get();
         
@@ -121,5 +122,18 @@ class WalletsController extends Controller
         }else{
             return response()->json(['status' => 301], 301);
         }
+    }
+
+    public function deleteWallet(Request $request)
+    {
+        $default_wallet = $this->defaultWallet();
+        $wallet = Wallet::find($request->id);
+
+        $is_amount = $default_wallet->amount + $wallet->amount;
+
+        $wallet->update(['status' => 'DL', 'amount' => 0]);
+        Wallet::find($default_wallet->id)->update(['amount' => $is_amount]);
+
+        return response()->json(['status' => 200], 200);
     }
 }
