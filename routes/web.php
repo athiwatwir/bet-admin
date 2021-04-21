@@ -6,6 +6,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\MembersController;
 use App\Http\Controllers\AdminsController;
+use App\Http\Controllers\CBankAccountController;
+use App\Http\Controllers\PaymentTransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,4 +46,17 @@ Route::middleware(['admin'])->group(function () {
     Route::post('/admins/register', [AdminsController::class, 'register']);
 
     Route::get('/members', [MembersController::class, 'index'])->name('members');
+
+    Route::get('/cbank', [CBankAccountController::class, 'index'])->name('cbank');
+
+
+    Route::post('/create-cbank', [CBankAccountController::class, 'createCBank']);
+    Route::post('/edit-cbank', [CBankAccountController::class, 'editCBank']);
+    Route::get('/delete-cbank/{id}', [CBankAccountController::class, 'deleteCBank']);
+
+    Route::prefix('/transaction')->group(function () {
+        Route::get('/payment', [PaymentTransactionController::class, 'index']);
+        Route::get('/confirm-payment-transaction/{id}', [PaymentTransactionController::class, 'confirmPaymentTransaction']);
+        Route::get('/void-payment-transaction/{id}', [PaymentTransactionController::class, 'voidPaymentTransaction']);
+    });
 });

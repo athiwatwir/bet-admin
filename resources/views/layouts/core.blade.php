@@ -35,6 +35,8 @@
 
 	<link rel="manifest" href="{{ asset('images/manifest/manifest.json') }}">
 	<meta name="theme-color" content="#377dff">
+
+    <link href="{{ asset('css/mystyle.css') }}" rel="stylesheet">
 </head>
 <body class="layout-admin header-sticky" data-s2t-class="btn-primary btn-sm bg-gradient-default rounded-circle b-0">
     <div id="wrapper" class="d-flex align-items-stretch flex-column">
@@ -65,6 +67,9 @@
         </footer>
     </div>
 
+    @yield('modal')
+
     <script src="{{ asset('js/smarty_js/core.min.js') }}"></script>
+    <script src="{{ asset('js/myapp.js') }}"></script>
 </body>
 </html>

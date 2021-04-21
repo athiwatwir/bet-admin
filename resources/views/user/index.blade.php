@@ -162,6 +162,10 @@
                                         </td>
 
                                         <td class="hidden-lg-down text-center">
+                                            is_wallet
+                                        </td>
+
+                                        <td class="hidden-lg-down text-center">
                                             {{ $user->phone }}
                                         </td>
 
