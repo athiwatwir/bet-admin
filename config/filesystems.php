@@ -42,6 +42,13 @@ return [
             'visibility' => 'public',
         ],
 
+        'public' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/uploads/slips'),
+            'url' => env('APP_URL').'/slip',
+            'visibility' => 'public',
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),
@@ -67,6 +74,7 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
+        public_path('slip') => storage_path('app/public/uploads/slips'),
     ],
 
 ];

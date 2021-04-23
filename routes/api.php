@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\Auth\PassportAuthController;
 use App\Http\Controllers\Api\V1\UsersController;
 use App\Http\Controllers\Api\V1\WalletsController;
+use App\Http\Controllers\Api\V1\PaymentTransactionsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,7 @@ Route::middleware(['auth:api'])->group(function () {
         Route::get('user-banking', [UsersController::class, 'userBanking']);
         Route::get('wallets', [WalletsController::class, 'userWallets']);
         Route::get('delete-wallet/{id}', [WalletsController::class, 'deleteWallet']);
+        Route::get('histories-wallet', [PaymentTransactionsController::class, 'userPaymentTransactions']);
 
         Route::post('update', [UsersController::class, 'update']);
         Route::post('change-password', [UsersController::class, 'changePassword']);
@@ -40,5 +42,7 @@ Route::middleware(['auth:api'])->group(function () {
         Route::post('create-wallet', [WalletsController::class, 'createWallet']);
         Route::post('add-wallet', [WalletsController::class, 'addWallet']);
         Route::post('transfer-wallet', [WalletsController::class, 'transferWallet']);
+        Route::post('deposit-wallet', [WalletsController::class, 'depositWallet']);
+        Route::post('withdraw-wallet', [WalletsController::class, 'withdrawWallet']);
     });
 });

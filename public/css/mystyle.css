@@ -1,3 +1,15 @@
 .btn-vv-sm {
     padding: 0 10px;
 }
+
+tr.bg-deposit {
+    background-color: #f3fff3;
+}
+
+tr.bg-withdraw {
+    background-color: #fff6f6;
+}
+
+tr.bg-transfer {
+    background-color: #fffcf4;
+}

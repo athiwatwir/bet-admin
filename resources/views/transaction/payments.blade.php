@@ -40,12 +40,12 @@
                                         ประเภทรายการ
                                     </span>
                                 </th>
-                                <th class="w--120 hidden-lg-down text-center">วัน-เวลา</th>
-                                <th class="w--200 hidden-lg-down text-center">ธนาคาร</th>
+                                <th class="hidden-lg-down text-center">ผู้ทำรายการ</th>
+                                <th class="hidden-lg-down text-center">วัน-เวลา</th>
+                                <th class="hidden-lg-down text-center">ไปยังบัญชี</th>
                                 <th class="hidden-lg-down text-center">จำนวนเงิน</th>
-                                <th class="w--60 hidden-lg-down text-center">สลิป</th>
-                                <th class="w--100 hidden-lg-down text-center">สถานะ</th>
-                                <th class="w--100 hidden-lg-down text-center">ผู้ทำรายการ</th>
+                                <th class="hidden-lg-down text-center">สลิป</th>
+                                <th class="hidden-lg-down text-center">สถานะ</th>
                                 <th>&nbsp;</th>
                             </tr>
                         </thead>
@@ -54,8 +54,11 @@
 
                             @foreach ($transaction as $key => $trans)
 
-                                <!-- user -->
-                                <tr id="message_id_{{ $key }}" class="text-dark">
+                                <tr id="message_id_{{ $key }}" class="text-dark 
+                                                                @if($trans->type == 'ฝาก') bg-deposit 
+                                                                @elseif($trans->type == 'ถอน') bg-withdraw  
+                                                                @elseif($trans->type == 'ย้าย') bg-transfer
+                                                                @endif ">
 
                                     <td class="hidden-lg-down">
                                         <label class="form-checkbox form-checkbox-secondary float-start">
@@ -84,22 +87,56 @@
                                         <!-- /MOBILE ONLY -->
                                     </td>
 
+                                    <td class="hidden-lg-down text-center" style="line-height: 16px;">
+                                        {{ $trans->username }}<br/>
+                                        <small class="">{{ $trans->name }}</small>
+                                    </td>
+
                                     <td class="hidden-lg-down text-center">
                                         {{ $trans->action_date }}
                                     </td>
 
                                     <td class="hidden-lg-down text-center" style="line-height: 16px;">
-                                        {{ $trans->bank_name }}<br/>
-                                        <small>{{ $trans->account_name }}</small><br/>
-                                        <small>{{ $trans->account_number }}</small>
+                                        @if($trans->type == 'ฝาก')
+                                            {{ $trans->bank_name }}<br/>
+                                            <small>{{ $trans->account_name }}</small><br/>
+                                            <small>{{ $trans->account_number }}</small>
+                                        @elseif($trans->type == 'ถอน')
+                                            {{ $trans->user_bank_name }}<br/>
+                                            <small>{{ $trans->bank_account_name }}</small><br/>
+                                            <small>{{ $trans->bank_account_number }}</small>
+                                        @elseif($trans->type == 'ย้าย')
+                                            <small>
+                                                @if($trans->from_default == 'Y')
+                                                    กระเป๋าหลัก
+                                                @else
+                                                    กระเป๋าเกม : {{ $trans->from_game }}
+                                                @endif
+                                            </small><br/>
+                                            <small>-></small></br>
+                                            <small>
+                                                @if($trans->to_default == 'Y')
+                                                    กระเป๋าหลัก
+                                                @else
+                                                    กระเป๋าเกม : {{ $trans->to_game }}
+                                                @endif
+                                            </small>
+                                        @endif
                                     </td>
 
                                     <td class="hidden-lg-down text-center">
-                                        {{ number_format($trans->amount) }}
+                                        <strong class=" @if($trans->type == 'ฝาก') text-success 
+                                                    @elseif($trans->type == 'ถอน') text-danger 
+                                                    @elseif($trans->type == 'ย้าย') text-warning
+                                                    @endif "
+                                        >{{ number_format($trans->amount) }}
+                                        </strong>
                                     </td>
 
                                     <td class="hidden-lg-down text-center">
-                                        <a href="{{ $trans->slip }}" target="_blank"><i class="fi fi-image"></i></a>
+                                        @if(isset($trans->slip))
+                                            <a href="{{ asset('slip/'.$trans->slip) }}" target="_blank"><i class="fi fi-image"></i></a>
+                                        @endif
                                     </td>
 
                                     <td class="hidden-lg-down text-center">
@@ -110,10 +147,6 @@
                                         @else
                                             <small class="badge badge-secondary font-weight-normal">รอยืนยัน</small>
                                         @endif
-                                    </td>
-
-                                    <td class="hidden-lg-down text-center">
-                                        {{ $trans->username }}
                                     </td>
 
                                     <td class="text-align-end">
