@@ -21,7 +21,7 @@ use App\Http\Controllers\PaymentTransactionController;
 */
 
 Route::get('/', function () {
-    return view('Auth\login');
+    return view('auth/login');
 })->name('login');
 
 Auth::routes();
