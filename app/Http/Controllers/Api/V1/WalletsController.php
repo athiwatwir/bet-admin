@@ -11,13 +11,18 @@ use Illuminate\Support\Facades\Log;
 
 class WalletsController extends Controller
 {
-    public function defaultWallet()
+    private function defaultWallet()
     {
         $accessToken = auth()->user()->token();
         return Wallet::where('user_id', '=', $accessToken->user_id)
                                 ->where('is_default', '=', 'Y')
                                 ->select(['id', 'amount', 'currency'])
                                 ->first();
+    }
+
+    private function transaction()
+    {
+
     }
 
 
@@ -72,6 +77,21 @@ class WalletsController extends Controller
                 "status" => 'CO',
             ]);
 
+            if($amount > 0) {
+                $trans = DB::table('payment_transactions')
+                    ->insert([
+                        'user_id' => $accessToken->user_id,
+                        'from_wallet_id' => $default_wallet->id,
+                        'to_wallet_id' => $wallet->id,
+                        'action_date' => date('Y-m-d h:i:s'),
+                        'type' => 'ย้าย',
+                        'amount' => $amount,
+                        'status' => 'CO',
+                        'created_at' => date('Y-m-d h:i:s'),
+                        'updated_at' => date('Y-m-d h:i:s'),
+                    ]);
+            }
+
             if($wallet){
                 Wallet::find($default_wallet->id)->update(['amount' => $is_amount]);
                 return response()->json(['status' => 200], 200);
@@ -87,7 +107,6 @@ class WalletsController extends Controller
     public function addWallet(Request $request)
     {
         $accessToken = auth()->user()->token();
-
         $default_wallet = $this->defaultWallet();
 
         if($default_wallet->amount >= $request->amount) {
@@ -98,6 +117,19 @@ class WalletsController extends Controller
             $is_amount = $wallet->amount + $request->amount;
 
             $wallet->update(['amount' => $is_amount]);
+
+            $trans = DB::table('payment_transactions')
+                ->insert([
+                    'user_id' => $accessToken->user_id,
+                    'from_wallet_id' => $default_wallet->id,
+                    'to_wallet_id' => $wallet->id,
+                    'action_date' => date('Y-m-d h:i:s'),
+                    'type' => 'ย้าย',
+                    'amount' => $request->amount,
+                    'status' => 'CO',
+                    'created_at' => date('Y-m-d h:i:s'),
+                    'updated_at' => date('Y-m-d h:i:s'),
+            ]);
 
             if($wallet){
                 Wallet::find($default_wallet->id)->update(['amount' => $default_wallet_amount]);
@@ -153,6 +185,7 @@ class WalletsController extends Controller
 
     public function deleteWallet(Request $request)
     {
+        $accessToken = auth()->user()->token();
         $default_wallet = $this->defaultWallet();
         $wallet = Wallet::find($request->id);
 
@@ -165,7 +198,7 @@ class WalletsController extends Controller
                         'to_wallet_id' => $default_wallet->id,
                         'action_date' => date('Y-m-d h:i:s'),
                         'type' => 'ย้าย',
-                        'amount' => $request->amount,
+                        'amount' => $wallet->amount,
                         'status' => 'CO',
                         'created_at' => date('Y-m-d h:i:s'),
                         'updated_at' => date('Y-m-d h:i:s'),
