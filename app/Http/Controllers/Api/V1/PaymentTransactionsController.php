@@ -26,7 +26,7 @@ class PaymentTransactionsController extends Controller
                             )
                     ->where('payment_transactions.user_id', $accessToken->user_id)
                     ->orderBy('payment_transactions.created_at', 'desc')
-                    ->get();
+                    ->paginate(20);
 
         return response()->json(['histories' => $trans, 'status' => 200], 200);
     }
