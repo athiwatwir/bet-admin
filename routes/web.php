@@ -44,6 +44,8 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/admins/active/{id}/{username}', [AdminsController::class, 'active']);
     Route::get('/admins/delete/{id}/{username}', [AdminsController::class, 'delete']);
     Route::post('/admins/register', [AdminsController::class, 'register']);
+    Route::post('/admins/edit', [AdminsController::class, 'edit']);
+    Route::post('/admins/re-password', [AdminsController::class, 'rePassword']);
 
     Route::get('/members', [MembersController::class, 'index'])->name('members');
 

@@ -39,10 +39,11 @@ class AdminsController extends Controller
 
     public function register(Request $request)
     {
-        $random = Str::random(10);
+        // $random = Str::random(10);
 
         $this->validate($request, [
             'username' => ['required', 'string', 'max:255'],
+            'password' => ['required', 'string', 'max:255'],
             'name' => ['required', 'string', 'max:255'],
             'phone' => ['required', 'string', 'min:10', 'max:10'],
         ]);
@@ -56,7 +57,7 @@ class AdminsController extends Controller
         if(!isset($checkUser)){
             $user = User::create([
                 "username" => $request->username,
-                "password" => $random,
+                "password" => $request->password,
                 "name" => $request->name,
                 "phone" => $request->phone,
                 "line" => $request->line,
@@ -69,6 +70,46 @@ class AdminsController extends Controller
         }
 
         return redirect()->back()->with('success', 'ลงทะเบียนเรียบร้อย');
+    }
+
+    public function edit(Request $request)
+    {
+        $this->validate($request, [
+            'edit_name' => ['required', 'string', 'max:255'],
+            'edit_phone' => ['required', 'string', 'min:10', 'max:10'],
+        ]);
+
+        $checkUser = User::where('phone', $request->phone)
+                    ->orWhere('line', $request->line)
+                    ->where('line', '!=', null)
+                    ->first();
+
+        if(!isset($checkUser)){
+            $admin = User::find($request->edit_id)->update([
+                'name' => $request->edit_name,
+                'phone' => $request->edit_phone,
+                'line' => $request->edit_line
+            ]);
+
+            return redirect()->back()->with('success', 'แก้ไขรายละเอียด Admin '. $request->edit_username .' เรียบร้อยแล้ว');
+        }else{
+            return redirect()->back()->with('warning', 'มีข้อมูลซ้ำกัน กรุณาตรวจสอบ');
+        }
+
+        return redirect()->back()->with('error', 'เกิดข้อผิดพลาด');
+    }
+
+    public function rePassword(Request $request)
+    {
+        $this->validate($request, [
+            'new_password' => ['required', 'string', 'max:255'],
+        ]);
+
+        $admin = User::find($request->admin_id)->update([
+            'password' => $request->new_password,
+        ]);
+
+        return redirect()->back()->with('success', 'แก้ไขรหัสผ่านเรียบร้อยแล้ว');
     }
 
     public function active(Request $request)

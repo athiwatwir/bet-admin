@@ -48,6 +48,43 @@
             </div>
         </div>
     </li>
+
+
+    <!-- Transaction -->
+    <li class="nav-item dropdown">
+        <a href="#" class="nav-link nav-link-caret-hide dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="mainNavFeatures">
+            <i class="fi fi-shield-ok float-start m-0"></i>
+            <span>Transaction</span> 
+        </a>
+
+        <div class="dropdown-menu dropdown-menu-hover w--300 p-0 border border-light overflow-hidden" aria-labelledby="mainNavFeatures">
+            <div class="row no-gutters bg-gradient-secondary">
+
+                <!-- REMOVE BAR IF NOT NEEDED -->
+                <div class="col-2 d-none d-lg-block"><!-- empty -->
+                    <!-- text-rotate-90 , text-rotate-180 -->
+                    <p class="h6 font-weight-medium mb-0 text-white text-rotate-180 text-center position-absolute d-middle">
+                        xxxx
+                    </p>
+                </div>
+
+                <div class="col bg-white overflow-hidden">
+                    <ul class="mx-0 px-0 my-2">
+                        <li class="dropdown-item text-wrap">
+                            <a href="{{ url('/transaction/payment') }}" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
+                                <i class="fi fi-users float-start fs--25 mt--n2"></i>
+                                <span class="h5-xs d-block fs--18">Payments</span>
+                                <span class="fs--11 text-muted text-uppercase">
+                                    การเคลื่อนไหวทางการเงิน
+                                </span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </li>
     
 
     <!-- SETTING -->
