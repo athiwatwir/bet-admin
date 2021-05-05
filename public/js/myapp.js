@@ -1,6 +1,6 @@
-function setDataEditModal(id, bName, aName, aNumber, isActive) {
+function setDataEditModal(id, bID, aName, aNumber, isActive) {
     document.getElementById('edit_id').value = id
-    document.getElementById('edit_bank_name').value = bName
+    document.getElementById('edit_bank').value = bID
     document.getElementById('edit_account_name').value = aName
     document.getElementById('edit_account_number').value = aNumber
     document.getElementById('edit_active').checked = isActive === 'Y' ? true : false
@@ -33,5 +33,11 @@ function copyNewPassword() {
     copyText.setSelectionRange(0, 99999)
     document.execCommand("copy");
 
-    console.log(copyText.value)
+    // console.log(copyText.value)
+}
+
+function setBankDataEdit(id, name, name_en) {
+    document.getElementById('edit_bank_name').value = name
+    document.getElementById('edit_bank_name_en').value = name_en
+    document.getElementById('edit_bank_id').value = id
 }

@@ -64,16 +64,17 @@
                                     </td>
 
                                     <td style="line-height: 17px;">
-                                        <p class="mb-0 d-flex">
-                                            <strong class="text-dark">{{ $cbank['bank_name'] }}</strong>
+                                        <p class="mb-0">
+                                            <strong class="text-dark">{{ $cbank->bank_name }}</strong><br/>
+                                            <small>{{ $cbank->bank_name_en }}</small>
                                         </p>
 
                                         <!-- MOBILE ONLY -->
                                         <div class="fs--13 d-block d-xl-none">
-                                            <span class="d-block text-muted">{{ $cbank['account_name'] }}</span>
-                                            <span class="d-block text-muted">{{ $cbank['account_number'] }}</span>
+                                            <span class="d-block text-muted">{{ $cbank->account_name }}</span>
+                                            <span class="d-block text-muted">{{ $cbank->account_number }}</span>
                                             <span class="d-block font-weight-medium">
-                                                @if($cbank['is_active'] == 'Y') 
+                                                @if($cbank->is_active == 'Y') 
                                                     <small class="badge badge-success font-weight-normal">ACTIVE</small>
                                                 @else 
                                                     <small class="badge badge-danger font-weight-normal">INACTIVE</small>
@@ -84,15 +85,15 @@
                                     </td>
 
                                     <td class="hidden-lg-down text-center">
-                                        {{ $cbank['account_name'] }}
+                                        {{ $cbank->account_name }}
                                     </td>
 
                                     <td class="hidden-lg-down text-center">
-                                        {{ $cbank['account_number'] }}
+                                        {{ $cbank->account_number }}
                                     </td>
 
                                     <td class="hidden-lg-down text-center">
-                                        @if($cbank['is_active'] == 'Y') 
+                                        @if($cbank->is_active == 'Y') 
                                             <small class="badge badge-success font-weight-normal">ACTIVE</small>
                                         @else 
                                             <small class="badge badge-danger font-weight-normal">INACTIVE</small>
@@ -105,17 +106,18 @@
 
                                         <button class="btn btn-success btn-sm btn-vv-sm rounded" title="แก้ไขบัญชีธนาคาร" 
                                             data-toggle="modal" data-target="#editCBankModal" 
-                                            onClick="setDataEditModal({{ $cbank['id'] }}, '{{ $cbank['bank_name'] }}', '{{ $cbank['account_name'] }}', {{ $cbank['account_number'] }}, '{{ $cbank['is_active'] }}')"
+                                            onClick="setDataEditModal({{ $cbank->id }}, {{ $cbank->bank_id }}, '{{ $cbank->account_name }}', {{ $cbank->account_number }}, '{{ $cbank->is_active }}')"
                                         >
                                             <i class="fi fi-pencil mr-0"></i>
                                         </button>
+
                                         <a	href="#!" 
                                             class="js-ajax-confirm btn btn-danger btn-sm btn-vv-sm ml-0 rounded" 
-                                            data-href="/delete-cbank/{{ $cbank['id'] }}"
+                                            data-href="/delete-cbank/{{ $cbank->id }}"
                                             data-ajax-confirm-body="<center>
                                                                         <h4 class='mb-2'>ยืนยันการลบบัญชีธนาคาร ? </h4>
-                                                                        {{ $cbank['bank_name'] }}
-                                                                        {{ $cbank['account_name'] }} : {{ $cbank['account_number'] }}
+                                                                        {{ $cbank->bank_name }}
+                                                                        {{ $cbank->account_name }} : {{ $cbank->account_number }}
                                                                     </center>" 
 
                                             data-ajax-confirm-method="GET" 
@@ -147,146 +149,7 @@
 
 
 @section('modal')
-<!-- Create CBANK Modal -->
-<div class="modal fade" id="createCBankModal" tabindex="-1" role="dialog" aria-labelledby="createCBankModal" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <form method="POST" action="{{ url('/create-cbank') }}">
-            @csrf
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">เพิ่มธนาคาร</h5>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group row">
-                        <label for="username" class="col-md-4 col-form-label text-md-right">{{ __('ธนาคาร') }} <span class="text-danger">*</span></label>
+    @include('cbank.modal.add')
 
-                        <div class="col-md-6">
-                            <input placeholder="ชื่อธนาคาร" id="bank_name" type="text" class="form-control @error('bank_name') is-invalid @enderror" name="bank_name" value="{{ old('bank_name') }}" required autocomplete="bank_name">
-
-                            @error('bank_name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="account_name" class="col-md-4 col-form-label text-md-right">{{ __('ชื่อบัญชี') }} <span class="text-danger">*</span></label>
-
-                        <div class="col-md-6">
-                            <input id="account_name" type="text" class="form-control @error('account_name') is-invalid @enderror" name="account_name" value="{{ old('account_name') }}" required autocomplete="account_name">
-
-                            @error('name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="form-group row g-0">
-                        <label for="account_number" class="col-md-4 col-form-label text-md-right">{{ __('เลขบัญชี') }} <span class="text-danger">*</span></label>
-
-                        <div class="col-md-6">
-                            <input placeholder="ตัวเลขเท่านั้น" id="account_number" type="number" class="form-control @error('account_number') is-invalid @enderror" name="account_number" value="{{ old('account_number') }}" required autocomplete="account_number">
-
-                            @error('account_number')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">ยกเลิก</button>
-                    <button type="submit" class="btn btn-primary btn-sm">เพิ่มบัญชี</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-
-
-<!-- edit CBANK Modal -->
-<div class="modal fade" id="editCBankModal" tabindex="-1" role="dialog" aria-labelledby="editCBankModal" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <form method="POST" action="{{ url('/edit-cbank') }}">
-            @csrf
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">แก้ไขธนาคาร</h5>
-                    <button type="button" class="close" data-dismiss="modal">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group row">
-                        <label for="username" class="col-md-4 col-form-label text-md-right">{{ __('ธนาคาร') }} <span class="text-danger">*</span></label>
-
-                        <div class="col-md-6">
-                            <input placeholder="ชื่อธาคาร" id="edit_bank_name" type="text" class="form-control @error('edit_bank_name') is-invalid @enderror" name="edit_bank_name" value="{{ old('edit_bank_name') }}" required autocomplete="edit_bank_name">
-
-                            @error('edit_bank_name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="edit_account_name" class="col-md-4 col-form-label text-md-right">{{ __('ชื่อบัญชี') }} <span class="text-danger">*</span></label>
-
-                        <div class="col-md-6">
-                            <input id="edit_account_name" type="text" class="form-control @error('edit_account_name') is-invalid @enderror" name="edit_account_name" value="{{ old('edit_account_name') }}" required autocomplete="edit_account_name">
-
-                            @error('edit_account_name')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="form-group row g-0">
-                        <label for="edit_account_number" class="col-md-4 col-form-label text-md-right">{{ __('เลขบัญชี') }} <span class="text-danger">*</span></label>
-
-                        <div class="col-md-6">
-                            <input placeholder="ตัวเลขเท่านั้น" id="edit_account_number" type="number" class="form-control @error('edit_account_number') is-invalid @enderror" name="edit_account_number" value="{{ old('edit_account_number') }}" required autocomplete="edit_account_number">
-
-                            @error('edit_account_number')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
-                        </div>
-                    </div>
-
-                    <div class="form-group row g-0">
-                        <label for="edit_active" class="col-md-4 col-form-label text-md-right">{{ __('สถานะการใช้งาน') }}</label>
-                        
-                        <div class="col-md-6">
-                            <label class="form-checkbox form-checkbox-success float-start mt-3">
-                                <input type="checkbox" id="edit_active" name="edit_active">
-                                <i></i>
-                            </label>
-                        </div>
-                    </div>
-
-                    <input type="hidden" name="edit_id" id="edit_id" value="">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">ยกเลิก</button>
-                    <button type="submit" class="btn btn-primary btn-sm">แก้ไข</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+    @include('cbank.modal.edit')
 @endsection

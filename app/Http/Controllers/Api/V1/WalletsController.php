@@ -39,16 +39,21 @@ class WalletsController extends Controller
                             ->get();
 
         $c_bank_accounts = DB::table('c_bank_accounts')
-                            ->where('is_active', 'Y')
-                            ->where('status', 'CO')
-                            ->select(['id', 'bank_name', 'account_name', 'account_number'])
+                            ->join('banks', 'c_bank_accounts.bank_id', '=', 'banks.id')
+                            ->where('c_bank_accounts.is_active', 'Y')
+                            ->where('c_bank_accounts.status', 'CO')
+                            ->select(['c_bank_accounts.id', 'c_bank_accounts.account_name', 'c_bank_accounts.account_number',
+                                        'banks.name as bank_name'])
                             ->get();
 
         $user_bank = DB::table('user_bankings')
-                        ->where('user_id', '=', $accessToken->user_id)
-                        ->where('is_active', '=', 'Y')
-                        ->where('status', '=', 'CO')
-                        ->select('id', 'bank_name', 'bank_account_number', 'bank_account_name')
+                        ->join('banks', 'user_bankings.bank_id', '=', 'banks.id')
+                        ->where('user_bankings.user_id', '=', $accessToken->user_id)
+                        ->where('user_bankings.is_active', '=', 'Y')
+                        ->where('user_bankings.status', '=', 'CO')
+                        ->select([
+                            'user_bankings.id', 'user_bankings.bank_account_number', 'user_bankings.bank_account_name',
+                            'banks.name as bank_name'])
                         ->first();
         
         if(isset($wallet)){

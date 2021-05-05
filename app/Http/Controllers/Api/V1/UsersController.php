@@ -63,15 +63,20 @@ class UsersController extends Controller
     public function userBanking(Request $request)
     {
         $accessToken = auth()->user()->token();
-        $bank = UserBanking::where('user_id', '=', $accessToken->user_id)
-                            ->where('status', '!=', 'DL')
-                            ->select(['bank_name', 'bank_account_number', 'bank_account_name', 'is_active'])
+        $bank = DB::table('user_bankings')
+                            ->join('banks', 'user_bankings.bank_id', '=', 'banks.id')
+                            ->select([
+                                'user_bankings.bank_account_number', 'user_bankings.bank_account_name', 'user_bankings.is_active', 
+                                'banks.id as bank_id','banks.name as bank_name', 'banks.name_en as bank_name_en'
+                            ])
+                            ->where('user_bankings.user_id', '=', $accessToken->user_id)
+                            ->where('user_bankings.status', '!=', 'DL')
                             ->first();
 
         $bankList = DB::table('banks')
                         ->where('is_active', '=', 'Y')
                         ->where('status', '=', 'CO')
-                        ->select(['name'])
+                        ->select(['id', 'name', 'name_en'])
                         ->get();
         
         if(isset($bank)){
@@ -86,7 +91,7 @@ class UsersController extends Controller
         $accessToken = auth()->user()->token();
         $bank = UserBanking::create([
             "user_id" => $accessToken->user_id,
-            "bank_name" => $request->bank_name,
+            "bank_id" => $request->bank_name,
             "bank_account_name" => $request->bank_account_name,
             "bank_account_number" => $request->bank_account_number,
             "is_active" => 'Y',
@@ -106,7 +111,7 @@ class UsersController extends Controller
         $bank = DB::table('user_bankings')
                     ->where('user_id', '=', $accessToken->user_id)
                     ->update([
-                        'bank_name' => $request->bank_name,
+                        'bank_id' => $request->bank_name,
                         'bank_account_name' => $request->bank_account_name,
                         'bank_account_number' => $request->bank_account_number
                     ]);

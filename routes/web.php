@@ -8,6 +8,7 @@ use App\Http\Controllers\MembersController;
 use App\Http\Controllers\AdminsController;
 use App\Http\Controllers\CBankAccountController;
 use App\Http\Controllers\PaymentTransactionController;
+use App\Http\Controllers\BanksController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +51,12 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/members', [MembersController::class, 'index'])->name('members');
 
     Route::get('/cbank', [CBankAccountController::class, 'index'])->name('cbank');
+
+    Route::get('/banks', [BanksController::class, 'index'])->name('banks');
+    Route::get('/banks/active/{id}/{bank_name}', [BanksController::class, 'active']);
+    Route::get('/banks/delete/{id}/{bank_name}', [BanksController::class, 'delete']);
+    Route::post('/banks/add', [BanksController::class, 'add']);
+    Route::post('/banks/edit', [BanksController::class, 'edit']);
 
 
     Route::post('/create-cbank', [CBankAccountController::class, 'createCBank']);

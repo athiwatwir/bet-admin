@@ -11,7 +11,7 @@ class CBankAccount extends Model
     use HasFactory, Notifiable;
 
     protected $fillable = [
-        'bank_name', 'account_name', 'account_number', 'is_active', 'status'
+        'bank_id', 'account_name', 'account_number', 'is_active', 'status'
     ];
 
     protected $hidden = [

@@ -134,11 +134,11 @@
                         </li>
 
                         <li class="dropdown-item text-wrap">
-                            <a href="../layout_2/index.html" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
+                            <a href="{{ route('banks') }}" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
                                 <i class="fi fi-graph float-start fs--25 mt--n2"></i>
-                                <span class="h5-xs d-block fs--18">Strategic Business</span>
+                                <span class="h5-xs d-block fs--18">Banks Master Data</span>
                                 <span class="fs--11 text-muted text-uppercase">
-                                    STARTING WITH $49 / mo
+                                    รายชื่อธนาคารทั้งหมด
                                 </span>
                             </a>
                         </li>

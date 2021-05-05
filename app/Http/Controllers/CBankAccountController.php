@@ -17,15 +17,21 @@ class CBankAccountController extends Controller
 
     public function index()
     {
-        $cbank = CBankAccount::where('status', '!=', 'DL')->get();
-        $banks = DB::table('banks')->get();
+        $cbank = DB::table('c_bank_accounts')
+                    ->join('banks', 'c_bank_accounts.bank_id', '=', 'banks.id')
+                    ->where('c_bank_accounts.status', 'CO')
+                    ->select('c_bank_accounts.*', 'banks.id as bank_id','banks.name as bank_name', 'banks.name_en as bank_name_en')
+                    ->get();
+
+        $banks = DB::table('banks')->where('status', 'CO')->get();
+
         return view('cbank.index', ['cbanks'=> $cbank, 'banks' => $banks]);
     }
 
     public function createCBank(Request $request)
     {
         $cbank = CBankAccount::create([
-            "bank_name" => $request->bank_name,
+            "bank_id" => $request->bank_id,
             "account_name" => $request->account_name,
             "account_number" => $request->account_number,
             "is_active" => "Y",
@@ -44,7 +50,7 @@ class CBankAccountController extends Controller
         $is_active = $request->edit_active ? 'Y' : 'N';
 
         $cbank = CBankAccount::find($request->edit_id)->update([
-            "bank_name" => $request->edit_bank_name,
+            "bank_id" => $request->edit_bank,
             "account_name" => $request->edit_account_name,
             "account_number" => $request->edit_account_number,
             "is_active" => $is_active
