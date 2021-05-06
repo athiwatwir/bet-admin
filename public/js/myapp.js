@@ -41,3 +41,9 @@ function setBankDataEdit(id, name, name_en) {
     document.getElementById('edit_bank_name_en').value = name_en
     document.getElementById('edit_bank_id').value = id
 }
+
+function setDataEditWalletAmount(id, amount, game) {
+    document.getElementById('wallet_id').value = id
+    document.getElementById('wallet_amount').value = amount
+    document.getElementById('wallet_game').innerHTML = game
+}

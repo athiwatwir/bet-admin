@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class UsersController extends Controller
@@ -17,20 +18,28 @@ class UsersController extends Controller
     public function index()
     {
         $users = User::where('is_admin', '=', 'N')
-                    ->orderBy('created_at', 'desc')
+                    ->where('status', 'CO')
+                    ->orderBy('users.created_at', 'desc')
                     ->paginate(10);
 
+        $is_user = json_decode($users);
+        $isUser = [];
         $inactive = [];
         $active = [];
         $deleted = [];
         foreach ($users as $key => $user) {
+            $wallet = $this->getWallets($user->id);
+            $user->is_wallet = json_decode($wallet, true);
+
             if($user->status == 'DL'){
                 array_push($deleted, $user);
             }else{
                 if($user->is_active == 'N') array_push($inactive, $user);
                 if($user->is_active == 'Y') array_push($active, $user);
             }
+            array_push($isUser, $user);
         }
+        $combine_user = json_encode($isUser);
 
         return view('user.index', ['users' => $users, 'inactive' => $inactive, 'active' => $active, 'deleted' => $deleted]);
     }
@@ -60,5 +69,10 @@ class UsersController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'ลบผู้ใช้งาน '. $request->username .' เรียบร้อยแล้ว');
+    }
+
+    private function getWallets($id)
+    {
+        return DB::table('wallets')->where('user_id', $id)->get();
     }
 }

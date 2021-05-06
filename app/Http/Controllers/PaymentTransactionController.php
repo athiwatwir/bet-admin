@@ -26,8 +26,8 @@ class PaymentTransactionController extends Controller
                     ->leftJoin('wallets as to_wallet', 'payment_transactions.to_wallet_id', '=', 'to_wallet.id')
                     ->select('payment_transactions.*', 
                             'users.username', 'users.name',
-                            'c_bank_accounts.bank_name', 'c_bank_accounts.account_name', 'c_bank_accounts.account_number',
-                            'user_bankings.bank_name as user_bank_name', 'user_bankings.bank_account_name', 'user_bankings.bank_account_number',
+                            'c_bank_accounts.bank_id as bank_name', 'c_bank_accounts.account_name', 'c_bank_accounts.account_number',
+                            'user_bankings.bank_id as user_bank_name', 'user_bankings.bank_account_name', 'user_bankings.bank_account_number',
                             'from_wallet.game_id as from_game', 'from_wallet.is_default as from_default',
                             'to_wallet.game_id as to_game', 'to_wallet.is_default as to_default',
                             )

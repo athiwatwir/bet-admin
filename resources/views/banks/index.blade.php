@@ -101,11 +101,11 @@
                                             <i class="fi fi-pencil"></i>
                                         </a>
 
-                                        <a class="text-truncate mr-2" title="@if($bank->is_active == 'Y') ปิดการใช้งาน @else เปิดการใช้งาน @endif" href="/banks/active/{{ $bank->id }}/{{ $bank->name }}">
+                                        <a class="text-truncate mr-2" href="/banks/active/{{ $bank->id }}/{{ $bank->name }}">
                                             @if($bank->is_active == 'Y')
-                                                <span class="text-success"><i class="fi fi-box"></i></span>
+                                                <span class="text-success" title="ปิดการใช้งาน"><i class="fi fi-box"></i></span>
                                             @else
-                                                <span class="text-danger"><i class="fi fi-box"></i></span>
+                                                <span class="text-danger" title="เปิดการใช้งาน"><i class="fi fi-box"></i></span>
                                             @endif
                                         </a>
 

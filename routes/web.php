@@ -9,6 +9,7 @@ use App\Http\Controllers\AdminsController;
 use App\Http\Controllers\CBankAccountController;
 use App\Http\Controllers\PaymentTransactionController;
 use App\Http\Controllers\BanksController;
+use App\Http\Controllers\WalletsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,10 +37,14 @@ Route::middleware(['admin'])->group(function () {
     Route::post('/account-setting/update/{id}', [AccountSettingController::class, 'update']);
     Route::post('/account-setting/change-password/{id}', [AccountSettingController::class , 'changePassword']);
 
-    Route::get('/users', [UsersController::class, 'index'])->name('users');
-    Route::get('/users/active/{id}/{username}', [UsersController::class, 'active']);
-    Route::get('/users/delete/{id}/{username}', [UsersController::class, 'delete']);
-    Route::get('/users/view/{id}', [UsersController::class, 'view'])->name('view');
+    Route::prefix('/users')->group(function () {
+        Route::get('/', [UsersController::class, 'index'])->name('users');
+        Route::get('/active/{id}/{username}', [UsersController::class, 'active']);
+        Route::get('/delete/{id}/{username}', [UsersController::class, 'delete']);
+        Route::get('/view/{id}', [UsersController::class, 'view'])->name('view');
+        Route::get('/{username}/{id}/wallet', [WalletsController::class, 'index'])->name('wallet');
+        Route::post('/wallet/edit-wallet-amount', [WalletsController::class, 'editWalletAmount']);
+    });
 
     Route::get('/admins', [AdminsController::class, 'index'])->name('admins');
     Route::get('/admins/active/{id}/{username}', [AdminsController::class, 'active']);
