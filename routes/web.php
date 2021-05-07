@@ -10,6 +10,8 @@ use App\Http\Controllers\CBankAccountController;
 use App\Http\Controllers\PaymentTransactionController;
 use App\Http\Controllers\BanksController;
 use App\Http\Controllers\WalletsController;
+use App\Http\Controllers\GameGroupsController;
+use App\Http\Controllers\GamesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,5 +74,24 @@ Route::middleware(['admin'])->group(function () {
         Route::get('/payment', [PaymentTransactionController::class, 'index']);
         Route::get('/confirm-payment-transaction/{id}', [PaymentTransactionController::class, 'confirmPaymentTransaction']);
         Route::get('/void-payment-transaction/{id}', [PaymentTransactionController::class, 'voidPaymentTransaction']);
+    });
+
+    Route::prefix('/games')->group(function () {
+        Route::get('/', [GamesController::class, 'index'])->name('games');
+        Route::get('/active/{id}/{game_name}', [GamesController::class, 'active']);
+        Route::get('/delete/{id}/{game_name}', [GamesController::class, 'delete']);
+        Route::post('/create', [GamesController::class, 'create']);
+        Route::post('/edit', [GamesController::class, 'edit']);
+
+        Route::prefix('/groups')->group(function () {
+            Route::get('/', [GameGroupsController::class, 'index'])->name('game_groups');
+            Route::get('/delete/{id}/{group_name}', [GameGroupsController::class, 'delete']);
+            Route::get('/{group_name}/{id}/game-list', [GameGroupsController::class, 'gameList']);
+            Route::get('/active/{id}/{group_name}', [GameGroupsController::class, 'active']);
+            Route::post('/create', [GameGroupsController::class, 'create']);
+            Route::post('/edit', [GameGroupsController::class, 'edit']);
+            Route::post('/game-transfer', [GameGroupsController::class, 'gameTransfer']);
+            Route::post('/active', [GameGroupsController::class, 'groupActive']);
+        });
     });
 });

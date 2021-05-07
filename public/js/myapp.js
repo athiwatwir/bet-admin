@@ -47,3 +47,28 @@ function setDataEditWalletAmount(id, amount, game) {
     document.getElementById('wallet_amount').value = amount
     document.getElementById('wallet_game').innerHTML = game
 }
+
+function setGameGroupDataEdit(id, name) {
+    document.getElementById('edit_game_group_name').value = name
+    document.getElementById('edit_game_group_id').value = id
+    document.getElementById('game_group_edit').innerHTML = name
+}
+
+function setGameDataEdit(id, name, url, token, group_id) {
+    document.getElementById('is_edit_game_name').innerHTML = name
+    document.getElementById('edit_game_id').value = id
+    document.getElementById('edit_game_name').value = name
+    document.getElementById('edit_game_url').value = url
+    document.getElementById('edit_game_token').value = token
+    document.getElementById('edit_game_group_id').value = group_id
+}
+
+function setGameDataTransfer(id) {
+    document.getElementById('game_transfer_id').value = id
+}
+
+function setGameGroupDataActive(id, name, game_count) {
+    document.getElementById('active_game_group_name').innerHTML = name
+    document.getElementById('active_game_group_count').innerHTML = game_count
+    document.getElementById('active_game_group_id').value = id
+}
