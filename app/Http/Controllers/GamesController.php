@@ -20,7 +20,7 @@ class GamesController extends Controller
                 ->leftJoin('game_groups', 'games.game_group_id', '=', 'game_groups.id')
                 ->where('games.status', 'CO')
                 ->select(['games.*', 'game_groups.id as group_id', 'game_groups.name as group_name'])
-                ->get();
+                ->paginate(10);
 
         $groups = DB::table('game_groups')->where('status', 'CO')->where('is_active', 'Y')->get();
 

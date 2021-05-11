@@ -69,6 +69,7 @@ Route::middleware(['admin'])->group(function () {
     Route::post('/create-cbank', [CBankAccountController::class, 'createCBank']);
     Route::post('/edit-cbank', [CBankAccountController::class, 'editCBank']);
     Route::get('/delete-cbank/{id}', [CBankAccountController::class, 'deleteCBank']);
+    Route::get('/active-cbank/{id}/{account_name}/{account_number}', [CBankAccountController:: class, 'activeCBank']);
 
     Route::prefix('/transaction')->group(function () {
         Route::get('/payment', [PaymentTransactionController::class, 'index']);

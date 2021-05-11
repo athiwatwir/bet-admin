@@ -57,17 +57,6 @@
                         </div>
                     </div>
 
-                    <div class="form-group row g-0">
-                        <label for="edit_active" class="col-md-4 col-form-label text-md-right">{{ __('สถานะการใช้งาน') }}</label>
-                        
-                        <div class="col-md-6">
-                            <label class="form-checkbox form-checkbox-success float-start mt-3">
-                                <input type="checkbox" id="edit_active" name="edit_active">
-                                <i></i>
-                            </label>
-                        </div>
-                    </div>
-
                     <input type="hidden" name="edit_id" id="edit_id" value="">
                 </div>
                 <div class="modal-footer">

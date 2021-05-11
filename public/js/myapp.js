@@ -1,9 +1,8 @@
-function setDataEditModal(id, bID, aName, aNumber, isActive) {
+function setDataEditModal(id, bID, aName, aNumber) {
     document.getElementById('edit_id').value = id
     document.getElementById('edit_bank').value = bID
     document.getElementById('edit_account_name').value = aName
     document.getElementById('edit_account_number').value = aNumber
-    document.getElementById('edit_active').checked = isActive === 'Y' ? true : false
 }
 
 function setDataAdminEditModal(id, username, name, phone, line) {

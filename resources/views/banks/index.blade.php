@@ -1,6 +1,6 @@
 @extends('layouts.core')
 
-@section('title', 'Banks Master Data')
+@section('title', 'รายชื่อธนาคาร')
 
 @section('content')
 <div class="row gutters-sm">
@@ -18,13 +18,13 @@
                 <div class="float-end">
 
                     <button type="button" class="btn btn-sm btn-primary btn-pill px-2 py-1 fs--15 mt--n3" data-toggle="modal" data-target="#bankAddModal">
-                        + Add Bank
+                        + เพิ่มธนาคาร
                     </button>
 
                 </div>
 
                 <span class="d-block text-muted text-truncate font-weight-medium pt-1">
-                    All Banks
+                    รายชื่อธนาคารทั้งหมด
                 </span>
             </div>
             <!-- /portlet : header -->
@@ -43,19 +43,20 @@
 
                             <thead>
                                 <tr class="text-muted fs--13 bg-light">
-                                    <th class="w--30 hidden-lg-down">
-                                        <label class="form-checkbox form-checkbox-primary float-start">
+                                    <th class="w--30 hidden-lg-down text-center">
+                                        #
+                                        <!-- <label class="form-checkbox form-checkbox-primary float-start">
                                             <input class="checkall" data-checkall-container="#item_list" type="checkbox" name="checkbox">
                                             <i></i>
-                                        </label>
+                                        </label> -->
                                     </th>
-                                    <th class="w--200">
+                                    <th>
                                         <span class="px-2 p-0-xs">
-                                            BANKNAME_TH
+                                            รายชื่อธนาคาร
                                         </span>
                                     </th>
-                                    <th class="w--100 hidden-lg-down text-center">STATUS</th>
-                                    <th class="w--100">&nbsp;</th>
+                                    <th class="w--100 hidden-lg-down text-center">สถานะ</th>
+                                    <th class="w--200">&nbsp;</th>
                                 </tr>
                             </thead>
 
@@ -64,11 +65,12 @@
                                 <!-- admin -->
                                 <tr id="message_id_{{ $key }}" class="text-dark">
 
-                                    <td class="hidden-lg-down">
-                                        <label class="form-checkbox form-checkbox-secondary float-start">
+                                    <td class="hidden-lg-down text-center">
+                                        {{ $key + 1 }}.
+                                        <!-- <label class="form-checkbox form-checkbox-secondary float-start">
                                             <input type="checkbox" name="item_id[]" value="{{ $key }}">
                                             <i></i>
-                                        </label>
+                                        </label> -->
                                     </td>
 
                                     <td style="line-height: 17px;">
@@ -80,9 +82,9 @@
                                         <!-- MOBILE ONLY -->
                                         <div class="fs--13 d-block d-xl-none">
                                             @if($bank->is_active == 'Y')
-                                                <span class="badge badge-success font-weight-normal mt-1">ACTIVE</span>
+                                                <span class="badge badge-success font-weight-normal mt-1">เปิดใช้งาน</span>
                                             @else
-                                                <span class="badge badge-danger font-weight-normal mt-1">INACTIVE</span>
+                                                <span class="badge badge-danger font-weight-normal mt-1">ปิดใช้งาน</span>
                                             @endif
                                         </div>
                                         <!-- /MOBILE ONLY -->
@@ -90,9 +92,9 @@
 
                                     <td class="hidden-lg-down text-center">
                                         @if($bank->is_active == 'Y')
-                                            <span class="badge badge-success font-weight-normal mt-1">ACTIVE</span>
+                                            <span class="badge badge-success font-weight-normal mt-1">เปิดใช้งาน</span>
                                         @else
-                                            <span class="badge badge-danger font-weight-normal mt-1">INACTIVE</span>
+                                            <span class="badge badge-danger font-weight-normal mt-1">ปิดใช้งาน</span>
                                         @endif
                                     </td>
 
@@ -103,9 +105,9 @@
 
                                         <a class="text-truncate mr-2" href="/banks/active/{{ $bank->id }}/{{ $bank->name }}">
                                             @if($bank->is_active == 'Y')
-                                                <span class="text-success" title="ปิดการใช้งาน"><i class="fi fi-box"></i></span>
+                                                <span class="text-success" title="ปิดการใช้งาน"><i class="fi fi-eye"></i></span>
                                             @else
-                                                <span class="text-danger" title="เปิดการใช้งาน"><i class="fi fi-box"></i></span>
+                                                <span class="text-danger" title="เปิดการใช้งาน"><i class="fi fi-eye-disabled"></i></span>
                                             @endif
                                         </a>
 
@@ -148,7 +150,7 @@
                         <div class="hidden-lg-down col-12 col-xl-6">
 
                             <!-- SELECTED ITEMS -->
-                            <div class="dropup">
+                            <!-- <div class="dropup">
 
                                 <a href="#" class="btn btn-sm btn-pill btn-light" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
                                     <span class="group-icon">
@@ -200,7 +202,7 @@
 
                                 </div>
 
-                            </div>
+                            </div> -->
                             <!-- /SELECTED ITEMS -->
 
                         </div>

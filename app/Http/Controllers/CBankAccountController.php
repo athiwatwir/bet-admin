@@ -21,7 +21,7 @@ class CBankAccountController extends Controller
                     ->join('banks', 'c_bank_accounts.bank_id', '=', 'banks.id')
                     ->where('c_bank_accounts.status', 'CO')
                     ->select('c_bank_accounts.*', 'banks.id as bank_id','banks.name as bank_name', 'banks.name_en as bank_name_en')
-                    ->get();
+                    ->paginate(10);
 
         $banks = DB::table('banks')->where('status', 'CO')->get();
 
@@ -47,13 +47,10 @@ class CBankAccountController extends Controller
 
     public function editCBank(Request $request)
     {
-        $is_active = $request->edit_active ? 'Y' : 'N';
-
         $cbank = CBankAccount::find($request->edit_id)->update([
             "bank_id" => $request->edit_bank,
             "account_name" => $request->edit_account_name,
             "account_number" => $request->edit_account_number,
-            "is_active" => $is_active
         ]);
 
         if($cbank) {
@@ -82,8 +79,16 @@ class CBankAccountController extends Controller
         return redirect()->back()->with('warning', 'ยังมีรายการเคลื่อนไหวทางการเงินที่ยังไม่ได้ถูกจัดการ กรุณาจัดการก่อนลบบัญชี...');
     }
 
-    public function statementCBank()
+    public function activeCBank(Request $request)
     {
+        $cbank = CBankAccount::find($request->id);
 
+        $is_active = $cbank->is_active == 'N' ? 'Y' : 'N';
+
+        $cbank->update([
+            'is_active' => $is_active
+        ]);
+
+        return redirect()->back()->with('success', 'แก้ไขสถานะบัญชี '. $request->account_name .' [ '. $request->account_number .' ] เรียบร้อยแล้ว');
     }
 }

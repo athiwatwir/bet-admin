@@ -80,9 +80,9 @@
                                         <!-- MOBILE ONLY -->
                                         <div class="fs--13 d-block d-xl-none">
                                             @if($group->is_active == 'Y')
-                                                <span class="badge badge-success font-weight-normal mt-1">ACTIVE</span>
+                                                <span class="badge badge-success font-weight-normal mt-1">เปิดใช้งาน</span>
                                             @else
-                                                <span class="badge badge-danger font-weight-normal mt-1">INACTIVE</span>
+                                                <span class="badge badge-danger font-weight-normal mt-1">ปิดใช้งาน</span>
                                             @endif
                                         </div>
                                         <!-- /MOBILE ONLY -->
@@ -91,9 +91,9 @@
                                     <td class="hidden-lg-down text-center">
                                         <small>
                                             @if($group->games_count > 0)
-                                                <a href="/games/groups/{{ $group->name }}/{{ $group->id }}/game-list">Game List <span class="badge badge-info font-weight-normal ml-1">{{ $group->games_count }}</span></a>
+                                                <a href="/games/groups/{{ $group->name }}/{{ $group->id }}/game-list">ดูรายการเกม <span class="badge badge-info font-weight-normal ml-1">{{ $group->games_count }}</span></a>
                                             @else
-                                                No Game.
+                                                ไม่มีเกมอยู่ในกลุ่ม
                                             @endif
                                         </small>
                                     </td>
