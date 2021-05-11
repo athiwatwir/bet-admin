@@ -1,72 +1,12 @@
 @extends('layouts.core')
 
-@section('title', 'Admins Menagement')
+@section('title', 'การจัดการผู้ดูแลระบบ')
 
 @section('content')
 <div class="row gutters-sm">
 
     <!-- navigation -->
-    <div class="col-12 col-lg-3 col-xl-2">
-
-        <nav class="nav-deep nav-deep-light mb-2">
-
-            <!-- mobile only -->
-            <button class="clearfix btn btn-toggle btn-sm btn-block text-align-left shadow-md border rounded mb-1 d-block d-lg-none" data-target="#nav_responsive" data-toggle-container-class="d-none d-sm-block bg-white shadow-md border animate-fadein rounded p-3">
-                <span class="group-icon px-2 py-2 float-start">
-                    <i class="fi fi-bars-2"></i>
-                    <i class="fi fi-close"></i>
-                </span>
-
-                <span class="h5 py-2 m-0 float-start font-weight-light">
-                    Inbox
-                </span>
-            </button>
-
-
-            <!-- navigation -->
-            <ul id="nav_responsive" class="nav flex-column d-none d-lg-block">
-
-                <li class="nav-item active">
-                    <a class="nav-link px-0" href="{{ url('/admins') }}">
-                        <i class="fi fi-arrow-end m-0 fs--12"></i> 
-                        <span class="px-2 d-inline-block">
-                            All Admins
-                        </span>
-                    </a>
-                </li>
-
-                <li class="nav-item active">
-                    <a class="nav-link px-0" href="{{ url('/admins') }}">
-                        <i class="fi fi-arrow-end m-0 fs--12"></i> 
-                        <span class="px-2 d-inline-block">
-                            Active Admins
-                        </span>
-                    </a>
-                </li>
-
-                <li class="nav-item active">
-                    <a class="nav-link px-0" href="{{ url('/admins') }}">
-                        <i class="fi fi-arrow-end m-0 fs--12"></i> 
-                        <span class="px-2 d-inline-block">
-                            InActive Admins <span class="badge badge-warning float-end font-weight-normal mt-1">{{ count($inactive) }}</span>
-                        </span>
-                    </a>
-                </li>
-
-                <li class="nav-item active">
-                    <a class="nav-link px-0" href="{{ url('/admins') }}">
-                        <i class="fi fi-arrow-end m-0 fs--12"></i> 
-                        <span class="px-2 d-inline-block">
-                            Deleted Admins
-                        </span>
-                    </a>
-                </li>
-
-            </ul>
-
-        </nav>
-
-    </div>
+    @include('admin.adminmenu')
     <!-- /navigation -->
 
 
@@ -83,13 +23,13 @@
                 <div class="float-end">
 
                     <button type="button" class="btn btn-sm btn-primary btn-pill px-2 py-1 fs--15 mt--n3" data-toggle="modal" data-target="#adminRegisterModal">
-                        + Add Admin
+                        + เพิ่มผู้ดูแลระบบ
                     </button>
 
                 </div>
 
                 <span class="d-block text-muted text-truncate font-weight-medium pt-1">
-                    All Admins
+                    ผู้ดูแลระบบทั้งหมด
                 </span>
             </div>
             <!-- /portlet : header -->
@@ -108,51 +48,45 @@
 
                             <thead>
                                 <tr class="text-muted fs--13 bg-light">
-                                    <th class="w--30 hidden-lg-down">
-                                        <label class="form-checkbox form-checkbox-primary float-start">
+                                    <th class="w--30 hidden-lg-down text-center">
+                                        #
+                                        <!-- <label class="form-checkbox form-checkbox-primary float-start">
                                             <input class="checkall" data-checkall-container="#item_list" type="checkbox" name="checkbox">
                                             <i></i>
-                                        </label>
+                                        </label> -->
                                     </th>
                                     <th>
                                         <span class="px-2 p-0-xs">
-                                            USERNAME
+                                            ชื่อผู้ใช้
                                         </span>
                                     </th>
-                                    <th class="w--100 hidden-lg-down text-center">ROLE</th>
-                                    <th class="w--200 hidden-lg-down text-center">PHONE</th>
-                                    <th class="w--100 hidden-lg-down text-center">LINE</th>
-                                    <th class="w--100 hidden-lg-down text-center">STATUS</th>
-                                    <th class="w--60">&nbsp;</th>
+                                    <th class="w--100 hidden-lg-down text-center">ตำแหน่ง</th>
+                                    <th class="w--200 hidden-lg-down text-center">โทรศัพท์</th>
+                                    <th class="w--100 hidden-lg-down text-center">ไลน์</th>
+                                    <th class="w--100 hidden-lg-down text-center">สถานะ</th>
+                                    <th class="w--150">&nbsp;</th>
                                 </tr>
                             </thead>
 
                             <tbody id="item_list">
 
                                 @foreach ($admins as $key => $admin)
-                                    @if($admin->status != 'DL')
-
                                     <!-- admin -->
                                     <tr id="message_id_{{ $key }}" class="text-dark">
 
-                                        <td class="hidden-lg-down">
-                                            <label class="form-checkbox form-checkbox-secondary float-start">
+                                        <td class="hidden-lg-down text-center">
+                                            {{ $key + 1 }}
+                                            <!-- <label class="form-checkbox form-checkbox-secondary float-start">
                                                 <input type="checkbox" name="item_id[]" value="{{ $key }}">
                                                 <i></i>
-                                            </label>
+                                            </label> -->
                                         </td>
 
                                         <td style="line-height: 17px;">
                                             <p class="mb-0 d-flex">
                                                 <strong class="text-dark">{{ $admin->username }}</strong> 
-                                                <a href="#" title="แก้ไข" data-toggle="modal" data-target="#adminEditModal" onClick="setDataAdminEditModal({{ $admin->id }}, '{{ $admin->username }}', '{{ $admin->name }}', '{{ $admin->phone }}', '{{ $admin->line }}')">
-                                                    <i class="fi fi-pencil d-block fs--14 ml-2 text-success" style="height: 10px; margin-top: -3px;"></i>
-                                                </a>
-                                                <a href="#" title="เปลี่ยนรหัสผ่าน" data-toggle="modal" data-target="#adminRePasswordModal" onClick="setAdminPasswordModal({{ $admin->id }})">
-                                                    <i class="fi fi-locked d-block fs--14 ml-2 text-danger" style="height: 10px; margin-top: -3px;"></i>
-                                                </a>
                                             </p>
-                                            <small style="font-size: 70%;">{{ $admin->name }}</small>
+                                            <small style="font-size: 70%;">ชื่อ-สกุล : {{ $admin->name }}</small>
 
                                             <!-- MOBILE ONLY -->
                                             <div class="fs--13 d-block d-xl-none">
@@ -182,66 +116,55 @@
 
                                         <td class="hidden-lg-down text-center">
                                             @if($admin->is_active == 'Y')
-                                                <span class="badge badge-success font-weight-normal mt-1">ACTIVE</span>
+                                                <span class="badge badge-success font-weight-normal mt-1">เปิดใช้งาน</span>
                                             @else
-                                                <span class="badge badge-danger font-weight-normal mt-1">INACTIVE</span>
+                                                <span class="badge badge-danger font-weight-normal mt-1">ปิดใช้งาน</span>
                                             @endif
                                         </td>
 
-                                        <td class="text-align-end">
+                                        <td class="text-center">
 
-                                            <div class="dropdown">
+                                            <a class="text-truncate mr-1" href="#!" title="แก้ไข" data-toggle="modal" data-target="#adminEditModal" onClick="setDataAdminEditModal({{ $admin->id }}, '{{ $admin->username }}', '{{ $admin->name }}', '{{ $admin->phone }}', '{{ $admin->line }}')">
+                                                <i class="fi fi-pencil"></i>
+                                            </a>
+                                            
+                                            <a class="text-truncate mr-1" href="#!" title="เปลี่ยนรหัสผ่าน" data-toggle="modal" data-target="#adminRePasswordModal" onClick="setAdminPasswordModal({{ $admin->id }})">
+                                                <i class="fi fi-locked"></i>
+                                            </a>
 
-                                                <a href="#" class="btn btn-sm btn-light rounded-circle" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
-                                                    <span class="group-icon">
-                                                        <i class="fi fi-dots-vertical-full"></i>
-                                                        <i class="fi fi-close"></i>
-                                                    </span>
-                                                </a>
+                                            <a class="text-truncate mr-1" href="/admins/active/{{ $admin->id }}/{{ $admin->username }}">
+                                                @if($admin->is_active == 'Y')
+                                                    <span class="text-success" title="ปิดการใช้งาน"><i class="fi fi-eye"></i></span>
+                                                @else
+                                                    <span class="text-danger" title="เปิดการใช้งาน"><i class="fi fi-eye-disabled"></i></span>
+                                                @endif
+                                            </a>
 
+                                            <a	 href="#!" 
+                                                class="text-truncate js-ajax-confirm" 
+                                                data-href="/admins/delete/{{ $admin->id }}/{{ $admin->username }}"
+                                                data-ajax-confirm-body="ยืนยันการลบบัญชี Admin {{ $admin->username }} ?" 
 
-                                                <div class="dropdown-menu dropdown-menu-clean dropdown-click-ignore max-w-220">
+                                                data-ajax-confirm-mode="ajax" 
+                                                data-ajax-confirm-method="GET" 
 
-                                                    <a class="dropdown-item text-truncate" href="/admins/active/{{ $admin->id }}/{{ $admin->username }}">
-                                                        <i class="fi fi-box"></i>
-                                                        @if($admin->is_active == 'Y')
-                                                            <span class="text-danger">ปิดใช้งาน</span>
-                                                        @else
-                                                            <span class="text-success">เปิดใช้งาน</span>
-                                                        @endif
-                                                    </a>
+                                                data-ajax-confirm-btn-yes-class="btn-sm btn-danger" 
+                                                data-ajax-confirm-btn-yes-text="ลบข้อมูล" 
+                                                data-ajax-confirm-btn-yes-icon="fi fi-check" 
 
-                                                    <a	 href="#!" 
-                                                        class="dropdown-item text-truncate js-ajax-confirm" 
-                                                        data-href="/admins/delete/{{ $admin->id }}/{{ $admin->username }}"
-                                                        data-ajax-confirm-body="ยืนยันการลบบัญชี Admin {{ $admin->username }} ?" 
+                                                data-ajax-confirm-btn-no-class="btn-sm btn-light" 
+                                                data-ajax-confirm-btn-no-text="ยกเลิก" 
+                                                data-ajax-confirm-btn-no-icon="fi fi-close"
 
-                                                        data-ajax-confirm-mode="ajax" 
-                                                        data-ajax-confirm-method="GET" 
-
-                                                        data-ajax-confirm-btn-yes-class="btn-sm btn-danger" 
-                                                        data-ajax-confirm-btn-yes-text="ลบข้อมูล" 
-                                                        data-ajax-confirm-btn-yes-icon="fi fi-check" 
-
-                                                        data-ajax-confirm-btn-no-class="btn-sm btn-light" 
-                                                        data-ajax-confirm-btn-no-text="ยกเลิก" 
-                                                        data-ajax-confirm-btn-no-icon="fi fi-close"
-
-                                                        data-ajax-confirm-success-target="#message_id_{{ $key }}" 
-                                                        data-ajax-confirm-success-target-action="remove">
-                                                        <i class="fi fi-thrash text-danger"></i>
-                                                        ลบผู้ใช้
-                                                    </a>
-
-                                                </div>
-
-                                            </div>
+                                                data-ajax-confirm-success-target="#message_id_{{ $key }}" 
+                                                data-ajax-confirm-success-target-action="remove">
+                                                <i class="fi fi-thrash text-danger"></i>
+                                            </a>
 
                                         </td>
 
                                     </tr>
                                     <!-- /admin -->
-                                    @endif
                                 @endforeach
 
                             </tbody>
@@ -258,7 +181,7 @@
                         <div class="hidden-lg-down col-12 col-xl-6">
 
                             <!-- SELECTED ITEMS -->
-                            <div class="dropup">
+                            <!-- <div class="dropup">
 
                                 <a href="#" class="btn btn-sm btn-pill btn-light" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
                                     <span class="group-icon">
@@ -310,7 +233,7 @@
 
                                 </div>
 
-                            </div>
+                            </div> -->
                             <!-- /SELECTED ITEMS -->
 
                         </div>
@@ -323,7 +246,7 @@
                                 <ul class="pagination pagination-pill justify-content-end justify-content-center justify-content-md-end">
 
                                     <li class="{{ $admins->onFirstPage() ? 'page-item btn-pill disabled' : 'page-item btn-pill' }}">
-                                        <a class="page-link" href="{{ $admins->previousPageUrl() }}" tabindex="-1" aria-disabled="true">Prev</a>
+                                        <a class="page-link" href="{{ $admins->previousPageUrl() }}" tabindex="-1" aria-disabled="true">ก่อนหน้า</a>
                                     </li>
                                     
                                     <li class="page-item active" aria-current="page">
@@ -331,7 +254,7 @@
                                     </li>
                                     
                                     <li class="{{ $admins->currentPage() == $admins->lastPage() ? 'page-item disabled' : 'page-item' }}">
-                                        <a class="page-link" href="{{ $admins->nextPageUrl() }}">Next</a>
+                                        <a class="page-link" href="{{ $admins->nextPageUrl() }}">ถัดไป</a>
                                     </li>
 
                                 </ul>

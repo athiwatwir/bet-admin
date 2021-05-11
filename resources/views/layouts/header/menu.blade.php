@@ -8,7 +8,7 @@
     <li class="nav-item dropdown">
         <a href="#" class="nav-link nav-link-caret-hide dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="mainNavFeatures">
             <i class="fi fi-shield-ok float-start m-0"></i>
-            <span>Users</span> 
+            <span>ผู้ใช้งาน</span> 
         </a>
 
         <div class="dropdown-menu dropdown-menu-hover w--300 p-0 border border-light overflow-hidden" aria-labelledby="mainNavFeatures">
@@ -27,7 +27,7 @@
                         <li class="dropdown-item text-wrap">
                             <a href="{{ url('/users') }}" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
                                 <i class="fi fi-users float-start fs--25 mt--n2"></i>
-                                <span class="h5-xs d-block fs--18">All Users</span>
+                                <span class="h5-xs d-block fs--18">สมาชิก</span>
                                 <span class="fs--11 text-muted text-uppercase">
                                     สมาชิกทั้งหมด
                                 </span>
@@ -37,9 +37,9 @@
                         <li class="dropdown-item text-wrap">
                             <a href="{{ url('/admins') }}" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
                                 <i class="fi fi-star-empty-radius float-start fs--25 mt--n2"></i>
-                                <span class="h5-xs d-block fs--18">All Admins</span>
+                                <span class="h5-xs d-block fs--18">ผู้ดูแลระบบ</span>
                                 <span class="fs--11 text-muted text-uppercase">
-                                    ผู้ดูแลระบบ
+                                    ผู้ดูแลระบบทั้งหมด
                                 </span>
                             </a>
                         </li>
@@ -54,7 +54,7 @@
     <li class="nav-item dropdown">
         <a href="#" class="nav-link nav-link-caret-hide dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="mainNavFeatures">
             <i class="fi fi-shield-ok float-start m-0"></i>
-            <span>Transaction</span> 
+            <span>รายการเคลื่อนไหว</span> 
         </a>
 
         <div class="dropdown-menu dropdown-menu-hover w--300 p-0 border border-light overflow-hidden" aria-labelledby="mainNavFeatures">
@@ -73,9 +73,9 @@
                         <li class="dropdown-item text-wrap">
                             <a href="{{ url('/transaction/payment') }}" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
                                 <i class="fi fi-users float-start fs--25 mt--n2"></i>
-                                <span class="h5-xs d-block fs--18">Payments</span>
+                                <span class="h5-xs d-block fs--18">การชำระเงิน</span>
                                 <span class="fs--11 text-muted text-uppercase">
-                                    การเคลื่อนไหวทางการเงิน
+                                    รายการการเคลื่อนไหวทางการเงิน
                                 </span>
                             </a>
                         </li>
@@ -91,7 +91,7 @@
     <li class="nav-item dropdown">
         <a href="#" class="nav-link nav-link-caret-hide dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="mainNavFeatures">
             <i class="fi fi-shield-ok float-start m-0"></i>
-            <span>Games</span> 
+            <span>เกม</span> 
         </a>
 
         <div class="dropdown-menu dropdown-menu-hover w--300 p-0 border border-light overflow-hidden" aria-labelledby="mainNavFeatures">
@@ -110,9 +110,9 @@
                         <li class="dropdown-item text-wrap">
                             <a href="{{ url('/games/groups') }}" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
                                 <i class="fi fi-users float-start fs--25 mt--n2"></i>
-                                <span class="h5-xs d-block fs--18">Groups</span>
+                                <span class="h5-xs d-block fs--18">กลุ่มเกม</span>
                                 <span class="fs--11 text-muted text-uppercase">
-                                    กลุ่มเกม
+                                    กลุ่มเกมทั้งหมด
                                 </span>
                             </a>
                         </li>
@@ -120,7 +120,7 @@
                         <li class="dropdown-item text-wrap">
                             <a href="{{ url('/games') }}" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
                                 <i class="fi fi-users float-start fs--25 mt--n2"></i>
-                                <span class="h5-xs d-block fs--18">Game Lists</span>
+                                <span class="h5-xs d-block fs--18">รายการเกม</span>
                                 <span class="fs--11 text-muted text-uppercase">
                                     รายการเกมทั้งหมด
                                 </span>
@@ -138,7 +138,7 @@
     <li class="nav-item dropdown">
         <a href="#" class="nav-link nav-link-caret-hide dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="mainNavFeatures">
             <i class="fi fi-cogs float-start m-0"></i>
-            <span>Setting</span>
+            <span>ตั้งค่า</span>
         </a>
 
         <div class="dropdown-menu dropdown-menu-hover w--300 p-0 border border-light overflow-hidden" aria-labelledby="mainNavFeatures">
@@ -151,7 +151,7 @@
                     
                     <!-- text-rotate-90 , text-rotate-180 -->
                     <p class="h6 font-weight-medium mb-0 text-white text-rotate-180 text-center position-absolute d-middle">
-                        BONUS • 30 DAYS • FREE
+                        การตั้งค่า
                     </p>
 
                 </div>
@@ -161,9 +161,9 @@
                     <ul class="mx-0 px-0 my-2">
 
                         <li class="dropdown-item text-wrap">
-                            <a href="../layout_1/index.html" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
+                            <a href="#!" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
                                 <i class="fi fi-round-lightning float-start fs--25 mt--n2"></i>
-                                <span class="h5-xs d-block fs--18">Currency</span>
+                                <span class="h5-xs d-block fs--18">สกุลเงิน</span>
                                 <span class="fs--11 text-muted text-uppercase">
                                     ตั้งค่าสกุลเงิน/อัตราแลกเปลี่ยน
                                 </span>
@@ -173,7 +173,7 @@
                         <li class="dropdown-item text-wrap">
                             <a href="{{ route('cbank') }}" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
                                 <i class="fi fi-round-lightning float-start fs--25 mt--n2"></i>
-                                <span class="h5-xs d-block fs--18">Banking Account</span>
+                                <span class="h5-xs d-block fs--18">บัญชีธนาคาร</span>
                                 <span class="fs--11 text-muted text-uppercase">
                                     จัดการธนาคารรับโอนเงิน
                                 </span>
@@ -183,48 +183,14 @@
                         <li class="dropdown-item text-wrap">
                             <a href="{{ route('banks') }}" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
                                 <i class="fi fi-graph float-start fs--25 mt--n2"></i>
-                                <span class="h5-xs d-block fs--18">Banks Master Data</span>
+                                <span class="h5-xs d-block fs--18">รายชื่อธนาคาร</span>
                                 <span class="fs--11 text-muted text-uppercase">
                                     รายชื่อธนาคารทั้งหมด
                                 </span>
                             </a>
                         </li>
 
-                        <li class="dropdown-item text-wrap">
-                            <a href="../layout_3/index.html" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
-                                <i class="fi fi-gps float-start fs--25 mt--n2"></i>
-                                <span class="h5-xs d-block fs--18">Advanced Marketer</span>
-                                <span class="fs--11 text-muted text-uppercase">
-                                    STARTING WITH $89 / mo
-                                </span>
-                            </a>
-                        </li>
-
                     </ul>
-
-                    <div class="position-relative bg-theme-color-light py-4 px-3">
-
-                        <h6>Enterprise</h6>
-
-                        <ul class="mx-0 px-0">
-
-                            <li class="dropdown-item text-wrap bg-transparent">
-                                <a href="#!" class="dropdown-link bg-transparent text-dark px-2 py-1">
-                                    <i class="fi fi-arrow-end"></i>
-                                    QA Testing
-                                </a>
-                            </li>
-
-                            <li class="dropdown-item text-wrap bg-transparent">
-                                <a href="#!" class="dropdown-link bg-transparent text-dark px-2 py-1">
-                                    <i class="fi fi-arrow-end"></i>
-                                    API
-                                </a>
-                            </li>
-
-                        </ul>
-
-                    </div>
 
                 </div>
 

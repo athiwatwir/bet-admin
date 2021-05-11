@@ -1,11 +1,11 @@
 <!-- Admin Register Modal -->
 <div class="modal fade" id="adminRegisterModal" tabindex="-1" role="dialog" aria-labelledby="adminRegisterModal" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 50%;">
         <div class="modal-content">
             <form method="POST" action="{{ url('/admins/register') }}">
             @csrf
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">ลงทะเบียน Admin</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">ลงทะเบียนผู้ดูแลระบบ</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
@@ -68,7 +68,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="line" class="col-md-4 col-form-label text-md-right">{{ __('Line') }}</label>
+                        <label for="line" class="col-md-4 col-form-label text-md-right">{{ __('ไลน์') }}</label>
 
                         <div class="col-md-6">
                             <input id="line" type="text" class="form-control" name="line" value="{{ old('line') }}" autocomplete="line">

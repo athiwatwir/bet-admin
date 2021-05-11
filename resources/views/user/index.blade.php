@@ -1,72 +1,12 @@
 @extends('layouts.core')
 
-@section('title', 'Users Menagement')
+@section('title', 'การจัดการสมาชิก')
 
 @section('content')
 <div class="row gutters-sm">
 
     <!-- navigation -->
-    <div class="col-12 col-lg-3 col-xl-2">
-
-        <nav class="nav-deep nav-deep-light mb-2">
-
-            <!-- mobile only -->
-            <button class="clearfix btn btn-toggle btn-sm btn-block text-align-left shadow-md border rounded mb-1 d-block d-lg-none" data-target="#nav_responsive" data-toggle-container-class="d-none d-sm-block bg-white shadow-md border animate-fadein rounded p-3">
-                <span class="group-icon px-2 py-2 float-start">
-                    <i class="fi fi-bars-2"></i>
-                    <i class="fi fi-close"></i>
-                </span>
-
-                <span class="h5 py-2 m-0 float-start font-weight-light">
-                    Inbox
-                </span>
-            </button>
-
-
-            <!-- navigation -->
-            <ul id="nav_responsive" class="nav flex-column d-none d-lg-block">
-
-                <li class="nav-item active">
-                    <a class="nav-link px-0" href="{{ url('/users') }}">
-                        <i class="fi fi-arrow-end m-0 fs--12"></i> 
-                        <span class="px-2 d-inline-block">
-                            All Users
-                        </span>
-                    </a>
-                </li>
-
-                <li class="nav-item active">
-                    <a class="nav-link px-0" href="{{ url('/users') }}">
-                        <i class="fi fi-arrow-end m-0 fs--12"></i> 
-                        <span class="px-2 d-inline-block">
-                            Active Users
-                        </span>
-                    </a>
-                </li>
-
-                <li class="nav-item active">
-                    <a class="nav-link px-0" href="{{ url('/users') }}">
-                        <i class="fi fi-arrow-end m-0 fs--12"></i> 
-                        <span class="px-2 d-inline-block">
-                            InActive Users <span class="badge badge-warning float-end font-weight-normal mt-1">{{ count($inactive) }}</span>
-                        </span>
-                    </a>
-                </li>
-
-                <li class="nav-item active">
-                    <a class="nav-link px-0" href="{{ url('/users') }}">
-                        <i class="fi fi-arrow-end m-0 fs--12"></i> 
-                        <span class="px-2 d-inline-block">
-                            Deleted Users
-                        </span>
-                    </a>
-                </li>
-
-            </ul>
-
-        </nav>
-
-    </div>
+    @include('user.usermenu')
     <!-- /navigation -->
 
 
@@ -83,13 +23,13 @@
                 <div class="float-end">
 
                     <a href="message-write.html" class="btn btn-sm btn-primary btn-pill px-2 py-1 fs--15 mt--n3">
-                        + Add User
+                        + เพิ่มสมาชิก
                     </a>
 
                 </div>
 
                 <span class="d-block text-muted text-truncate font-weight-medium pt-1">
-                    All Users
+                    สมาชิกทั้งหมด
                 </span>
             </div>
             <!-- /portlet : header -->
@@ -108,22 +48,23 @@
 
                             <thead>
                                 <tr class="text-muted fs--13 bg-light">
-                                    <th class="w--30 hidden-lg-down">
-                                        <label class="form-checkbox form-checkbox-primary float-start">
+                                    <th class="w--30 hidden-lg-down text-center">
+                                        #
+                                        <!-- <label class="form-checkbox form-checkbox-primary float-start">
                                             <input class="checkall" data-checkall-container="#item_list" type="checkbox" name="checkbox">
                                             <i></i>
-                                        </label>
+                                        </label> -->
                                     </th>
                                     <th>
                                         <span class="px-2 p-0-xs">
-                                            USERNAME
+                                            ชื่อผู้ใช้
                                         </span>
                                     </th>
-                                    <th class="w--160 hidden-lg-down text-center">WALLET</th>
-                                    <th class="w--200 hidden-lg-down text-center">PHONE</th>
-                                    <th class="w--100 hidden-lg-down text-center">LINE</th>
-                                    <th class="w--100 hidden-lg-down text-center">CURRENCY</th>
-                                    <th class="w--100 hidden-lg-down text-center">STATUS</th>
+                                    <th class="w--160 hidden-lg-down text-center">กระเป๋าเงิน</th>
+                                    <th class="w--200 hidden-lg-down text-center">โทรศัพท์</th>
+                                    <th class="w--100 hidden-lg-down text-center">ไลน์</th>
+                                    <th class="w--100 hidden-lg-down text-center">สกุลเงิน</th>
+                                    <th class="w--100 hidden-lg-down text-center">สถานะ</th>
                                     <th class="w--150">&nbsp;</th>
                                 </tr>
                             </thead>
@@ -135,11 +76,12 @@
                                     <!-- user -->
                                     <tr id="message_id_{{ $key }}" class="text-dark">
 
-                                        <td class="hidden-lg-down">
-                                            <label class="form-checkbox form-checkbox-secondary float-start">
+                                        <td class="hidden-lg-down text-center">
+                                            <!-- <label class="form-checkbox form-checkbox-secondary float-start">
                                                 <input type="checkbox" name="item_id[]" value="{{ $key }}">
                                                 <i></i>
-                                            </label>
+                                            </label> -->
+                                            {{ $key + 1 }}
                                         </td>
 
                                         <td style="line-height: 17px;">
@@ -149,7 +91,7 @@
                                                     <i class="fi fi-dots-horizontal-full d-block fs--20 ml-2" style="height: 10px; margin-top: -6px;"></i>
                                                 </a>
                                             </p>
-                                            <small style="font-size: 70%;">{{ $user->name }}</small>
+                                            <small style="font-size: 70%;">ชื่อ-สกุล : {{ $user->name }}</small>
 
                                             <!-- MOBILE ONLY -->
                                             <div class="fs--13 d-block d-xl-none">
@@ -161,7 +103,7 @@
                                         </td>
 
                                         <td class="hidden-lg-down text-center">
-                                            <a href="/users/{{ $user->username }}/{{ $user->id }}/wallet" class="fs--13"><i class="fi fi-cart-3"></i> ดูรายการ Wallets</a>
+                                            <a href="/users/{{ $user->username }}/{{ $user->id }}/wallet" class="fs--13"><i class="fi fi-cart-3"></i> ดูรายการการเป๋าเงิน</a>
                                         </td>
 
                                         <td class="hidden-lg-down text-center">
@@ -182,9 +124,9 @@
 
                                         <td class="hidden-lg-down text-center">
                                             @if($user->is_active == 'Y')
-                                                <span class="badge badge-success float-end font-weight-normal mt-1">ACTIVE</span>
+                                                <span class="badge badge-success float-end font-weight-normal mt-1">เปิดใช้งาน</span>
                                             @else
-                                                <span class="badge badge-danger float-end font-weight-normal mt-1">INACTIVE</span>
+                                                <span class="badge badge-danger float-end font-weight-normal mt-1">ปิดใช้งาน</span>
                                             @endif
                                         </td>
 
@@ -246,7 +188,7 @@
                         <div class="hidden-lg-down col-12 col-xl-6">
 
                             <!-- SELECTED ITEMS -->
-                            <div class="dropup">
+                            <!-- <div class="dropup">
 
                                 <a href="#" class="btn btn-sm btn-pill btn-light" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
                                     <span class="group-icon">
@@ -298,7 +240,7 @@
 
                                 </div>
 
-                            </div>
+                            </div> -->
                             <!-- /SELECTED ITEMS -->
 
                         </div>
@@ -311,7 +253,7 @@
                                 <ul class="pagination pagination-pill justify-content-end justify-content-center justify-content-md-end">
 
                                     <li class="{{ $users->onFirstPage() ? 'page-item btn-pill disabled' : 'page-item btn-pill' }}">
-                                        <a class="page-link" href="{{ $users->previousPageUrl() }}" tabindex="-1" aria-disabled="true">Prev</a>
+                                        <a class="page-link" href="{{ $users->previousPageUrl() }}" tabindex="-1" aria-disabled="true">ก่อนหน้า</a>
                                     </li>
                                     
                                     <li class="page-item active" aria-current="page">
@@ -319,7 +261,7 @@
                                     </li>
                                     
                                     <li class="{{ $users->currentPage() == $users->lastPage() ? 'page-item disabled' : 'page-item' }}">
-                                        <a class="page-link" href="{{ $users->nextPageUrl() }}">Next</a>
+                                        <a class="page-link" href="{{ $users->nextPageUrl() }}">ถัดไป</a>
                                     </li>
 
                                 </ul>

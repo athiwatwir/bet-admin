@@ -17,29 +17,33 @@ class UsersController extends Controller
 
     public function index()
     {
-        $users = User::where('is_admin', '=', 'N')
+        $users = User::where('is_admin', 'N')
                     ->where('status', 'CO')
                     ->orderBy('users.created_at', 'desc')
                     ->paginate(10);
 
+        $deleted = DB::table('users')
+                    ->where('is_admin', 'N')
+                    ->where('status', 'DL')
+                    ->orderBy('users.created_at', 'desc')
+                    ->paginate(10);
+
         $is_user = json_decode($users);
-        $isUser = [];
         $inactive = [];
         $active = [];
-        $deleted = [];
         foreach ($users as $key => $user) {
-            $wallet = $this->getWallets($user->id);
-            $user->is_wallet = json_decode($wallet, true);
+            // $wallet = $this->getWallets($user->id);
+            // $user->is_wallet = json_decode($wallet, true);
 
-            if($user->status == 'DL'){
-                array_push($deleted, $user);
-            }else{
-                if($user->is_active == 'N') array_push($inactive, $user);
-                if($user->is_active == 'Y') array_push($active, $user);
-            }
-            array_push($isUser, $user);
+            if($user->is_active == 'N') array_push($inactive, $user);
+            if($user->is_active == 'Y') array_push($active, $user);
+
+            // Log::debug($active);
+            // $users[$key]->data->user_active = $active;
+
         }
-        $combine_user = json_encode($isUser);
+        // $users->user_active = $active;
+        // Log::debug($users);
 
         return view('user.index', ['users' => $users, 'inactive' => $inactive, 'active' => $active, 'deleted' => $deleted]);
     }
@@ -65,6 +69,7 @@ class UsersController extends Controller
     public function delete(Request $request)
     {
         $user = User::find($request->id)->update([
+            'is_active' => 'N',
             'status' => 'DL'
         ]);
 

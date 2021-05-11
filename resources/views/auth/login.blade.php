@@ -36,25 +36,25 @@
 
                 <div class="form-label-group mb-3">
                     <input id="username" placeholder="Username" type="text" class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autofocus>
-
+                    <label for="username">Username</label>
                     @error('username')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
                         </span>
                     @enderror
-                    <label for="username">Username</label>
+                    
                 </div>
 
                 <div class="input-group-over">
                     <div class="form-label-group mb-3">
                         <input id="password" placeholder="Password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
+                        <label for="password">Password</label>
                         @error('password')
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
-                        <label for="password">Password</label>
+                        
                     </div>
 
                     <!-- <a href="account-signin-password.html" class="btn fs--12">

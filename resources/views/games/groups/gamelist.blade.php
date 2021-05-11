@@ -18,13 +18,13 @@
                 <div class="float-end">
 
                     <a href="/games/groups" class="btn btn-sm btn-primary btn-pill px-2 py-1 fs--15 mt--n3">
-                        < Back
+                        < ย้อนกลับ
                     </a>
 
                 </div>
 
                 <span class="d-block text-muted text-truncate font-weight-medium pt-1">
-                    Game Lists By {{ $is_group }}
+                    รายการเกมที่อยู่ในกลุ่ม {{ $is_group }}
                 </span>
             </div>
             <!-- /portlet : header -->
@@ -43,20 +43,21 @@
 
                             <thead>
                                 <tr class="text-muted fs--13 bg-light">
-                                    <th class="w--30 hidden-lg-down">
-                                        <label class="form-checkbox form-checkbox-primary float-start">
+                                    <th class="w--30 hidden-lg-down text-center">
+                                        #
+                                        <!-- <label class="form-checkbox form-checkbox-primary float-start">
                                             <input class="checkall" data-checkall-container="#item_list" type="checkbox" name="checkbox">
                                             <i></i>
-                                        </label>
+                                        </label> -->
                                     </th>
                                     <th>
                                         <span class="px-2 p-0-xs">
-                                            GAME NAME
+                                            ชื่อเกม
                                         </span>
                                     </th>
                                     <th class="hidden-lg-down text-center">URL</th>
                                     <th class="hidden-lg-down text-center">TOKEN</th>
-                                    <th class="w--200 hidden-lg-down text-center">STATUS</th>
+                                    <th class="w--200 hidden-lg-down text-center">สถามนะ</th>
                                     <th class="w--200">&nbsp;</th>
                                 </tr>
                             </thead>
@@ -66,11 +67,12 @@
                                 @foreach($games as $key => $game)
                                 <tr id="message_id_{{ $key }}" class="text-dark">
 
-                                    <td class="hidden-lg-down">
-                                        <label class="form-checkbox form-checkbox-secondary float-start">
+                                    <td class="hidden-lg-down text-center">
+                                        {{ $key + 1 }}.
+                                        <!-- <label class="form-checkbox form-checkbox-secondary float-start">
                                             <input type="checkbox" name="item_id[]" value="{{ $key }}">
                                             <i></i>
-                                        </label>
+                                        </label> -->
                                     </td>
 
                                     <td style="line-height: 17px;">
@@ -99,9 +101,9 @@
 
                                     <td class="hidden-lg-down text-center">
                                         @if($game->is_active == 'Y')
-                                            <span class="badge badge-success font-weight-normal mt-1">ACTIVE</span>
+                                            <span class="badge badge-success font-weight-normal mt-1">เปิดใช้งาน</span>
                                         @else
-                                            <span class="badge badge-danger font-weight-normal mt-1">INACTIVE</span>
+                                            <span class="badge badge-danger font-weight-normal mt-1">ปิดใช้งาน</span>
                                         @endif
                                     </td>
 
@@ -161,7 +163,7 @@
                         <div class="hidden-lg-down col-12 col-xl-6">
 
                             <!-- SELECTED ITEMS -->
-                            <div class="dropup">
+                            <!-- <div class="dropup">
 
                                 <a href="#" class="btn btn-sm btn-pill btn-light" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
                                     <span class="group-icon">
@@ -213,7 +215,7 @@
 
                                 </div>
 
-                            </div>
+                            </div> -->
                             <!-- /SELECTED ITEMS -->
 
                         </div>
@@ -223,7 +225,25 @@
 
                             <!-- pagination -->
                             <nav aria-label="pagination">
-                                
+                                <ul class="pagination pagination-pill justify-content-end justify-content-center justify-content-md-end">
+
+                                    <li class="{{ $games->onFirstPage() ? 'page-item btn-pill disabled' : 'page-item btn-pill' }}">
+                                        <a class="page-link" href="{{ $games->previousPageUrl() }}" tabindex="-1" aria-disabled="true">ก่อนหน้า</a>
+                                    </li>
+                                    
+                                    <li class="page-item active" aria-current="page">
+                                        {{ $games->links() }}
+                                    </li>
+                                    
+                                    <li class="{{ $games->currentPage() == $games->lastPage() ? 'page-item disabled' : 'page-item' }}">
+                                        <a class="page-link" href="{{ $games->nextPageUrl() }}">ถัดไป</a>
+                                    </li>
+
+                                </ul>
+
+                                <div class="justify-content-end justify-content-center justify-content-md-end text-right">
+                                    <small>หน้า : {{ $games->currentPage() }} / {{ $games->lastPage() }}</small>
+                                </div>
                             </nav>
                             <!-- pagination -->
 
@@ -249,4 +269,6 @@
 
 @section('modal')
     @include('games.groups.modal.transfer')
+
+    @include('games.modal.edit')
 @endsection

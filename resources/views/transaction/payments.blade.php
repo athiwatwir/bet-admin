@@ -1,6 +1,6 @@
 @extends('layouts.core')
 
-@section('title', 'Payment Transaction')
+@section('title', 'รายการเคลื่อนไหวทางการเงิน')
 
 @section('content')
 <div class="row gutters-sm">
@@ -15,7 +15,7 @@
                 </div>
 
                 <span class="d-block text-muted text-truncate font-weight-medium pt-1">
-                    รายการเคลื่อนไหวทางการเงิน
+                    รายการเคลื่อนไหวทางการเงินทั้งหมด
                 </span>
             </div>
             <!-- /portlet : header -->

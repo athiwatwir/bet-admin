@@ -53,11 +53,11 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
+                    <!-- <div class="form-group row">
                         <label for="edit_game_group_id" class="col-md-4 col-form-label text-md-right">{{ __('กลุ่มเกม') }}</label>
 
                         <div class="col-md-6">
-                            <select required id="edit_game_group_id" class="form-control @error('edit_game_group_id') is-invalid @enderror" name="edit_game_group_id" autocomplete="edit_game_group_id">
+                            <select required id="edit_game_group_id" class="form-control @error('edit_game_group_id') is-invalid @enderror bg-light" name="edit_game_group_id" autocomplete="edit_game_group_id" disabled readonly>
                                 <option value="" selected disabled>-- เลือกกลุ่มเกม --</option>
                                 @foreach($groups as $group)
                                     <option value="{{ $group->id }}">{{ $group->name }}</option>
@@ -70,7 +70,7 @@
                                 </span>
                             @enderror
                         </div>
-                    </div>
+                    </div> -->
 
                     <input type="hidden" id="edit_game_id" name="edit_game_id" value="">
 

@@ -78,7 +78,6 @@ class GamesController extends Controller
                     'name' => $request->edit_game_name,
                     'url' => $request->edit_game_url,
                     'token' => $request->edit_game_token,
-                    'game_group_id' => $request->edit_game_group_id,
                 ]);
 
         if($games) {

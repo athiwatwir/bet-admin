@@ -16,7 +16,7 @@ class GameGroupsController extends Controller
 
     public function index()
     {
-        $groups = DB::table('game_groups')->where('status', 'CO')->get();
+        $groups = DB::table('game_groups')->where('status', 'CO')->paginate(10);
 
         foreach($groups as $key => $group) {
             $games = DB::table('games')->where('game_group_id', $group->id)->where('status', 'CO')->count();
@@ -123,7 +123,7 @@ class GameGroupsController extends Controller
         $games = DB::table('games')
                 ->where('game_group_id', $request->id)
                 ->where('status', 'CO')
-                ->get();
+                ->paginate(10);
 
         $groups = DB::table('game_groups')->where('status', 'CO')->get();
 

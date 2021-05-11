@@ -48,7 +48,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label for="edit_line" class="col-md-4 col-form-label text-md-right">{{ __('Line') }}</label>
+                        <label for="edit_line" class="col-md-4 col-form-label text-md-right">{{ __('ไลน์') }}</label>
 
                         <div class="col-md-6">
                             <input id="edit_line" type="text" class="form-control" name="edit_line" value="{{ old('edit_line') }}" autocomplete="edit_line">

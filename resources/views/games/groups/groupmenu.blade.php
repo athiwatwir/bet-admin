@@ -3,7 +3,7 @@
 
     <nav class="nav-deep nav-deep-light mb-2">
 
-        <h4>Game Groups</h4>
+        <h4>กลุ่มเกม</h4>
 
         <!-- mobile only -->
         <button class="clearfix btn btn-toggle btn-sm btn-block text-align-left shadow-md border rounded mb-1 d-block d-lg-none" data-target="#nav_responsive" data-toggle-container-class="d-none d-sm-block bg-white shadow-md border animate-fadein rounded p-3">
@@ -25,7 +25,7 @@
                 <a class="nav-link px-0" href="{{ url('/games/groups') }}">
                     <i class="fi fi-arrow-end m-0 fs--12"></i> 
                     <span class="px-2 d-inline-block">
-                        All Groups
+                        กลุ่มเกมทั้งหมด
                     </span>
                 </a>
             </li>

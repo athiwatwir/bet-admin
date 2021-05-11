@@ -111,6 +111,7 @@
                                     </td>
 
                                     <td class="text-center">
+
                                         <a class="text-truncate mr-2" href="#!" title="แก้ไข" data-toggle="modal" data-target="#gameEditModal" onClick="setGameDataEdit({{ $game->id }}, '{{ $game->name }}', '{{ $game->url }}', '{{ $game->token }}', {{ $game->game_group_id }})">
                                             <i class="fi fi-pencil"></i>
                                         </a>

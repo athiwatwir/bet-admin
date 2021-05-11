@@ -1,6 +1,6 @@
 @extends('layouts.core')
 
-@section('title', 'Game Groups')
+@section('title', 'กลุ่มเกม')
 
 @section('content')
 <div class="row gutters-sm">
@@ -18,13 +18,13 @@
                 <div class="float-end">
 
                     <button type="button" class="btn btn-sm btn-primary btn-pill px-2 py-1 fs--15 mt--n3" data-toggle="modal" data-target="#groupGameCreateModal">
-                        + Add Group
+                        + เพิ่มกลุ่ม
                     </button>
 
                 </div>
 
                 <span class="d-block text-muted text-truncate font-weight-medium pt-1">
-                    All Groups
+                    กลุ่มเกมทั้งหมด
                 </span>
             </div>
             <!-- /portlet : header -->
@@ -51,11 +51,11 @@
                                     </th>
                                     <th>
                                         <span class="px-2 p-0-xs">
-                                            GROUP NAME
+                                            ชื่อกลุ่ม
                                         </span>
                                     </th>
-                                    <th class="w--200 hidden-lg-down text-center">GAME LIST</th>
-                                    <th class="w--200 hidden-lg-down text-center">STATUS</th>
+                                    <th class="w--200 hidden-lg-down text-center">รายการเกมในกลุ่ม</th>
+                                    <th class="w--200 hidden-lg-down text-center">สถานะ</th>
                                     <th class="w--200">&nbsp;</th>
                                 </tr>
                             </thead>
@@ -100,9 +100,9 @@
 
                                     <td class="hidden-lg-down text-center">
                                         @if($group->is_active == 'Y')
-                                            <span class="badge badge-success font-weight-normal mt-1">ACTIVE</span>
+                                            <span class="badge badge-success font-weight-normal mt-1">เปิดใช้งาน</span>
                                         @else
-                                            <span class="badge badge-danger font-weight-normal mt-1">INACTIVE</span>
+                                            <span class="badge badge-danger font-weight-normal mt-1">ปิดใช้งาน</span>
                                         @endif
                                     </td>
 
@@ -193,7 +193,7 @@
                         <div class="hidden-lg-down col-12 col-xl-6">
 
                             <!-- SELECTED ITEMS -->
-                            <div class="dropup">
+                            <!-- <div class="dropup">
 
                                 <a href="#" class="btn btn-sm btn-pill btn-light" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
                                     <span class="group-icon">
@@ -245,7 +245,7 @@
 
                                 </div>
 
-                            </div>
+                            </div> -->
                             <!-- /SELECTED ITEMS -->
 
                         </div>
@@ -255,7 +255,25 @@
 
                             <!-- pagination -->
                             <nav aria-label="pagination">
-                                
+                                <ul class="pagination pagination-pill justify-content-end justify-content-center justify-content-md-end">
+
+                                    <li class="{{ $groups->onFirstPage() ? 'page-item btn-pill disabled' : 'page-item btn-pill' }}">
+                                        <a class="page-link" href="{{ $groups->previousPageUrl() }}" tabindex="-1" aria-disabled="true">ก่อนหน้า</a>
+                                    </li>
+                                    
+                                    <li class="page-item active" aria-current="page">
+                                        {{ $groups->links() }}
+                                    </li>
+                                    
+                                    <li class="{{ $groups->currentPage() == $groups->lastPage() ? 'page-item disabled' : 'page-item' }}">
+                                        <a class="page-link" href="{{ $groups->nextPageUrl() }}">ถัดไป</a>
+                                    </li>
+
+                                </ul>
+
+                                <div class="justify-content-end justify-content-center justify-content-md-end text-right">
+                                    <small>หน้า : {{ $groups->currentPage() }} / {{ $groups->lastPage() }}</small>
+                                </div>
                             </nav>
                             <!-- pagination -->
 

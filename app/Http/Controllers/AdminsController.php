@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\User;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class AdminsController extends Controller
@@ -17,21 +18,23 @@ class AdminsController extends Controller
 
     public function index()
     {
-        $admins = User::where('is_admin', '=', 'Y')
+        $admins = User::where('is_admin', 'Y')
+                    ->where('status', 'CO')
+                    ->orderBy('created_at', 'desc')
+                    ->paginate(10);
+
+        $deleted = DB::table('users')
+                    ->where('is_admin', 'Y')
+                    ->where('status', 'DL')
                     ->orderBy('created_at', 'desc')
                     ->paginate(10);
 
         $inactive = [];
         $active = [];
-        $deleted = [];
         $all = [];
         foreach ($admins as $key => $admin) {
-            if($admin->status == 'DL'){
-                array_push($deleted, $admin);
-            }else{
-                if($admin->is_active == 'N') array_push($inactive, $admin);
-                if($admin->is_active == 'Y') array_push($active, $admin);
-            }
+            if($admin->is_active == 'N') array_push($inactive, $admin);
+            if($admin->is_active == 'Y') array_push($active, $admin);
         }
 
         return view('admin.index', ['admins' => $admins, 'inactive' => $inactive, 'active' => $active, 'deleted' => $deleted]);
