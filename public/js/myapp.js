@@ -71,3 +71,38 @@ function setGameGroupDataActive(id, name, game_count) {
     document.getElementById('active_game_group_count').innerHTML = game_count
     document.getElementById('active_game_group_id').value = id
 }
+
+
+// User Profile
+function editProfile() {
+    document.getElementById("name").disabled = false
+    document.getElementById("phone").disabled = false
+    document.getElementById("line").disabled = false
+    document.getElementById("is-edit-profile-btn").style.display = "block";
+}
+
+function cancelEditProfile() {
+    document.getElementById("name").disabled = true
+    document.getElementById("phone").disabled = true
+    document.getElementById("line").disabled = true
+    document.getElementById("is-edit-profile-btn").style.display = "none";
+}
+
+function editProfileBank() {
+    document.getElementById("banks").disabled = false
+    document.getElementById("account_name").disabled = false
+    document.getElementById("account_number").disabled = false
+    document.getElementById("is-edit-bank-btn").style.display = "block";
+}
+
+function cancelEditBank() {
+    document.getElementById("banks").disabled = true
+    document.getElementById("account_name").disabled = true
+    document.getElementById("account_number").disabled = true
+    document.getElementById("is-edit-bank-btn").style.display = "none";
+}
+// END User Profile
+
+function setImagePaymentTransactionSlip(url) {
+    document.getElementById("slip_img").src = '/slip/' + url
+}

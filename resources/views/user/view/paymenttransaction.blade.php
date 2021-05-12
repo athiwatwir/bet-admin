@@ -1,52 +1,23 @@
-@extends('layouts.core')
-
-@section('title', 'รายการเคลื่อนไหวทางการเงิน')
-
-@section('content')
-<div class="row gutters-sm">
-    <div class="col-12">
-        <div class="portlet">
-            
-            <!-- portlet : header -->
-            <div class="portlet-header border-bottom">
-
-                <div class="float-end">
-
-                </div>
-
-                <span class="d-block text-muted text-truncate font-weight-medium pt-1">
-                    รายการเคลื่อนไหวทางการเงินทั้งหมด
-                </span>
-            </div>
-            <!-- /portlet : header -->
-
-
-            <!-- portlet : body -->
-            <div class="portlet-body pt-0">
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
                 <div class="table-responsive">
 
                     <table class="table table-align-middle border-bottom mb-6">
 
                         <thead>
                             <tr class="text-muted fs--13 bg-light">
-                                <th class="w--30 hidden-lg-down">
-                                    <label class="form-checkbox form-checkbox-primary float-start">
-                                        <input class="checkall" data-checkall-container="#item_list" type="checkbox" name="checkbox">
-                                        <i></i>
-                                    </label>
-                                </th>
                                 <th>
                                     <span class="px-2 p-0-xs">
                                         ประเภทรายการ
                                     </span>
                                 </th>
-                                <th class="hidden-lg-down text-center">ผู้ทำรายการ</th>
                                 <th class="hidden-lg-down text-center">วัน-เวลา</th>
                                 <th class="hidden-lg-down text-center">ไปยังบัญชี</th>
                                 <th class="hidden-lg-down text-center">จำนวนเงิน</th>
                                 <th class="hidden-lg-down text-center">สลิป</th>
                                 <th class="hidden-lg-down text-center">สถานะ</th>
-                                <th>&nbsp;</th>
                             </tr>
                         </thead>
 
@@ -59,13 +30,6 @@
                                                                 @elseif($trans->type == 'ถอน') bg-withdraw  
                                                                 @elseif($trans->type == 'ย้าย') bg-transfer
                                                                 @endif ">
-
-                                    <td class="hidden-lg-down">
-                                        <label class="form-checkbox form-checkbox-secondary float-start">
-                                            <input type="checkbox" name="item_id[]" value="{{ $key }}">
-                                            <i></i>
-                                        </label>
-                                    </td>
 
                                     <td>
                                         <p class="mb-0 d-flex">
@@ -85,11 +49,6 @@
                                             <span class="d-block text-muted"></span>
                                         </div>
                                         <!-- /MOBILE ONLY -->
-                                    </td>
-
-                                    <td class="hidden-lg-down text-center" style="line-height: 16px;">
-                                        {{ $trans->username }}<br/>
-                                        <small class="">{{ $trans->name }}</small>
                                     </td>
 
                                     <td class="hidden-lg-down text-center" style="line-height: 17px;">
@@ -153,51 +112,6 @@
                                         @endif
                                     </td>
 
-                                    <td class="text-align-end">
-
-                                        @if($trans->status == NULL)
-                                            <a href="#!" 
-                                                class="js-ajax-confirm btn btn-success btn-sm btn-vv-sm ml-0 rounded" 
-                                                data-href="/transaction/confirm-payment-transaction/{{ $trans->id }}"
-                                                data-ajax-confirm-body="<center>
-                                                                            <h4 class='mb-2'>ยืนยันการทำรายการ ? </h4>
-                                                                        </center>" 
-
-                                                data-ajax-confirm-method="GET" 
-
-                                                data-ajax-confirm-btn-yes-class="btn-sm btn-danger" 
-                                                data-ajax-confirm-btn-yes-text="ยืนยัน" 
-                                                data-ajax-confirm-btn-yes-icon="fi fi-check" 
-
-                                                data-ajax-confirm-btn-no-class="btn-sm btn-light" 
-                                                data-ajax-confirm-btn-no-text="ยกเลิก" 
-                                                data-ajax-confirm-btn-no-icon="fi fi-close"
-                                            >
-                                                ยืนยัน
-                                            </a>
-                                            <a href="#!" 
-                                                class="js-ajax-confirm btn btn-danger btn-sm btn-vv-sm ml-0 rounded" 
-                                                data-href="/transaction/void-payment-transaction/{{ $trans->id }}"
-                                                data-ajax-confirm-body="<center>
-                                                                            <h4 class='mb-2'>ยืนยันการทำรายการ ? </h4>
-                                                                        </center>" 
-
-                                                data-ajax-confirm-method="GET" 
-
-                                                data-ajax-confirm-btn-yes-class="btn-sm btn-danger" 
-                                                data-ajax-confirm-btn-yes-text="ยืนยัน" 
-                                                data-ajax-confirm-btn-yes-icon="fi fi-check" 
-
-                                                data-ajax-confirm-btn-no-class="btn-sm btn-light" 
-                                                data-ajax-confirm-btn-no-text="ยกเลิก" 
-                                                data-ajax-confirm-btn-no-icon="fi fi-close"
-                                            >
-                                                ปฏิเสธ
-                                            </a>
-                                        @endif
-
-                                    </td>
-
                                 </tr>
                             @endforeach
 
@@ -205,6 +119,8 @@
 
                     </table>
                 </div>
+
+
 
                 <!-- options and pagination -->
                 <div class="row text-center-xs">
@@ -247,13 +163,12 @@
                     </div>
 
                 </div>
-                
-            </div>
-        </div>
-    </div>
-</div>
-@endsection
 
-@section('modal')
-    @include('user.modal.payment_slip')
-@endsection
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>

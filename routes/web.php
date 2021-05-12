@@ -43,8 +43,10 @@ Route::middleware(['admin'])->group(function () {
         Route::get('/', [UsersController::class, 'index'])->name('users');
         Route::get('/active/{id}/{username}', [UsersController::class, 'active']);
         Route::get('/delete/{id}/{username}', [UsersController::class, 'delete']);
-        Route::get('/view/{id}', [UsersController::class, 'view'])->name('view');
+        Route::get('/{username}/{id}/view', [UsersController::class, 'view'])->name('view');
         Route::get('/{username}/{id}/wallet', [WalletsController::class, 'index'])->name('wallet');
+        Route::post('/edit/profile', [UsersController::class, 'editProfile']);
+        Route::post('/edit/bank', [UsersController::class, 'editBank']);
         Route::post('/wallet/edit-wallet-amount', [WalletsController::class, 'editWalletAmount']);
     });
 

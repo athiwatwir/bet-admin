@@ -1,43 +1,7 @@
-@extends('layouts.core')
-
-@section('title', 'จัดการกระเป๋าเงิน')
-
-@section('content')
-<div class="row gutters-sm">
-
-    <!-- navigation -->
-    
-    <!-- /navigation -->
-
-
-    <!-- inbox list -->
-    <div class="col-12 col-lg-12 col-xl-12">
-
-
-        <!-- portlet -->
-        <div class="portlet">
-            
-            <!-- portlet : header -->
-            <div class="portlet-header border-bottom">
-
-                <div class="float-end">
-
-                    <a href="/users" class="btn btn-sm btn-primary btn-pill px-2 py-1 fs--15 mt--n3">
-                        < ย้อนกลับ
-                    </a>
-
-                </div>
-
-                <span class="d-block text-muted text-truncate font-weight-medium pt-1">
-                    รายการกระเป๋าเงินของ {{ $username }}
-                </span>
-            </div>
-            <!-- /portlet : header -->
-
-
-            <!-- portlet : body -->
-            <div class="portlet-body pt-0">
-
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-body">
                 <form novalidate class="bs-validate" id="form_id" method="post" action="#!">
                 @csrf
                     <input type="hidden" id="action" name="action" value=""><!-- value populated by js -->
@@ -68,7 +32,7 @@
                                         <strong>กระเป๋าเงินหลัก</strong>
                                     </td>
                                     <td class="hidden-lg-down text-center">
-                                        {{ number_format($default_wallet->amount) }} {{ $default_wallet->currency }}
+                                        <strong class="text-success">{{ number_format($default_wallet->amount) }}</strong> <small>{{ $default_wallet->currency }}</small>
                                     </td>
                                     <td class="hidden-lg-down text-center">
                                         <div class="flex text-right">
@@ -88,7 +52,7 @@
                                         </td>
                                         <td>
                                             <p class="mb-0 d-flex">
-                                                {{ $is_wallet->game_id }}
+                                                กระเป๋าเงินเกม {{ $is_wallet->game_id }}
                                             </p>
 
                                             <!-- MOBILE ONLY -->
@@ -100,7 +64,7 @@
                                         </td>
 
                                         <td class="hidden-lg-down text-center">
-                                            {{ number_format($is_wallet->amount) }} {{ $is_wallet->currency }}
+                                            <strong class="text-success">{{ number_format($is_wallet->amount) }}</strong> <small>{{ $is_wallet->currency }}</small>
                                         </td>
 
                                         <td class="hidden-lg-down text-center">
@@ -165,23 +129,14 @@
                         </div>
 
                     </div>
-                    <!-- /options and pagination -->
 
                 </form>
 
             </div>
-            <!-- /portlet : body -->
 
         </div>
-        <!-- /portlet -->
 
 
     </div>
-    <!-- /inbox list -->
 
 </div>
-@endsection
-
-@section('modal')
-    @include('user.modal.wallet_edit')
-@endsection

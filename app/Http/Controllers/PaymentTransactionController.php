@@ -24,15 +24,18 @@ class PaymentTransactionController extends Controller
                     ->leftJoin('user_bankings', 'payment_transactions.user_banking_id', '=', 'user_bankings.id')
                     ->leftJoin('wallets as from_wallet', 'payment_transactions.from_wallet_id', '=', 'from_wallet.id')
                     ->leftJoin('wallets as to_wallet', 'payment_transactions.to_wallet_id', '=', 'to_wallet.id')
+                    ->leftJoin('banks as ubank', 'user_bankings.bank_id', '=', 'ubank.id')
+                    ->leftJoin('banks as cbank', 'c_bank_accounts.bank_id', '=', 'cbank.id')
                     ->select('payment_transactions.*', 
                             'users.username', 'users.name',
                             'c_bank_accounts.bank_id as bank_name', 'c_bank_accounts.account_name', 'c_bank_accounts.account_number',
                             'user_bankings.bank_id as user_bank_name', 'user_bankings.bank_account_name', 'user_bankings.bank_account_number',
                             'from_wallet.game_id as from_game', 'from_wallet.is_default as from_default',
                             'to_wallet.game_id as to_game', 'to_wallet.is_default as to_default',
+                            'ubank.name as ubank_name', 'cbank.name as cbank_name',
                             )
                     ->orderBy('payment_transactions.created_at', 'desc')
-                    ->get();
+                    ->paginate(10);
 
         return view('transaction.payments', ['transaction'=> $trans]);
     }

@@ -21,7 +21,7 @@ class WalletsController extends Controller
                 ->where('status', 'CO')
                 ->where('is_default', 'N')
                 ->select(['id', 'game_id', 'amount', 'currency'])
-                ->get();
+                ->paginate(10);
 
         $default_wallet = DB::table('wallets')
                 ->where('user_id', $request->id)
