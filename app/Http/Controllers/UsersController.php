@@ -59,8 +59,7 @@ class UsersController extends Controller
         $wallets = $this->getWallets($request->id);
         $default_wallet = $this->getDefaultWallet($request->id);
         $transactions = $this->getPaymentTransaction($request->id);
-
-        $banks = DB::table('banks')->where('is_active', 'Y')->where('status', 'CO')->get();
+        $banks = $this->getBanks();
 
         return view('user.view', [
                     'profile' => $user, 'ubank' => $ubank, 'banks' => $banks, 'username' => $request->username,
@@ -162,6 +161,11 @@ class UsersController extends Controller
                     ->where('is_default', 'Y')
                     ->select(['id', 'amount', 'currency'])
                     ->first();
+    }
+
+    private function getBanks()
+    {
+        return DB::table('banks')->where('is_active', 'Y')->where('status', 'CO')->get();
     }
 
     private function getPaymentTransaction($id)
