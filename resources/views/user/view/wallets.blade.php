@@ -36,10 +36,15 @@
                                     </td>
                                     <td class="hidden-lg-down text-center">
                                         <div class="flex text-right">
-                                            <a href="#!" title="แก้ไขเงินในกระเป๋าหลัก" 
-                                                data-toggle="modal" data-target="#editWalletModal" onClick="setDataEditWalletAmount({{ $default_wallet->id }}, {{ $default_wallet->amount }} , 'หลัก')"
+                                            <a class="mr-3" href="#!" title="เพิ่มเงินในกระเป๋าหลัก" 
+                                                data-toggle="modal" data-target="#increaseWalletModal" onClick="setDataIncreaseWalletAmount({{ $default_wallet->id }}, {{ $default_wallet->amount }}, 'หลัก', '{{ $username }}')"
                                             >
-                                                <i class="fi fi-pencil mr-0"></i>
+                                                <i class="fi fi-plus mr-0 text-primary"></i>
+                                            </a>
+                                            <a href="#!" title="ลดเงินในกระเป๋าหลัก" 
+                                                data-toggle="modal" data-target="#decreaseWalletModal" onClick="setDataDecreaseWalletAmount({{ $default_wallet->id }}, {{ $default_wallet->amount }} , 'หลัก', '{{ $username }}')"
+                                            >
+                                                <i class="fi fi-minus mr-0 text-danger"></i>
                                             </a>
                                         </div>
                                     </td>
@@ -52,7 +57,7 @@
                                         </td>
                                         <td>
                                             <p class="mb-0 d-flex">
-                                                กระเป๋าเงินเกม {{ $is_wallet->game_id }}
+                                                กระเป๋าเงินเกม : {{ $is_wallet->game_name }}
                                             </p>
 
                                             <!-- MOBILE ONLY -->
@@ -69,10 +74,15 @@
 
                                         <td class="hidden-lg-down text-center">
                                             <div class="flex text-right">
-                                                <a href="#!" title="แก้ไขเงินในกระเป๋าเกม{{ $is_wallet->game_id }}" 
-                                                    data-toggle="modal" data-target="#editWalletModal" onClick="setDataEditWalletAmount({{ $is_wallet->id }}, {{ $is_wallet->amount }} , {{ $is_wallet->game_id }})"
+                                                <a class="mr-3" href="#!" title="เพิ่มเงินในกระเป๋าเกม{{ $is_wallet->game_name }}" 
+                                                    data-toggle="modal" data-target="#increaseWalletModal" onClick="setDataIncreaseWalletAmount({{ $is_wallet->id }}, {{ $is_wallet->amount }}, '{{ $is_wallet->game_name }}', '{{ $username }}')"
                                                 >
-                                                    <i class="fi fi-pencil mr-0"></i>
+                                                    <i class="fi fi-plus mr-0 text-primary"></i>
+                                                </a>
+                                                <a href="#!" title="ลดเงินในกระเป๋าเกม{{ $is_wallet->game_name }}" 
+                                                    data-toggle="modal" data-target="#decreaseWalletModal" onClick="setDataDecreaseWalletAmount({{ $is_wallet->id }}, {{ $is_wallet->amount }} , '{{ $is_wallet->game_name }}', '{{ $username }}')"
+                                                >
+                                                    <i class="fi fi-minus mr-0 text-danger"></i>
                                                 </a>
                                                 
                                             </div>

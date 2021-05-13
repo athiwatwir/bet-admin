@@ -78,7 +78,9 @@
 @endsection
 
 @section('modal')
-    @include('user.modal.wallet_edit')
+    @include('user.modal.wallet_increase')
+
+    @include('user.modal.wallet_decrease')
 
     @include('user.modal.payment_slip')
 @endsection

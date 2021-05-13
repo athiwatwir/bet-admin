@@ -41,11 +41,47 @@ function setBankDataEdit(id, name, name_en) {
     document.getElementById('edit_bank_id').value = id
 }
 
-function setDataEditWalletAmount(id, amount, game) {
+// Profile Wallet Edit
+function setDataIncreaseWalletAmount(id, amount, game, username) {
     document.getElementById('wallet_id').value = id
-    document.getElementById('wallet_amount').value = amount
+    document.getElementById('is_wallet').value = amount
     document.getElementById('wallet_game').innerHTML = game
+    document.getElementById('username').innerHTML = username
+    document.getElementById('wallet_amount_notice').innerHTML = 'จำนวนเงินเดิม : ' + amount
 }
+
+function setDataDecreaseWalletAmount(id, amount, game, username) {
+    document.getElementById('wallet_id_decrease').value = id
+    document.getElementById('min_wallet').value = amount
+    document.getElementById('wallet_game').innerHTML = game
+    document.getElementById('username').innerHTML = username
+    document.getElementById('wallet_amount_notice_min').innerHTML = 'จำนวนเงินเดิม : ' + amount
+}
+
+function chackWalletIncreaseAmountValue() {
+    let min = document.getElementById('is_wallet').value
+    let value = document.getElementById('wallet_amount').value
+    let increase = parseInt(min) + parseInt(value)
+    document.getElementById('wallet_amount_notice').innerHTML = "จำนวนเงินคงเหลือ (" + min + " + " + value + ") = " + increase
+}
+
+function chackWalletDecreaseAmountValue() {
+    let min = document.getElementById('min_wallet').value
+    let value = document.getElementById('wallet_amount_decrease').value
+    let decrease = min - value
+    if(decrease < 0) {
+        document.getElementById('wallet_amount_decrease').value = min
+        document.getElementById('wallet_amount_notice_min').innerHTML = "ลดจำนวนเงินได้สูงสุดคือ " + min
+    }else{
+        document.getElementById('wallet_amount_notice_min').innerHTML = "จำนวนเงินคงเหลือ (" + min + " - " + value + ") = " + decrease
+    }
+}
+
+function clearWalletAmount() {
+    document.getElementById('wallet_amount').value = ''
+    document.getElementById('wallet_amount_decrease').value = ''
+}
+// END Profile Wallet Edit
 
 function setGameGroupDataEdit(id, name) {
     document.getElementById('edit_game_group_name').value = name

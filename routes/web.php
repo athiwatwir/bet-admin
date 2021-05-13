@@ -47,7 +47,8 @@ Route::middleware(['admin'])->group(function () {
         Route::get('/{username}/{id}/wallet', [WalletsController::class, 'index'])->name('wallet');
         Route::post('/edit/profile', [UsersController::class, 'editProfile']);
         Route::post('/edit/bank', [UsersController::class, 'editBank']);
-        Route::post('/wallet/edit-wallet-amount', [WalletsController::class, 'editWalletAmount']);
+        Route::post('/wallet/increase-wallet-amount', [WalletsController::class, 'increaseWalletAmount']);
+        Route::post('/wallet/decrease-wallet-amount', [WalletsController::class, 'decreaseWalletAmount']);
     });
 
     Route::get('/admins', [AdminsController::class, 'index'])->name('admins');

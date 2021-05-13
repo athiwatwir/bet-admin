@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 use App\Http\Controllers\PaginateController;
+use App\Http\Controllers\PaymentTransactionController;
+use App\Http\Controllers\WalletsController;
 
 class UsersController extends Controller
 {
@@ -56,9 +58,9 @@ class UsersController extends Controller
     {
         $user = DB::table('users')->find($request->id);
         $ubank = $this->getUserBanking($request->id);
-        $wallets = $this->getWallets($request->id);
-        $default_wallet = $this->getDefaultWallet($request->id);
-        $transactions = $this->getPaymentTransaction($request->id);
+        $wallets = (new WalletsController)->getWalletsByUserId($request->id);
+        $default_wallet = (new WalletsController)->getDefaultWalletByUserId($request->id);
+        $transactions = (new PaymentTransactionController)->getPaymentTransactionByUserId($request->id);
         $banks = $this->getBanks();
 
         return view('user.view', [
@@ -135,6 +137,10 @@ class UsersController extends Controller
         return redirect('/users')->with('success', 'ลบผู้ใช้งาน '. $request->username .' เรียบร้อยแล้ว');
     }
 
+
+
+    // PRIVATE FUNCTION /////////////////////////////
+
     private function getUserBanking($id)
     {
         return DB::table('user_bankings')
@@ -144,50 +150,8 @@ class UsersController extends Controller
                     ->first();
     }
 
-    private function getWallets($id)
-    {
-        return DB::table('wallets')
-                    ->where('user_id', $id)
-                    ->where('status', 'CO')
-                    ->where('is_default', 'N')
-                    ->select(['id', 'game_id', 'amount', 'currency'])
-                    ->paginate(10);
-    }
-
-    private function getDefaultWallet($id)
-    {
-        return DB::table('wallets')
-                    ->where('user_id', $id)
-                    ->where('is_default', 'Y')
-                    ->select(['id', 'amount', 'currency'])
-                    ->first();
-    }
-
     private function getBanks()
     {
         return DB::table('banks')->where('is_active', 'Y')->where('status', 'CO')->get();
-    }
-
-    private function getPaymentTransaction($id)
-    {
-        return DB::table('payment_transactions')
-                    ->leftJoin('users', 'payment_transactions.user_id', '=', 'users.id')
-                    ->leftJoin('c_bank_accounts', 'payment_transactions.c_bank_account_id', '=', 'c_bank_accounts.id')
-                    ->leftJoin('user_bankings', 'payment_transactions.user_banking_id', '=', 'user_bankings.id')
-                    ->leftJoin('wallets as from_wallet', 'payment_transactions.from_wallet_id', '=', 'from_wallet.id')
-                    ->leftJoin('wallets as to_wallet', 'payment_transactions.to_wallet_id', '=', 'to_wallet.id')
-                    ->leftJoin('banks as ubank', 'user_bankings.bank_id', '=', 'ubank.id')
-                    ->leftJoin('banks as cbank', 'c_bank_accounts.bank_id', '=', 'cbank.id')
-                    ->where('payment_transactions.user_id', $id)
-                    ->select('payment_transactions.*', 
-                            'users.username', 'users.name',
-                            'c_bank_accounts.bank_id as bank_name', 'c_bank_accounts.account_name', 'c_bank_accounts.account_number',
-                            'user_bankings.bank_id as user_bank_name', 'user_bankings.bank_account_name', 'user_bankings.bank_account_number',
-                            'from_wallet.game_id as from_game', 'from_wallet.is_default as from_default',
-                            'to_wallet.game_id as to_game', 'to_wallet.is_default as to_default',
-                            'ubank.name as ubank_name', 'cbank.name as cbank_name',
-                            )
-                    ->orderBy('payment_transactions.created_at', 'desc')
-                    ->paginate(10);
     }
 }
