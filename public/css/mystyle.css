@@ -13,6 +13,12 @@ tr.bg-withdraw {
 tr.bg-transfer {
     background-color: #fffcf4;
 }
+tr.bg-increase {
+    background-color: #f5f6ff;
+}
+tr.bg-decrease {
+    background-color: #f1f1f1;
+}
 
 
 /* Toggle Switch User Profile is_active */

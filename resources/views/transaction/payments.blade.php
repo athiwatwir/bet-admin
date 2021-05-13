@@ -52,6 +52,8 @@
                                                                 @if($trans->type == 'ฝาก') bg-deposit 
                                                                 @elseif($trans->type == 'ถอน') bg-withdraw  
                                                                 @elseif($trans->type == 'ย้าย') bg-transfer
+                                                                @elseif($trans->type == 'เพิ่ม') bg-increase
+                                                                @elseif($trans->type == 'ลด') bg-decrease
                                                                 @endif ">
 
                                     <td style="line-height: 17px;">
