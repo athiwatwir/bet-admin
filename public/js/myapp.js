@@ -53,8 +53,8 @@ function setDataIncreaseWalletAmount(id, amount, game, username) {
 function setDataDecreaseWalletAmount(id, amount, game, username) {
     document.getElementById('wallet_id_decrease').value = id
     document.getElementById('min_wallet').value = amount
-    document.getElementById('wallet_game').innerHTML = game
-    document.getElementById('username').innerHTML = username
+    document.getElementById('wallet_game_decrease').innerHTML = game
+    document.getElementById('username_decrease').innerHTML = username
     document.getElementById('wallet_amount_notice_min').innerHTML = 'จำนวนเงินเดิม : ' + amount
 }
 

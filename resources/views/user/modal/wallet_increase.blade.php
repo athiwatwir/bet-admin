@@ -21,7 +21,9 @@
                     </div>
 
                     <div class="form-group row">
-                        <div class="col-md-8 offset-2">
+                        <label for="is_reason" class="col-md-4 col-form-label text-md-right">{{ __('เหตุผล') }} <span class="text-danger">*</span></label>
+
+                        <div class="col-md-6">
                             <input placeholder="กรุณาระบุเหตุผล" id="is_reason" type="text" class="form-control @error('is_reason') is-invalid @enderror" name="is_reason" value="{{ old('is_reason') }}" required autocomplete="is_reason">
                         </div>
                     </div>

@@ -5,7 +5,7 @@
             <form method="POST" action="{{ url('/users/wallet/decrease-wallet-amount') }}">
             @csrf
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">ลดเงินในกระเป๋า <span id="wallet_game"></span> ของ <span id="username"></span></h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">ลดเงินในกระเป๋า <span id="wallet_game_decrease"></span> ของ <span id="username_decrease"></span></h5>
                     <button type="button" class="close" data-dismiss="modal">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -21,7 +21,9 @@
                     </div>
 
                     <div class="form-group row">
-                        <div class="col-md-8 offset-2">
+                        <label for="is_reason" class="col-md-4 col-form-label text-md-right">{{ __('เหตุผล') }} <span class="text-danger">*</span></label>
+
+                        <div class="col-md-6">
                             <input placeholder="กรุณาระบุเหตุผล" id="is_reason" type="text" class="form-control @error('is_reason') is-invalid @enderror" name="is_reason" value="{{ old('is_reason') }}" required autocomplete="is_reason">
                         </div>
                     </div>
