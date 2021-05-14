@@ -51,12 +51,15 @@ Route::middleware(['admin'])->group(function () {
         Route::post('/wallet/decrease-wallet-amount', [WalletsController::class, 'decreaseWalletAmount']);
     });
 
-    Route::get('/admins', [AdminsController::class, 'index'])->name('admins');
-    Route::get('/admins/active/{id}/{username}', [AdminsController::class, 'active']);
-    Route::get('/admins/delete/{id}/{username}', [AdminsController::class, 'delete']);
-    Route::post('/admins/register', [AdminsController::class, 'register']);
-    Route::post('/admins/edit', [AdminsController::class, 'edit']);
-    Route::post('/admins/re-password', [AdminsController::class, 'rePassword']);
+    Route::prefix('/admins')->group(function () {
+        Route::get('/', [AdminsController::class, 'index'])->name('admins');
+        Route::get('/active/{id}/{username}', [AdminsController::class, 'active']);
+        Route::get('/delete/{id}/{username}', [AdminsController::class, 'delete']);
+        Route::get('/{username}/{id}/view', [AdminsController::class, 'view'])->name('view');
+        Route::post('/register', [AdminsController::class, 'register']);
+        Route::post('/edit/profile', [AdminsController::class, 'edit']);
+        Route::post('/re-password', [AdminsController::class, 'rePassword']);
+    });
 
     Route::get('/members', [MembersController::class, 'index'])->name('members');
 

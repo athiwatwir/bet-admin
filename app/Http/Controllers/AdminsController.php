@@ -40,6 +40,13 @@ class AdminsController extends Controller
         return view('admin.index', ['admins' => $admins, 'inactive' => $inactive, 'active' => $active, 'deleted' => $deleted]);
     }
 
+    public function view(Request $request)
+    {
+        $admin = DB::table('users')->find($request->id);
+
+        return view('admin.view', ['profile' => $admin, 'username' => $request->username]);
+    }
+
     public function register(Request $request)
     {
         // $random = Str::random(10);
@@ -131,6 +138,7 @@ class AdminsController extends Controller
     public function delete(Request $request)
     {
         $admin = User::find($request->id)->update([
+            'is_active' => 'N',
             'status' => 'DL'
         ]);
 

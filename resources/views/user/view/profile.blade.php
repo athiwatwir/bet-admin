@@ -134,13 +134,20 @@
 
                         <div class="col-md-9">
                             <select id="banks" name="banks" class="form-control" disabled>
-                                @foreach($banks as $bank)
-                                    @if($bank->id == $ubank->bank_id)
-                                        <option value="{{ $bank->id }}" selected disabled>{{ $bank->name }} @if($bank->name_en != '')- {{ $bank->name_en }} @endif</option>
-                                    @else
+                                @if(isset($ubank))
+                                    @foreach($banks as $bank)
+                                        @if($bank->id == $ubank->bank_id)
+                                            <option value="{{ $bank->id }}" selected disabled>{{ $bank->name }} @if($bank->name_en != '')- {{ $bank->name_en }} @endif</option>
+                                        @else
+                                            <option value="{{ $bank->id }}">{{ $bank->name }} @if($bank->name_en != '')- {{ $bank->name_en }} @endif</option>
+                                        @endif
+                                    @endforeach
+                                @else
+                                    <option value="" selected disabled>-- เลือกธนาคาร --</option>
+                                    @foreach($banks as $bank)
                                         <option value="{{ $bank->id }}">{{ $bank->name }} @if($bank->name_en != '')- {{ $bank->name_en }} @endif</option>
-                                    @endif
-                                @endforeach
+                                    @endforeach
+                                @endif
                             </select>
                         </div>
                     </div>
@@ -149,7 +156,11 @@
                         <label for="account_name" class="col-md-3 col-form-label text-md-right">{{ __('ชื่อบัญชี') }} <span class="text-danger">*</span></label>
 
                         <div class="col-md-9">
-                            <input placeholder="ชื่อบัญชี" id="account_name" type="text" class="form-control is-input-display @error('account_name') is-invalid @enderror" name="account_name" value="{{ $ubank->bank_account_name }}" required disabled autocomplete="account_name">
+                            @if(isset($ubank))
+                                <input placeholder="ชื่อบัญชี" id="account_name" type="text" class="form-control is-input-display @error('account_name') is-invalid @enderror" name="account_name" value="{{ $ubank->bank_account_name }}" required disabled autocomplete="account_name">
+                            @else
+                                <input placeholder="ชื่อบัญชี" id="account_name" type="text" class="form-control is-input-display @error('account_name') is-invalid @enderror" name="account_name" value="" required disabled autocomplete="account_name">
+                            @endif
 
                             @error('account_name')
                                 <span class="invalid-feedback" role="alert">
@@ -163,7 +174,11 @@
                         <label for="account_number" class="col-md-3 col-form-label text-md-right">{{ __('เลขบัญชี') }} <span class="text-danger">*</span></label>
 
                         <div class="col-md-9">
-                            <input placeholder="ตัวเลขเท่านั้น" id="account_number" type="number" class="form-control is-input-display @error('account_number') is-invalid @enderror" name="account_number" value="{{ $ubank->bank_account_number }}" required disabled autocomplete="account_number">
+                            @if(isset($ubank))
+                                <input placeholder="ตัวเลขเท่านั้น" id="account_number" type="number" class="form-control is-input-display @error('account_number') is-invalid @enderror" name="account_number" value="{{ $ubank->bank_account_number }}" required disabled autocomplete="account_number">
+                            @else
+                                <input placeholder="ตัวเลขเท่านั้น" id="account_number" type="number" class="form-control is-input-display @error('account_number') is-invalid @enderror" name="account_number" value="" required disabled autocomplete="account_number">
+                            @endif
 
                             @error('account_number')
                                 <span class="invalid-feedback" role="alert">
@@ -173,7 +188,9 @@
                         </div>
                     </div>
 
-                    <input type="hidden" name="id" value="{{ $ubank->id }}">
+                    @if(isset($ubank))
+                        <input type="hidden" name="id" value="{{ $ubank->id }}">
+                    @endif
 
                     <div id="is-edit-bank-btn" class="form-group row" style="display: none;">
                         <div class="col-md-12 text-right">

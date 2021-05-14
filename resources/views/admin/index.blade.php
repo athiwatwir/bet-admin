@@ -6,12 +6,12 @@
 <div class="row gutters-sm">
 
     <!-- navigation -->
-    @include('admin.adminmenu')
+    
     <!-- /navigation -->
 
 
     <!-- inbox list -->
-    <div class="col-12 col-lg-9 col-xl-10">
+    <div class="col-12 col-lg-12 col-xl-12">
 
 
         <!-- portlet -->
@@ -60,11 +60,10 @@
                                             ชื่อผู้ใช้
                                         </span>
                                     </th>
-                                    <th class="w--100 hidden-lg-down text-center">ตำแหน่ง</th>
-                                    <th class="w--200 hidden-lg-down text-center">โทรศัพท์</th>
-                                    <th class="w--100 hidden-lg-down text-center">ไลน์</th>
-                                    <th class="w--100 hidden-lg-down text-center">สถานะ</th>
-                                    <th class="w--150">&nbsp;</th>
+                                    <th class="w--250 hidden-lg-down text-center">ตำแหน่ง</th>
+                                    <th class="w--250 hidden-lg-down text-center">โทรศัพท์</th>
+                                    <th class="w--150 hidden-lg-down text-center">ไลน์</th>
+                                    <th class="w--150 hidden-lg-down text-center">สถานะ</th>
                                 </tr>
                             </thead>
 
@@ -75,7 +74,7 @@
                                     <tr id="message_id_{{ $key }}" class="text-dark">
 
                                         <td class="hidden-lg-down text-center">
-                                            {{ $key + 1 }}
+                                            {{ $key + 1 }}.
                                             <!-- <label class="form-checkbox form-checkbox-secondary float-start">
                                                 <input type="checkbox" name="item_id[]" value="{{ $key }}">
                                                 <i></i>
@@ -83,10 +82,12 @@
                                         </td>
 
                                         <td style="line-height: 17px;">
-                                            <p class="mb-0 d-flex">
-                                                <strong class="text-dark">{{ $admin->username }}</strong> 
-                                            </p>
-                                            <small style="font-size: 70%;">ชื่อ-สกุล : {{ $admin->name }}</small>
+                                            <a class="text-dark" href="/admins/{{ $admin->username }}/{{ $admin->id }}/view" title="ดูรายละเอียดของผู้ดูแลระบบนี้">
+                                                <p class="mb-0 d-flex">
+                                                    <strong class="text-dark">{{ $admin->username }}</strong> 
+                                                </p>
+                                                <small style="font-size: 70%;">ชื่อ-สกุล : {{ $admin->name }}</small>
+                                            </a>
 
                                             <!-- MOBILE ONLY -->
                                             <div class="fs--13 d-block d-xl-none">
@@ -120,47 +121,6 @@
                                             @else
                                                 <span class="badge badge-danger font-weight-normal mt-1">ปิดใช้งาน</span>
                                             @endif
-                                        </td>
-
-                                        <td class="text-center">
-
-                                            <a class="text-truncate mr-1" href="#!" title="แก้ไข" data-toggle="modal" data-target="#adminEditModal" onClick="setDataAdminEditModal({{ $admin->id }}, '{{ $admin->username }}', '{{ $admin->name }}', '{{ $admin->phone }}', '{{ $admin->line }}')">
-                                                <i class="fi fi-pencil"></i>
-                                            </a>
-                                            
-                                            <a class="text-truncate mr-1" href="#!" title="เปลี่ยนรหัสผ่าน" data-toggle="modal" data-target="#adminRePasswordModal" onClick="setAdminPasswordModal({{ $admin->id }})">
-                                                <i class="fi fi-locked"></i>
-                                            </a>
-
-                                            <a class="text-truncate mr-1" href="/admins/active/{{ $admin->id }}/{{ $admin->username }}">
-                                                @if($admin->is_active == 'Y')
-                                                    <span class="text-success" title="ปิดการใช้งาน"><i class="fi fi-eye"></i></span>
-                                                @else
-                                                    <span class="text-danger" title="เปิดการใช้งาน"><i class="fi fi-eye-disabled"></i></span>
-                                                @endif
-                                            </a>
-
-                                            <a	 href="#!" 
-                                                class="text-truncate js-ajax-confirm" 
-                                                data-href="/admins/delete/{{ $admin->id }}/{{ $admin->username }}"
-                                                data-ajax-confirm-body="ยืนยันการลบบัญชี Admin {{ $admin->username }} ?" 
-
-                                                data-ajax-confirm-mode="ajax" 
-                                                data-ajax-confirm-method="GET" 
-
-                                                data-ajax-confirm-btn-yes-class="btn-sm btn-danger" 
-                                                data-ajax-confirm-btn-yes-text="ลบข้อมูล" 
-                                                data-ajax-confirm-btn-yes-icon="fi fi-check" 
-
-                                                data-ajax-confirm-btn-no-class="btn-sm btn-light" 
-                                                data-ajax-confirm-btn-no-text="ยกเลิก" 
-                                                data-ajax-confirm-btn-no-icon="fi fi-close"
-
-                                                data-ajax-confirm-success-target="#message_id_{{ $key }}" 
-                                                data-ajax-confirm-success-target-action="remove">
-                                                <i class="fi fi-thrash text-danger"></i>
-                                            </a>
-
                                         </td>
 
                                     </tr>

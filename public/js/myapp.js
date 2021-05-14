@@ -81,6 +81,7 @@ function clearWalletAmount() {
     document.getElementById('wallet_amount').value = ''
     document.getElementById('wallet_amount_decrease').value = ''
 }
+
 // END Profile Wallet Edit
 
 function setGameGroupDataEdit(id, name) {
@@ -138,6 +139,22 @@ function cancelEditBank() {
     document.getElementById("is-edit-bank-btn").style.display = "none";
 }
 // END User Profile
+
+// Admin Profile
+function editProfileAdmin() {
+    document.getElementById("name_admin").disabled = false
+    document.getElementById("phone_admin").disabled = false
+    document.getElementById("line_admin").disabled = false
+    document.getElementById("is-edit-admin-profile-btn").style.display = "block";
+}
+
+function cancelEditAdminProfile() {
+    document.getElementById("name_admin").disabled = true
+    document.getElementById("phone_admin").disabled = true
+    document.getElementById("line_admin").disabled = true
+    document.getElementById("is-edit-admin-profile-btn").style.display = "none";
+}
+// END Admin Profile
 
 function setImagePaymentTransactionSlip(url) {
     document.getElementById("slip_img").src = '/slip/' + url
