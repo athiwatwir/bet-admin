@@ -41,24 +41,12 @@
                             <a class="nav-link active" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">
                                 รายละเอียดผู้ดูแลระบบ
                             </a>
-                            <a class="nav-link" id="v-pills-wallet-tab" data-toggle="pill" href="#v-pills-wallet" role="tab" aria-controls="v-pills-wallet" aria-selected="false">
-                                เมนู 2
-                            </a>
-                            <a class="nav-link" id="v-pills-paymenttransaction-tab" data-toggle="pill" href="#v-pills-paymenttransaction" role="tab" aria-controls="v-pills-paymenttransaction" aria-selected="false">
-                                เมนู 3
-                            </a>
                         </div>
                     </div>
                     <div class="col-9 py-4 rounded bordered" style="background-color: #f4f8ff;">
                         <div class="tab-content" id="v-pills-tabContent">
                             <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                                 @include('admin.view.profile')
-                            </div>
-                            <div class="tab-pane fade" id="v-pills-wallet" role="tabpanel" aria-labelledby="v-pills-wallet-tab">
-                                MENU 2
-                            </div>
-                            <div class="tab-pane fade" id="v-pills-paymenttransaction" role="tabpanel" aria-labelledby="v-pills-paymenttransaction-tab">
-                                MENU 3
                             </div>
                         </div>
                     </div>
