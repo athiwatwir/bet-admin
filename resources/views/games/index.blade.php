@@ -50,6 +50,7 @@
                                             <i></i>
                                         </label> -->
                                     </th>
+                                    <th class="w--120 hidden-lg-down text-center">โลโก้</th>
                                     <th>
                                         <span class="px-2 p-0-xs">
                                             ชื่อเกม
@@ -58,8 +59,8 @@
                                     <th class="hidden-lg-down text-center">URL</th>
                                     <th class="hidden-lg-down text-center">TOKEN</th>
                                     <th class="w--200 hidden-lg-down text-center">กลุ่มเกม</th>
-                                    <th class="w--200 hidden-lg-down text-center">สถานะ</th>
-                                    <th class="w--200">&nbsp;</th>
+                                    <th class="w--100 hidden-lg-down text-center">สถานะ</th>
+                                    <th class="w--100">&nbsp;</th>
                                 </tr>
                             </thead>
 
@@ -74,6 +75,10 @@
                                             <input type="checkbox" name="item_id[]" value="{{ $key }}">
                                             <i></i>
                                         </label> -->
+                                    </td>
+
+                                    <td class="hidden-lg-down text-center">
+                                        <img src="{{ asset('logogames/'.$game->logo) }}" width="115">
                                     </td>
 
                                     <td style="line-height: 17px;">
@@ -124,7 +129,7 @@
 
                                     <td class="text-center">
 
-                                        <a class="text-truncate mr-2" href="#!" title="แก้ไข" data-toggle="modal" data-target="#gameEditModal" onClick="setGameDataEdit({{ $game->id }}, '{{ $game->name }}', '{{ $game->url }}', '{{ $game->token }}', {{ $game->game_group_id }})">
+                                        <a class="text-truncate mr-2" href="#!" title="แก้ไข" data-toggle="modal" data-target="#gameEditModal" onClick="setGameDataEdit({{ $game->id }}, '{{ $game->name }}', '{{ $game->url }}', '{{ $game->token }}', '{{ $game->logo }}')">
                                             <i class="fi fi-pencil"></i>
                                         </a>
 

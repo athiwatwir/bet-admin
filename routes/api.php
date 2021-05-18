@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\Auth\PassportAuthController;
 use App\Http\Controllers\Api\V1\UsersController;
 use App\Http\Controllers\Api\V1\WalletsController;
 use App\Http\Controllers\Api\V1\PaymentTransactionsController;
+use App\Http\Controllers\Api\V1\GamesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,10 @@ use App\Http\Controllers\Api\V1\PaymentTransactionsController;
 
 Route::post('register', [PassportAuthController::class, 'register']);
 Route::post('login', [PassportAuthController::class, 'login']);
+
+Route::prefix('menu')->group(function () {
+    Route::get('games', [GamesController::class, 'menuGames']);
+});
 
 Route::middleware(['auth:api'])->group(function () {
     Route::get('logout', [PassportAuthController::class, 'logout']);

@@ -32,10 +32,11 @@ class WalletsController extends Controller
         $wallet = $this->defaultWallet();
 
         $wallets = Wallet::where('user_id', '=', $accessToken->user_id)
-                            ->where('is_default', '=', 'N')
-                            ->where('status', '!=', 'DL')
-                            ->select(['id', 'game_id', 'amount', 'currency'])
-                            ->orderBy('created_at', 'desc')
+                            ->leftJoin('games', 'wallets.game_id', '=', 'games.id')
+                            ->where('wallets.is_default', '=', 'N')
+                            ->where('wallets.status', '!=', 'DL')
+                            ->select(['wallets.id', 'games.name as game_name', 'wallets.amount', 'wallets.currency'])
+                            ->orderBy('wallets.created_at', 'desc')
                             ->get();
 
         $c_bank_accounts = DB::table('c_bank_accounts')
@@ -223,7 +224,7 @@ class WalletsController extends Controller
         $default_wallet = $this->defaultWallet();
 
         $fileName = time().'_'.$request->file('attachment')->getClientOriginalName();
-        $request->file('attachment')->storeAs('public/uploads/slips', $fileName);
+        $request->file('attachment')->move(public_path('/slips'), $fileName);
 
         $trans = DB::table('payment_transactions')
                     ->insert([

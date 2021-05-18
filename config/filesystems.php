@@ -42,11 +42,14 @@ return [
             'visibility' => 'public',
         ],
 
-        'public' => [
+        'slips' => [
             'driver' => 'local',
-            'root' => storage_path('app/public/uploads/slips'),
-            'url' => env('APP_URL').'/slip',
-            'visibility' => 'public',
+            'root' => public_path('/slips'),
+        ],
+
+        'logogames' => [
+            'driver' => 'local',
+            'root' => public_path().'/logogames',
         ],
 
         's3' => [
@@ -74,7 +77,6 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
-        public_path('slip') => storage_path('app/public/uploads/slips'),
     ],
 
 ];

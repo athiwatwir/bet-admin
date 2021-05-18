@@ -2,7 +2,7 @@
 <div class="modal fade" id="gameEditModal" tabindex="-1" role="dialog" aria-labelledby="gameEditModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 60%;">
         <div class="modal-content">
-            <form method="POST" action="{{ url('/games/edit') }}">
+            <form method="POST" action="{{ url('/games/edit') }}" enctype="multipart/form-data">
             @csrf
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLongTitle">แก้ไขเกม <span id="is_edit_game_name"></span></h5>
@@ -46,6 +46,22 @@
                             <input required placeholder="TOKEN" id="edit_game_token" type="text" class="form-control @error('edit_game_token') is-invalid @enderror" name="edit_game_token" value="{{ old('edit_game_token') }}" autocomplete="edit_game_token">
                             
                             @error('edit_game_token')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="logo" class="col-md-4 col-form-label text-md-right">{{ __('โลโก้') }}</label>
+
+                        <div class="col-md-6">
+                            <img id="logo_img" class="w-50">
+
+                            <input id="logo" type="file" class="form-control @error('logo') is-invalid @enderror" name="logo" value="{{ old('logo') }}" autocomplete="logo">
+                            <small class="text-danger"><small>ขนาด 120 x 60 px ไฟล์ PNG ไม่เกิน 100 Kb</small></small>
+                            @error('logo')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>

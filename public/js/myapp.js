@@ -90,13 +90,13 @@ function setGameGroupDataEdit(id, name) {
     document.getElementById('game_group_edit').innerHTML = name
 }
 
-function setGameDataEdit(id, name, url, token, group_id) {
+function setGameDataEdit(id, name, url, token, logo) {
     document.getElementById('is_edit_game_name').innerHTML = name
     document.getElementById('edit_game_id').value = id
     document.getElementById('edit_game_name').value = name
     document.getElementById('edit_game_url').value = url
     document.getElementById('edit_game_token').value = token
-    document.getElementById('edit_game_group_id').value = group_id
+    document.getElementById("logo_img").src = '/logogames/' + logo
 }
 
 function setGameDataTransfer(id) {
@@ -157,5 +157,5 @@ function cancelEditAdminProfile() {
 // END Admin Profile
 
 function setImagePaymentTransactionSlip(url) {
-    document.getElementById("slip_img").src = '/slip/' + url
+    document.getElementById("slip_img").src = '/slips/' + url
 }

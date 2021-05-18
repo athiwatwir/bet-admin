@@ -30,6 +30,7 @@ class GamesController extends Controller
 
     public function create(Request $request)
     {
+        // Log::debug($request);
         $this->validate($request, [
             'name' => ['required', 'string', 'max:255'],
             'url' => ['required', 'string', 'max:255'],
@@ -43,12 +44,16 @@ class GamesController extends Controller
             'game_group_id.required' => 'กรุณาเลือกกลุ่มเกม',
         ]);
 
+        $fileName = time().'_'.$request->logo->getClientOriginalName();
+        $request->logo->move(public_path('/logogames'), $fileName);
+
         $games = DB::table('games')
                 ->insert([
+                    'game_group_id' => $request->game_group_id,
                     'name' => $request->name,
                     'url' => $request->url,
                     'token' => $request->token,
-                    'game_group_id' => $request->game_group_id,
+                    'logo' => $fileName,
                     'is_active' => 'Y',
                     'status' => 'CO'
                 ]);
@@ -73,12 +78,22 @@ class GamesController extends Controller
             'token.required' => 'กรุณาระบุ token',
         ]);
 
+        // Log::debug($request);
         $games = DB::table('games')->where('id', $request->edit_game_id)
                 ->update([
                     'name' => $request->edit_game_name,
                     'url' => $request->edit_game_url,
                     'token' => $request->edit_game_token,
                 ]);
+        if(isset($request->logo)) {
+            $getLogo = DB::table('games')->where('id', $request->edit_game_id)->first();
+            if(isset($getLogo->logo)) unlink(public_path('logogames/'.$getLogo->logo));
+
+            $fileName = time().'_'.$request->logo->getClientOriginalName();
+            $request->logo->move(public_path('/logogames'), $fileName);
+
+            DB::table('games')->where('id', $getLogo->id)->update(['logo' => $fileName]);
+        }
 
         if($games) {
             return redirect()->back()->with('success', 'แก้ไขเกม '. $request->edit_game_name .' เรียบร้อยแล้ว');

@@ -2,7 +2,7 @@
 <div class="modal fade" id="gameCreateModal" tabindex="-1" role="dialog" aria-labelledby="gameCreateModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 60%;">
         <div class="modal-content">
-            <form method="POST" action="{{ url('/games/create') }}">
+            <form method="POST" action="{{ url('/games/create') }}" enctype="multipart/form-data">
             @csrf
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLongTitle">เพิ่มเกม</h5>
@@ -65,6 +65,20 @@
                             </select>
                             
                             @error('game_group_id')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="logo" class="col-md-4 col-form-label text-md-right">{{ __('โลโก้') }}</label>
+
+                        <div class="col-md-6">
+                            <input required id="logo" type="file" class="form-control @error('logo') is-invalid @enderror" name="logo" value="{{ old('logo') }}" autocomplete="logo">
+                            <small class="text-danger"><small>ขนาด 120 x 60 px ไฟล์ PNG ไม่เกิน 100 Kb</small></small>
+                            @error('logo')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
