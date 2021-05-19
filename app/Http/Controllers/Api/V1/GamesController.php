@@ -21,12 +21,20 @@ class GamesController extends Controller
             $games = DB::table('games')
                         ->where('game_group_id', $group->id)
                         ->where('is_active', 'Y')
-                        ->select('id', 'name', 'url', 'token', 'logo')
+                        ->select('id', 'name', 'logo')
                         ->get();
+                        
             $groups[$key]->games = $games;
         }
         // Log::debug($groups);
 
         return response()->json(['menugames' => $groups], 200);
+    }
+
+    public function playGame(Request $request, $id)
+    {
+        $playGame = DB::table('games')->find($id, ['url', 'token']);
+
+        return response()->json(['playgame' => $playGame], 200);
     }
 }

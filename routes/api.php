@@ -50,4 +50,8 @@ Route::middleware(['auth:api'])->group(function () {
         Route::post('deposit-wallet', [WalletsController::class, 'depositWallet']);
         Route::post('withdraw-wallet', [WalletsController::class, 'withdrawWallet']);
     });
+
+    Route::prefix('game')->group(function () {
+        Route::get('play/{id}', [GamesController::class, 'playGame']);
+    });
 });
