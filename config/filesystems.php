@@ -52,6 +52,11 @@ return [
             'root' => public_path().'/logogames',
         ],
 
+        'logoteams' => [
+            'driver' => 'local',
+            'root' => public_path().'/logoteams',
+        ],
+
         's3' => [
             'driver' => 's3',
             'key' => env('AWS_ACCESS_KEY_ID'),

@@ -19,7 +19,9 @@ tr.bg-increase {
 tr.bg-decrease {
     background-color: #f1f1f1;
 }
-
+ul.list-style-none {
+    list-style-type: none;
+}
 
 /* Toggle Switch User Profile is_active */
 .switch-user-profile-active {

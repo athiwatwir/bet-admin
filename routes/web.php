@@ -12,6 +12,7 @@ use App\Http\Controllers\BanksController;
 use App\Http\Controllers\WalletsController;
 use App\Http\Controllers\GameGroupsController;
 use App\Http\Controllers\GamesController;
+use App\Http\Controllers\FootballLeagueController;
 
 /*
 |--------------------------------------------------------------------------
@@ -99,6 +100,24 @@ Route::middleware(['admin'])->group(function () {
             Route::post('/edit', [GameGroupsController::class, 'edit']);
             Route::post('/game-transfer', [GameGroupsController::class, 'gameTransfer']);
             Route::post('/active', [GameGroupsController::class, 'groupActive']);
+        });
+    });
+
+    Route::prefix('/football')->group(function () {
+        Route::prefix('/leagues')->group(function () {
+            Route::get('/', [FootballLeagueController::class, 'leagueIndex']);
+            Route::get('/active/{id}/{league_name}', [FootballLeagueController::class, 'leagueActive']);
+            Route::get('/delete/{id}/{league_name}', [FootballLeagueController::class, 'leagueDelete']);
+            Route::post('/create', [FootballLeagueController::class, 'leagueCreate']);
+            Route::post('/edit', [FootballLeagueController::class, 'leagueEdit']);
+        });
+        Route::prefix('/teams')->group(function () {
+            Route::get('/', [FootballLeagueController::class, 'teamIndex']);
+            Route::get('/{league_id}/{league_name}/list', [FootballLeagueController::class, 'leagueListTeam']);
+            Route::get('/active/{id}/{team_name}', [FootballLeagueController::class, 'teamActive']);
+            Route::get('/delete/{id}/{team_name}', [FootballLeagueController::class, 'teamDelete']);
+            Route::post('/create', [FootballLeagueController::class, 'teamCreate']);
+            Route::post('/edit', [FootballLeagueController::class, 'teamEdit']);
         });
     });
 });
