@@ -155,11 +155,11 @@
                 <div class="col bg-white overflow-hidden">
                     <ul class="mx-0 px-0 my-2">
                         <li class="dropdown-item text-wrap">
-                            <a href="{{ url('/football/leagues') }}" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
+                            <a href="{{ url('/football/matchs') }}" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
                                 <i class="fi fi-users float-start fs--25 mt--n2"></i>
-                                <span class="h5-xs d-block fs--18">รายการลีก</span>
+                                <span class="h5-xs d-block fs--18">แมทซ์การแข่งขัน</span>
                                 <span class="fs--11 text-muted text-uppercase">
-                                    ลีกฟุตบอลทั้งหมด
+                                    จัดการแมทซ์การแข่งขันฟุตบอล
                                 </span>
                             </a>
                         </li>
@@ -177,9 +177,9 @@
                         <li class="dropdown-item text-wrap">
                             <a href="{{ url('/football/leagues') }}" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
                                 <i class="fi fi-users float-start fs--25 mt--n2"></i>
-                                <span class="h5-xs d-block fs--18">แมทซ์การแข่งขัน</span>
+                                <span class="h5-xs d-block fs--18">รายการลีก</span>
                                 <span class="fs--11 text-muted text-uppercase">
-                                    จัดการแมทซ์ฟุตบอล
+                                    ลีกฟุตบอลทั้งหมด
                                 </span>
                             </a>
                         </li>

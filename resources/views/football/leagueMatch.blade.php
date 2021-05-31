@@ -4,7 +4,7 @@
 <div class="row gutters-sm">
 
     <div class="col-12 col-lg-3 col-xl-2">
-        @include('football.league_team_menu')
+        @include('football.league_match_menu')
     </div>
 
     <!-- inbox list -->
@@ -19,14 +19,14 @@
 
                 <div class="float-end">
 
-                    <button type="button" class="btn btn-sm btn-primary btn-pill px-2 py-1 fs--15 mt--n3" data-toggle="modal" data-target="#teamCreateModal">
-                        + เพิ่มทีม "{{ $is_league }}"
+                    <button type="button" class="btn btn-sm btn-primary btn-pill px-2 py-1 fs--15 mt--n3" data-toggle="modal" data-target="#matchCreateModal">
+                        + เพิ่มแมทซ์ "{{ $is_league }}"
                     </button>
 
                 </div>
 
                 <span class="d-block text-muted text-truncate font-weight-medium pt-1">
-                    รายการทีมของ "{{ $is_league }}"
+                    รายการแมทซ์ของ "{{ $is_league }}"
                 </span>
             </div>
             <!-- /portlet : header -->
@@ -39,7 +39,7 @@
                 @csrf
                     <input type="hidden" id="action" name="action" value=""><!-- value populated by js -->
 
-                    @include('football.teamlists')
+                    @include('football.matchlists')
 
                     <!-- options and pagination -->
                     <div class="row text-center-xs">
@@ -55,22 +55,22 @@
                             <nav aria-label="pagination">
                                 <ul class="pagination pagination-pill justify-content-end justify-content-center justify-content-md-end">
 
-                                    <li class="{{ $teams->onFirstPage() ? 'page-item btn-pill disabled' : 'page-item btn-pill' }}">
-                                        <a class="page-link" href="{{ $teams->previousPageUrl() }}" tabindex="-1" aria-disabled="true">ก่อนหน้า</a>
+                                    <li class="{{ $matchs->onFirstPage() ? 'page-item btn-pill disabled' : 'page-item btn-pill' }}">
+                                        <a class="page-link" href="{{ $matchs->previousPageUrl() }}" tabindex="-1" aria-disabled="true">ก่อนหน้า</a>
                                     </li>
                                     
                                     <li class="page-item active" aria-current="page">
-                                        {{ $teams->links() }}
+                                        {{ $matchs->links() }}
                                     </li>
                                     
-                                    <li class="{{ $teams->currentPage() == $teams->lastPage() ? 'page-item disabled' : 'page-item' }}">
-                                        <a class="page-link" href="{{ $teams->nextPageUrl() }}">ถัดไป</a>
+                                    <li class="{{ $matchs->currentPage() == $matchs->lastPage() ? 'page-item disabled' : 'page-item' }}">
+                                        <a class="page-link" href="{{ $matchs->nextPageUrl() }}">ถัดไป</a>
                                     </li>
 
                                 </ul>
 
                                 <div class="justify-content-end justify-content-center justify-content-md-end text-right">
-                                    <small>หน้า : {{ $teams->currentPage() }} / {{ $teams->lastPage() }}</small>
+                                    <small>หน้า : {{ $matchs->currentPage() }} / {{ $matchs->lastPage() }}</small>
                                 </div>
                             </nav>
                             <!-- pagination -->
@@ -96,7 +96,7 @@
 @endsection
 
 @section('modal')
-    @include('football.modal.add_team')
+    @include('football.modal.add_match')
 
-    @include('football.modal.edit_team')
+    @include('football.modal.edit_match')
 @endsection

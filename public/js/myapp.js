@@ -215,4 +215,56 @@ function isValidateFile(file, logo_alert, inValidate, isValidate) {
     }
 }
 
+// set logo team when create and edit match
+    // create
+    document.querySelector("#home_team").addEventListener('change', function(e) {
+        let logo = getLogoFromHomeAwayTeam(e.target.value)
+        document.getElementById('home_team_logo').src = '/logoteams/' + logo
+    })
+
+    document.querySelector("#away_team").addEventListener('change', function(e) {
+        let logo = getLogoFromHomeAwayTeam(e.target.value)
+        document.getElementById('away_team_logo').src = '/logoteams/' + logo
+    })
+
+    // edit
+    document.querySelector("#home_team_edit").addEventListener('change', function(e) {
+        let logo = getLogoFromHomeAwayTeam(e.target.value)
+        document.getElementById('home_team_logo_edit').src = '/logoteams/' + logo
+    })
+    document.querySelector("#away_team_edit").addEventListener('change', function(e) {
+        let logo = getLogoFromHomeAwayTeam(e.target.value)
+        document.getElementById('away_team_logo_edit').src = '/logoteams/' + logo
+    })
+
+    // global func
+    function getLogoFromHomeAwayTeam(data) {
+        let logo = data.split("!")
+        return logo[1]
+    }
+// end
+
+function setDataEditFootballMatch(id, home_id, away_id, datetime, home_score, away_score, home_logo, away_logo) {
+    let date_time = datetime.split(' ')
+
+    document.getElementById('match_id').value = id
+    document.getElementById('home_team_edit').value = home_id + '!' + home_logo
+    document.getElementById('away_team_edit').value = away_id + '!' + away_logo
+    document.getElementById('match_date_edit').value = date_time[0]
+    document.getElementById('match_time_edit').value = date_time[1]
+    document.getElementById('home_score').value = home_score
+    document.getElementById('away_score').value = away_score
+    document.getElementById('home_team_logo_edit').src = '/logoteams/' + home_logo
+    document.getElementById('away_team_logo_edit').src = '/logoteams/' + away_logo
+}
+
+function clearDataCreateMatch() {
+    document.getElementById('home_team').value = ''
+    document.getElementById('away_team').value = ''
+    document.getElementById('away_team_logo').src = ''
+    document.getElementById('home_team_logo').src = ''
+    document.getElementById('add_match_date').value = ''
+    document.getElementById('add_match_time').value = ''
+}
+
 // END Football League

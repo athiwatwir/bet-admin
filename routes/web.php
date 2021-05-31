@@ -119,5 +119,13 @@ Route::middleware(['admin'])->group(function () {
             Route::post('/create', [FootballLeagueController::class, 'teamCreate']);
             Route::post('/edit', [FootballLeagueController::class, 'teamEdit']);
         });
+        Route::prefix('/matchs')->group(function () {
+            Route::get('/', [FootballLeagueController::class, 'matchIndex']);
+            Route::get('/{league_id}/{league_name}/list', [FootballLeagueController::class, 'leagueListMatch']);
+            Route::get('/delete/{id}', [FootballLeagueController::class, 'matchDelete']);
+            Route::get('/end/{id}', [FootballLeagueController::class, 'matchEnd']);
+            Route::post('/create', [FootballLeagueController::class, 'matchCreate']);
+            Route::post('/edit', [FootballLeagueController::class, 'matchEdit']);
+        });
     });
 });

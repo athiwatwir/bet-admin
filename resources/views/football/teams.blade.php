@@ -4,7 +4,7 @@
 <div class="row gutters-sm">
 
     <div class="col-12 col-lg-3 col-xl-2">
-        @include('football.leaguemenu')
+        @include('football.league_team_menu')
     </div>
 
     <!-- inbox list -->
@@ -39,7 +39,7 @@
                 @csrf
                     <input type="hidden" id="action" name="action" value=""><!-- value populated by js -->
 
-                    @include('football.lists')
+                    @include('football.teamlists')
 
                     <!-- options and pagination -->
                     <div class="row text-center-xs">
