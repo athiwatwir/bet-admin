@@ -1,6 +1,6 @@
 <!-- League Edit Modal -->
 <div class="modal fade" id="leagueEditModal" tabindex="-1" role="dialog" aria-labelledby="leagueEditModal" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 60%;">
+    <div class="modal-dialog modal-dialog-centered modal-size-60" role="document">
         <div class="modal-content">
             <form method="POST" action="{{ url('/football/leagues/edit') }}" enctype="multipart/form-data">
             @csrf

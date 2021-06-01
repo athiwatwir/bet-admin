@@ -50,12 +50,82 @@
                                             <small><small><span class="text-danger">**</span> {{ $trans->description }}</small></small>
                                         @endif
 
-                                        <!-- MOBILE ONLY -->
+                                        <!-- MOBILE ONLY ----------------------------------------------->
                                         <div class="fs--13 d-block d-xl-none">
-                                            <span class="d-block text-muted"></span>
-                                            <span class="d-block text-muted"></span>
+                                            <span class="d-block text-muted">
+                                                วัน-เวลา : {{ date('d-m-Y', strtotime($trans->action_date)) }} | 
+                                                <small>{{ date('H:i:s', strtotime($trans->action_date)) }}</small>
+                                            </span>
+                                            <span class="d-block text-muted">
+                                                ไปยัง : 
+                                                @if(isset($trans->by_admin))
+                                                    <small>
+                                                        <strong>ผู้ดูแลระบบ : {{ $trans->by_admin }}</strong>
+                                                    </small>
+                                                    <small><i class="fi fi-arrow-right-full text-primary"></i></small>
+                                                    <small>
+                                                        @if($trans->to_default == 'Y')
+                                                            กระเป๋าหลัก
+                                                        @else
+                                                            กระเป๋าเกม : {{ $trans->to_game }}
+                                                        @endif
+                                                    </small>
+                                                @else
+                                                    @if($trans->type == 'ฝาก')
+                                                        {{ $trans->cbank_name }} | 
+                                                        <small>{{ $trans->account_name }}</small> | 
+                                                        <small>{{ $trans->account_number }}</small>
+                                                    @elseif($trans->type == 'ถอน')
+                                                        {{ $trans->ubank_name }} | 
+                                                        <small>{{ $trans->bank_account_name }}</small> | 
+                                                        <small>{{ $trans->bank_account_number }}</small>
+                                                    @elseif($trans->type == 'ย้าย')
+                                                        <small>
+                                                            @if($trans->from_default == 'Y')
+                                                                กระเป๋าหลัก
+                                                            @else
+                                                                กระเป๋าเกม : {{ $trans->from_game }}
+                                                            @endif
+                                                        </small>
+                                                        <small><i class="fi fi-arrow-right-full text-primary"></i></small>
+                                                        <small>
+                                                            @if($trans->to_default == 'Y')
+                                                                กระเป๋าหลัก
+                                                            @else
+                                                                กระเป๋าเกม : {{ $trans->to_game }}
+                                                            @endif
+                                                        </small>
+                                                    @endif
+                                                @endif
+                                            </span>
+                                            <span class="d-block text-muted">
+                                                จำนวน : <small><strong class=" @if($trans->type == 'ฝาก') text-success 
+                                                    @elseif($trans->type == 'ถอน') text-danger 
+                                                    @elseif($trans->type == 'ย้าย') text-warning
+                                                    @elseif($trans->type == 'เพิ่ม') text-primary
+                                                    @elseif($trans->type == 'ลด') text-secondary
+                                                    @endif "
+                                                >
+                                                    {{ number_format($trans->amount) }}
+                                                </strong> {{ $trans->currency }}</small>
+                                                @if(isset($trans->slip))
+                                                <a href="#!" title="ดูสลิปโอนเงิน" 
+                                                    data-toggle="modal" data-target="#paymentSlipModal" onClick="setImagePaymentTransactionSlip('{{ $trans->slip }}')">
+                                                    <i class="fi fi-image"></i>
+                                                </a>
+                                                @endif
+                                            </span>
+                                            <span class="d-block text-muted">
+                                                @if($trans->status == 'CO') 
+                                                    <small class="badge badge-success font-weight-normal">ยืนยันแล้ว</small>
+                                                @elseif($trans->status == 'VO')
+                                                    <small class="badge badge-danger font-weight-normal">ปฏิเสธแล้ว</small>
+                                                @else
+                                                    <small class="badge badge-secondary font-weight-normal">รอยืนยัน</small>
+                                                @endif
+                                            </span>
                                         </div>
-                                        <!-- /MOBILE ONLY -->
+                                        <!-- /MOBILE ONLY ----------------------------------------------->
                                     </td>
 
                                     <td class="hidden-lg-down text-center" style="line-height: 17px;">

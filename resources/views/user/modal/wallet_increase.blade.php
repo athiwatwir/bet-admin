@@ -1,6 +1,6 @@
 <!-- edit CBANK Modal -->
 <div class="modal fade" id="increaseWalletModal" tabindex="-1" role="dialog" aria-labelledby="increaseWalletModal" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 50%;">
+    <div class="modal-dialog modal-dialog-centered modal-size-50" role="document">
         <div class="modal-content">
             <form method="POST" action="{{ url('/users/wallet/increase-wallet-amount') }}">
             @csrf

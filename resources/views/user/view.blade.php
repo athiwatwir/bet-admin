@@ -36,7 +36,7 @@
             <div class="portlet-body pt-0">
 
                 <div class="row mt-2">
-                    <div class="col-3" style="padding-right: 0;">
+                    <div class="col-md-3" style="padding-right: 0;">
                         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                             <a class="nav-link active" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile" aria-selected="false">
                                 รายละเอียดผู้ใช้
@@ -45,11 +45,11 @@
                                 กระเป๋าเงิน
                             </a>
                             <a class="nav-link" id="v-pills-paymenttransaction-tab" data-toggle="pill" href="#v-pills-paymenttransaction" role="tab" aria-controls="v-pills-paymenttransaction" aria-selected="false">
-                                รายการเครื่องไหวทางการเงิน
+                                รายการเครื่อนไหวทางการเงิน
                             </a>
                         </div>
                     </div>
-                    <div class="col-9 py-4 rounded bordered" style="background-color: #f4f8ff;">
+                    <div class="col-md-9 py-4 rounded bordered" style="background-color: #f4f8ff;">
                         <div class="tab-content" id="v-pills-tabContent">
                             <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                                 @include('user.view.profile')

@@ -10,7 +10,7 @@
         </span>
 
         <span class="h5 py-2 m-0 float-start font-weight-light">
-            Inbox
+            เมนูลีก
         </span>
     </button>
 

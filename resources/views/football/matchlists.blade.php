@@ -15,9 +15,9 @@
             @foreach($matchs as $key => $match)
             <tr id="message_id_{{ $key }}" class="text-dark">
 
-                <td class="hidden-lg-down text-center" style="line-height: 17px;">
+                <td class="text-center" style="line-height: 17px;">
                     <img src="{{ asset('logoteams/'.$match->home_team_logo) }}" width="60" class="mb-2"><br/>
-                    {{ $match->home_team_name }}<br/>
+                    <p class="mb-0 text-dark">{{ $match->home_team_name }}</p>
                     <small>{{ $match->home_team_en }}</small>
                 </td>
 
@@ -96,9 +96,9 @@
                     <!-- /MOBILE ONLY -->
                 </td>
 
-                <td class="hidden-lg-down text-center" style="line-height: 17px;">
+                <td class="text-center" style="line-height: 17px;">
                     <img src="{{ asset('logoteams/'.$match->away_team_logo) }}" width="60" class="mb-2"><br/>
-                    {{ $match->away_team_name }}<br/>
+                    <p class="mb-0 text-dark">{{ $match->away_team_name }}</p>
                     <small>{{ $match->away_team_en }}</small>
                 </td>
 

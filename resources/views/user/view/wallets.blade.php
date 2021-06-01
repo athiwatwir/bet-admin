@@ -19,7 +19,7 @@
                                         </span>
                                     </th>
                                     <th class="w--200 hidden-lg-down text-center">จำนวนเงิน</th>
-                                    <th class="w--200">&nbsp;</th>
+                                    <th class="w--100">&nbsp;</th>
                                 </tr>
                             </thead>
 
@@ -62,8 +62,7 @@
 
                                             <!-- MOBILE ONLY -->
                                             <div class="fs--13 d-block d-xl-none">
-                                                <span class="d-block text-muted"></span>
-                                                <span class="d-block text-muted"></span>
+                                                <strong class="text-success">{{ number_format($is_wallet->amount) }}</strong> <small>{{ $is_wallet->currency }}</small>
                                             </div>
                                             <!-- /MOBILE ONLY -->
                                         </td>
@@ -72,7 +71,7 @@
                                             <strong class="text-success">{{ number_format($is_wallet->amount) }}</strong> <small>{{ $is_wallet->currency }}</small>
                                         </td>
 
-                                        <td class="hidden-lg-down text-center">
+                                        <td class="text-center">
                                             <div class="flex text-right">
                                                 <a class="mr-3" href="#!" title="เพิ่มเงินในกระเป๋าเกม{{ $is_wallet->game_name }}" 
                                                     data-toggle="modal" data-target="#increaseWalletModal" onClick="setDataIncreaseWalletAmount({{ $is_wallet->id }}, {{ $is_wallet->amount }}, '{{ $is_wallet->game_name }}', '{{ $username }}')"

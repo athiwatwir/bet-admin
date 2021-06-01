@@ -1,6 +1,6 @@
 <!-- Match Add Modal -->
 <div class="modal fade" id="matchCreateModal" tabindex="-1" role="dialog" aria-labelledby="matchCreateModal" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 60%;">
+    <div class="modal-dialog modal-dialog-centered modal-size-60" role="document">
         <div class="modal-content">
             <form method="POST" action="{{ url('/football/matchs/create') }}" enctype="multipart/form-data">
             @csrf
@@ -13,7 +13,7 @@
                 <div class="modal-body">
 
                     <div class="form-group row mb-4">
-                        <div class="col-md-6 text-center">
+                        <div class="col-md-6 text-center mt-2">
                             <label for="home_team">{{ __('ทีมเหย้า') }}</label>
 
                             <select required id="home_team" name="home_team" class="form-control">
@@ -27,7 +27,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-6 text-center">
+                        <div class="col-md-6 text-center mt-2">
                             <label for="away_team">{{ __('ทีมเยือน') }}</label>
                             
                             <select required id="away_team" name="away_team" class="form-control">
@@ -42,20 +42,16 @@
                     <hr/>
 
                     <div id="match_show" class="form-group row">
-                        <div class="col-md-4 text-center">
+                        <div class="hidden-lg-down col-md-4 text-center">
                             <img src="" id="home_team_logo" class="w--150">
-                            <p id="home_team_name"></p>
-                            <small id="home_team_en"></small>
                         </div>
                         <div class="col-md-4 text-center px-4">
                             <label for="match_date_edit">{{ __('วัน-เวลา แข่งขัน') }}</label>
                             <input required id="add_match_date" type="date" class="form-control mb-2" name="match_date">
                             <input required id="add_match_time" type="time" class="form-control" name="match_time">
                         </div>
-                        <div class="col-md-4 text-center">
+                        <div class="hidden-lg-down col-md-4 text-center">
                             <img src="" id="away_team_logo" class="w--150">
-                            <p id="away_team_name"></p>
-                            <small id="away_team_en"></small>
                         </div>
                     </div>
 

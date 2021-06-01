@@ -1,6 +1,6 @@
 <!-- Match Add Modal -->
 <div class="modal fade" id="matchEditModal" tabindex="-1" role="dialog" aria-labelledby="matchEditModal" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 60%;">
+    <div class="modal-dialog modal-dialog-centered modal-size-60" role="document">
         <div class="modal-content">
             <form method="POST" action="{{ url('/football/matchs/edit') }}" enctype="multipart/form-data">
             @csrf
@@ -38,21 +38,23 @@
                     <hr/>
 
                     <div id="match_show" class="form-group row">
-                        <div class="col-md-3 text-center">
+                        <div class="hidden-lg-down col-md-3 text-center">
                             <img src="" id="home_team_logo_edit" class="w--150">
                         </div>
-                        <div class="col-md-1 px-0 text-center">
-                            <input required id="home_score" type="number" class="form-control" name="home_score">
+                        <div class="col-md-1 px-2 text-center mt-2">
+                            <label for="home_score" class="d-block d-xl-none">สกอร์ทีมเหย้า</label>
+                            <input required id="home_score" type="number" class="form-control input-match-score" name="home_score">
                         </div>
-                        <div class="col-md-4 text-center px-4">
+                        <div class="col-md-4 text-center px-4 mt-2">
                             <label for="match_date_edit">{{ __('วัน-เวลา แข่งขัน') }}</label>
                             <input id="match_date_edit" type="date" class="form-control mb-2" name="match_date">
                             <input id="match_time_edit" type="time" class="form-control" name="match_time">
                         </div>
-                        <div class="col-md-1 px-0 text-center">
-                            <input required id="away_score" type="number" class="form-control" name="away_score">
+                        <div class="col-md-1 px-2 text-center mt-2">
+                            <label for="away_score" class="d-block d-xl-none">สกอร์ทีมเยือน</label>
+                            <input required id="away_score" type="number" class="form-control input-match-score" name="away_score">
                         </div>
-                        <div class="col-md-3 text-center">
+                        <div class="hidden-lg-down col-md-3 text-center">
                             <img src="" id="away_team_logo_edit" class="w--150 mb-2">
                         </div>
                     </div>

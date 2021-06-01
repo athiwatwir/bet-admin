@@ -30,7 +30,7 @@ class PaymentTransactionController extends Controller
                     ->leftJoin('games as from_game', 'from_wallet.game_id', '=', 'from_game.id')
                     ->leftJoin('games as to_game', 'to_wallet.game_id', '=', 'to_game.id')
                     ->select('payment_transactions.*', 
-                            'users.username', 'users.name', 'admin.username as by_admin',
+                            'users.username', 'users.name', 'users.currency', 'admin.username as by_admin',
                             'c_bank_accounts.bank_id as bank_name', 'c_bank_accounts.account_name', 'c_bank_accounts.account_number',
                             'user_bankings.bank_id as user_bank_name', 'user_bankings.bank_account_name', 'user_bankings.bank_account_number',
                             'from_game.name as from_game', 'to_game.name as to_game',
@@ -107,7 +107,7 @@ class PaymentTransactionController extends Controller
                 ->leftJoin('games as to_game', 'to_wallet.game_id', '=', 'to_game.id')
                 ->where('payment_transactions.user_id', $id)
                 ->select('payment_transactions.*', 
-                        'users.username', 'users.name', 'admin.username as by_admin',
+                        'users.username', 'users.name', 'users.currency', 'admin.username as by_admin',
                         'c_bank_accounts.bank_id as bank_name', 'c_bank_accounts.account_name', 'c_bank_accounts.account_number',
                         'user_bankings.bank_id as user_bank_name', 'user_bankings.bank_account_name', 'user_bankings.bank_account_number',
                         'from_game.name as from_game', 'to_game.name as to_game',

@@ -49,10 +49,6 @@
                                 <tr class="text-muted fs--13 bg-light">
                                     <th class="w--30 hidden-lg-down text-center">
                                         #
-                                        <!-- <label class="form-checkbox form-checkbox-primary float-start">
-                                            <input class="checkall" data-checkall-container="#item_list" type="checkbox" name="checkbox">
-                                            <i></i>
-                                        </label> -->
                                     </th>
                                     <th>
                                         <span class="px-2 p-0-xs">
@@ -74,10 +70,6 @@
                                     <tr id="message_id_{{ $key }}" class="text-dark">
 
                                         <td class="hidden-lg-down text-center">
-                                            <!-- <label class="form-checkbox form-checkbox-secondary float-start">
-                                                <input type="checkbox" name="item_id[]" value="{{ $key }}">
-                                                <i></i>
-                                            </label> -->
                                             {{ $key + 1 }}.
                                         </td>
 
@@ -93,7 +85,6 @@
                                             <div class="fs--13 d-block d-xl-none">
                                                 <span class="d-block text-muted">{{ $user->phone }}</span>
                                                 <span class="d-block text-muted">{{ $user->line }}</span>
-                                                <span class="d-block font-weight-medium">{{ $user->is_active }}</span>
                                             </div>
                                             <!-- /MOBILE ONLY -->
                                         </td>
@@ -114,7 +105,7 @@
                                             {{ $user->currency }}
                                         </td>
 
-                                        <td class="hidden-lg-down text-center">
+                                        <td class="text-center">
                                             @if($user->is_active == 'Y')
                                                 <span class="badge badge-success float-end font-weight-normal mt-1">เปิดใช้งาน</span>
                                             @else
@@ -140,59 +131,7 @@
                         <div class="hidden-lg-down col-12 col-xl-6">
 
                             <!-- SELECTED ITEMS -->
-                            <!-- <div class="dropup">
-
-                                <a href="#" class="btn btn-sm btn-pill btn-light" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
-                                    <span class="group-icon">
-                                        <i class="fi fi-dots-vertical-full"></i>
-                                        <i class="fi fi-close"></i>
-                                    </span>
-                                    <span>Selected Items</span>
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-clean dropdown-click-ignore max-w-250">
-
-                                    <a	 href="#" 
-                                        class="dropdown-item text-truncate js-form-advanced-bulk" 
-                                        data-js-form-advanced-bulk-hidden-action-id="#action" 
-                                        data-js-form-advanced-bulk-hidden-action-value="myactionhere3" 
-                                        data-js-form-advanced-bulk-container-items="#item_list" 
-                                        data-js-form-advanced-bulk-required-selected="true" 
-                                        data-js-form-advanced-bulk-required-txt-error="No Items Selected!" 
-                                        data-js-form-advanced-bulk-required-txt-position="top-center" 
-                                        data-js-form-advanced-bulk-submit-without-confirmation="true" 
-                                        data-js-form-advanced-form-id="#form_id">
-                                        <i class="fi fi-box"></i>
-                                        Archive
-                                    </a>
-
-                                    <a	 href="#" 
-                                        class="dropdown-item text-truncate js-form-advanced-bulk" 
-                                        data-js-form-advanced-bulk-hidden-action-id="#action" 
-                                        data-js-form-advanced-bulk-hidden-action-value="delete" 
-                                        data-js-form-advanced-bulk-container-items="#item_list" 
-                                        data-js-form-advanced-bulk-required-selected="true" 
-                                        data-js-form-advanced-bulk-required-txt-error="No Items Selected!" 
-                                        data-js-form-advanced-bulk-required-txt-position="top-center" 
-                                        data-js-form-advanced-bulk-required-custom-modal="" 
-                                        data-js-form-advanced-bulk-required-custom-modal-content-ajax="" 
-                                        data-js-form-advanced-bulk-required-modal-type="danger" 
-                                        data-js-form-advanced-bulk-required-modal-size="modal-md" 
-                                        data-js-form-advanced-bulk-required-modal-txt-title="Please Confirm" 
-                                        data-js-form-advanced-bulk-required-modal-txt-subtitle="Selected Items: no_selected" 
-                                        data-js-form-advanced-bulk-required-modal-txt-body-txt="Are you sure? Delete no_selected selected items?" 
-                                        data-js-form-advanced-bulk-required-modal-txt-body-info="Please note: this is a permanent action!" 
-                                        data-js-form-advanced-bulk-required-modal-btn-text-yes="Delete" 
-                                        data-js-form-advanced-bulk-required-modal-btn-text-no="Cancel" 
-                                        data-js-form-advanced-bulk-submit-without-confirmation="false" 
-                                        data-js-form-advanced-form-id="#form_id">
-                                        <i class="fi fi-thrash text-danger"></i>
-                                        ลบที่เลือก
-                                    </a>
-
-                                </div>
-
-                            </div> -->
+                            
                             <!-- /SELECTED ITEMS -->
 
                         </div>

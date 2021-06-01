@@ -31,10 +31,6 @@
 
                 <td class="hidden-lg-down text-center">
                     {{ $key + 1 }}
-                    <!-- <label class="form-checkbox form-checkbox-secondary float-start">
-                        <input type="checkbox" name="item_id[]" value="{{ $key }}">
-                        <i></i>
-                    </label> -->
                 </td>
 
                 <td class="hidden-lg-down text-center">
@@ -42,14 +38,25 @@
                 </td>
 
                 <td style="line-height: 17px;">
+                    <!-- MOBILE ONLY -->
+                    <div class="fs--13 d-block d-xl-none mb-2">
+                        <!-- logo -->
+                        <img src="{{ asset('logoteams/'.$team->logo) }}" width="60">
+                    </div>
+                    <!-- /MOBILE ONLY -->
+
                     <p class="mb-0 d-flex">
                         <strong class="text-dark">{{ $team->name }}</strong> 
                     </p>
                     <small style="font-size: 70%;">{{ $team->name_en }}</small>
 
                     <!-- MOBILE ONLY -->
-                    <div class="fs--13 d-block d-xl-none">
-                        <strong>สถานะ :</strong> 
+                    <div class="fs--13 d-block d-xl-none mt-2">
+                        <!-- league -->
+                        <p class="mb-0 text-dark">{{ $team->league_name }} <small><small class="text-secondary">({{ $team->league_en }})</small></small></p>
+                        <!-- code -->
+                        <p class="mb-0">รหัสทีม : {{ $team->code }}</p>
+                        <!-- active -->
                         @if($team->is_active == 'Y')
                             <span class="badge badge-success font-weight-normal mt-1">เปิดใช้งาน</span>
                         @else
@@ -60,8 +67,10 @@
                 </td>
 
                 <td class="hidden-lg-down text-center" style="line-height: 17px;">
-                    <p class="mb-0 text-dark">{{ $team->league_name }}</p>
-                    <small><small class="text-secondary">{{ $team->league_en }}</small></small>
+                    <a href="/football/teams/{{ $team->league_id }}/{{ $team->league_name }}/list">
+                        <p class="mb-0 text-dark">{{ $team->league_name }}</p>
+                        <small><small class="text-secondary">{{ $team->league_en }}</small></small>
+                    </a>
                 </td>
 
                 <td class="hidden-lg-down text-center">

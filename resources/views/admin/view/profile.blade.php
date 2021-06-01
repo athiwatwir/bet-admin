@@ -3,7 +3,7 @@
         <button type="button" class="btn btn-vv-sm btn-primary" onClick="editProfileAdmin()"><small><i class="fi fi-pencil fs--14"></i> แก้ไขรายละเอียด</small></button>
     </div>
 
-    <div class="col-md-5">
+    <div class="col-md-5 mb-2">
         <div class="card">
             <div class="card-body text-center">
                 <small>ชื่อผู้ใช้</small>

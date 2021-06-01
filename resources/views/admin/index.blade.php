@@ -91,10 +91,18 @@
 
                                             <!-- MOBILE ONLY -->
                                             <div class="fs--13 d-block d-xl-none">
-                                                <span class="d-block text-muted">role--0</span>
-                                                <span class="d-block text-muted">{{ $admin->phone }}</span>
-                                                <span class="d-block text-muted">{{ $admin->line }}</span>
-                                                <span class="d-block font-weight-medium">{{ $admin->is_active }}</span>
+                                                <span class="d-block text-muted">ตำแหน่ง : role--0</span>
+                                                <span class="d-block text-muted">โทรศัพท์ : {{ $admin->phone }}</span>
+                                                @if($admin->line)
+                                                    <span class="d-block text-muted">ไลน์ : <a href="https://line.me/R/ti/p/{{ $admin->line }}" target="_blank">{{ $admin->line }}</a></span>
+                                                @endif
+                                                <span class="d-block font-weight-medium">
+                                                    @if($admin->is_active == 'Y')
+                                                        <span class="badge badge-success font-weight-normal mt-1">เปิดใช้งาน</span>
+                                                    @else
+                                                        <span class="badge badge-danger font-weight-normal mt-1">ปิดใช้งาน</span>
+                                                    @endif
+                                                </span>
                                             </div>
                                             <!-- /MOBILE ONLY -->
                                         </td>

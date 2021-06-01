@@ -72,7 +72,7 @@ class FootballLeagueController extends Controller
         $teams = DB::table('c_teams')
             ->leftJoin('c_leagues', 'c_teams.c_league_id', '=', 'c_leagues.id')
             ->where('c_teams.status', 'CO')
-            ->select('c_teams.*', 'c_leagues.name as league_name', 'c_leagues.name_en as league_en')
+            ->select('c_teams.*', 'c_leagues.id as league_id', 'c_leagues.name as league_name', 'c_leagues.name_en as league_en')
             ->paginate(20);
 
         $leagues = $this->getLeagues();
@@ -87,7 +87,7 @@ class FootballLeagueController extends Controller
             ->leftJoin('c_leagues', 'c_teams.c_league_id', '=', 'c_leagues.id')
             ->where('c_teams.status', 'CO')
             ->where('c_teams.c_league_id', $request->league_id)
-            ->select('c_teams.*', 'c_leagues.name as league_name', 'c_leagues.name_en as league_en')
+            ->select('c_teams.*', 'c_leagues.id as league_id', 'c_leagues.name as league_name', 'c_leagues.name_en as league_en')
             ->paginate(20);
 
         $leagues = $this->getLeagues();
@@ -99,19 +99,25 @@ class FootballLeagueController extends Controller
     {
         if(isset($request->name) && isset($request->league) && isset($request->code) && isset($request->logo)) {
 
-            $fileName = time().'_'.$request->logo->getClientOriginalName();
-            $request->logo->move(public_path('/logoteams'), $fileName);
+            if(!$this->checkDupplicateTeamName($request->name)) {
+                $fileName = time().'_'.$request->logo->getClientOriginalName();
+                $request->logo->move(public_path('/logoteams'), $fileName);
 
-            DB::table('c_teams')
-                ->insert([
-                    'c_league_id' => $request->league,
-                    'name' => $request->name,
-                    'name_en' => $request->name_en,
-                    'code' => $request->code,
-                    'logo' => $fileName,
-                ]);
+                DB::table('c_teams')
+                    ->insert([
+                        'c_league_id' => $request->league,
+                        'name' => $request->name,
+                        'name_en' => $request->name_en,
+                        'code' => $request->code,
+                        'logo' => $fileName,
+                    ]);
 
-            return redirect()->back()->with('success', 'เพิ่มทีม '. $request->name .' เรียบร้อยแล้ว');
+                return redirect()->back()->with('success', 'เพิ่มทีม '. $request->name .' เรียบร้อยแล้ว');
+            }else{
+                return redirect()->back()->with('warning', 'มีชื่อทีมนี้อยู่แล้ว กรุณาตรวจสอบ');
+            }
+
+            return redirect()->back()->with('danger', 'เกิดข้อผิดพลาด');
         }else{
             return redirect()->back()->with('warning', 'กรุณาระบุรายละเอียดให้ครบ');
         }
@@ -298,5 +304,11 @@ class FootballLeagueController extends Controller
     {
         $id = explode('!', $data);
         return $id[0];
+    }
+
+    private function checkDupplicateTeamName($teamName)
+    {
+        $checkTeamName = DB::table('c_teams')->where('name', $teamName)->where('status', 'CO')->first();
+        return isset($checkTeamName) ? true : false;
     }
 }
