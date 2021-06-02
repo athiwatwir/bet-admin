@@ -27,6 +27,13 @@ ul.list-style-none {
     height: 40px;
     border-color: #1a21ff;
 }
+.input-align-center {
+    text-align: center;
+}
+.input-score-style {
+    font-size: 30px;
+    height: 65px;
+}
 
 .modal-size-60 {
     max-width: 60%;
@@ -37,6 +44,9 @@ ul.list-style-none {
 @media only screen and (max-width: 600px) {
     .modal-size-60, .modal-size-50 {
         max-width: 100%;
+    }
+    .text-mobile {
+        font-size: 14px;
     }
 }
 

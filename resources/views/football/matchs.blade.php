@@ -35,9 +35,7 @@
             <!-- portlet : body -->
             <div class="portlet-body pt-0">
 
-                <form novalidate class="bs-validate" id="form_id" method="post" action="#!">
-                @csrf
-                    <input type="hidden" id="action" name="action" value=""><!-- value populated by js -->
+                
 
                     @include('football.matchlists')
 
@@ -80,7 +78,7 @@
                     </div>
                     <!-- /options and pagination -->
 
-                </form>
+                
 
             </div>
             <!-- /portlet : body -->

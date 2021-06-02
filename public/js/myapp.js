@@ -244,7 +244,33 @@ function isValidateFile(file, logo_alert, inValidate, isValidate) {
     }
 // end
 
-function setDataEditFootballMatch(id, home_id, away_id, datetime, home_score, away_score, home_logo, away_logo) {
+function scoreUpdate(key) {
+    let home_input = parseInt(document.getElementById('home_score_'+key).value)
+    let away_input = parseInt(document.getElementById('away_score_'+key).value)
+
+    if(Number.isInteger(home_input) && Number.isInteger(away_input)){
+        document.getElementById('match_action_'+key).style.display = "none"
+        document.getElementById('score_action_'+key).style.display = "block"
+    }else{
+        document.getElementById('match_action_'+key).style.display = "block"
+        document.getElementById('score_action_'+key).style.display = "none"
+    }
+}
+
+function clearScoreMatch(key, home, away) {
+    document.getElementById('home_score_'+key).value = home
+    document.getElementById('away_score_'+key).value = away
+    document.getElementById('match_action_'+key).style.display = "block"
+    document.getElementById('score_action_'+key).style.display = "none"
+}
+
+document.querySelector('#btn-save-score').addEventListener('click', function(e) {
+    let key = e.target.dataset.key
+    document.getElementById('score_action_'+key).style.display = "none"
+    document.getElementById('score_updated_'+key).style.display = "block"
+})
+
+function setDataEditFootballMatch(id, home_id, away_id, datetime, home_logo, away_logo) {
     let date_time = datetime.split(' ')
 
     document.getElementById('match_id').value = id
@@ -252,8 +278,6 @@ function setDataEditFootballMatch(id, home_id, away_id, datetime, home_score, aw
     document.getElementById('away_team_edit').value = away_id + '!' + away_logo
     document.getElementById('match_date_edit').value = date_time[0]
     document.getElementById('match_time_edit').value = date_time[1]
-    document.getElementById('home_score').value = home_score
-    document.getElementById('away_score').value = away_score
     document.getElementById('home_team_logo_edit').src = '/logoteams/' + home_logo
     document.getElementById('away_team_logo_edit').src = '/logoteams/' + away_logo
 }

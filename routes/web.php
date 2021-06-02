@@ -126,6 +126,7 @@ Route::middleware(['admin'])->group(function () {
             Route::get('/end/{id}', [FootballLeagueController::class, 'matchEnd']);
             Route::post('/create', [FootballLeagueController::class, 'matchCreate']);
             Route::post('/edit', [FootballLeagueController::class, 'matchEdit']);
+            Route::post('/update-score', [FootballLeagueController::class, 'matchUpdateScore']);
         });
     });
 });

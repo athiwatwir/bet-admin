@@ -234,24 +234,31 @@ class FootballLeagueController extends Controller
         if(isset($request->home_team) && 
             isset($request->away_team) && 
             isset($request->match_date) && 
-            isset($request->match_time) && 
-            isset($request->home_score) && 
-            isset($request->away_score)
+            isset($request->match_time)
         ) {
 
             DB::table('football_matchs')->where('id', $request->match_id)
                 ->update([
                     'home_team' => $this->getHomeAwayTeamId($request->home_team),
                     'away_team' => $this->getHomeAwayTeamId($request->away_team),
-                    'datetime' => $request->match_date.' '.$request->match_time,
-                    'home_score' => $request->home_score,
-                    'away_score' => $request->away_score
+                    'datetime' => $request->match_date.' '.$request->match_time
                 ]);
 
             return redirect()->back()->with('success', 'แก้ไขรายละเอียดแมทซ์เรียบร้อย');
         }else{
             return redirect()->back()->with('warning', 'กรุณาระบุรายละเอียดให้ครบ');
         }
+    }
+
+    public function matchUpdateScore(Request $request)
+    {
+        DB::table('football_matchs')->where('id', $request->match_id)
+            ->update([
+                'home_score' => $request->home_score,
+                'away_score' => $request->away_score
+            ]);
+
+        return redirect()->back()->with('success', 'อัพเดทสกอร์เรียบร้อยแล้ว');
     }
 
     public function matchDelete(Request $request)
