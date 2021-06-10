@@ -2,7 +2,10 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\Api\V1\Auth\PassportAuthController;
+use App\Http\Controllers\Api\V1\Auth\GameCallbackController;
+
 use App\Http\Controllers\Api\V1\UsersController;
 use App\Http\Controllers\Api\V1\WalletsController;
 use App\Http\Controllers\Api\V1\PaymentTransactionsController;
@@ -29,6 +32,8 @@ Route::post('login', [PassportAuthController::class, 'login']);
 Route::prefix('menu')->group(function () {
     Route::get('games', [GamesController::class, 'menuGames']);
 });
+
+Route::post('game/call-back', [GameCallbackController::class, 'gameCallBack']);
 
 Route::middleware(['auth:api'])->group(function () {
     Route::get('logout', [PassportAuthController::class, 'logout']);

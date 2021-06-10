@@ -15,7 +15,7 @@
             @foreach($matchs as $key => $match)
             <tr id="message_id_{{ $key }}" class="text-dark">
                 <td class="text-center text-mobile" style="line-height: 17px;">
-                    <img src="{{ asset('logoteams/'.$match->home_team_logo) }}" width="60" class="mb-2"><br/>
+                    <img id="home_logo_{{ $key }}" src="{{ asset('logoteams/'.$match->home_team_logo) }}" alt="{{ $match->home_team_logo }}" width="60" class="mb-2"><br/>
                     <p class="mb-0 text-dark">{{ $match->home_team_name }}</p>
                     <small>{{ $match->home_team_en }}</small>
                 </td>
@@ -55,12 +55,11 @@
                             @if($match->status == 'DR')
                                 <a class="text-truncate mr-2" href="#!" title="แก้ไขแมทซ์" data-toggle="modal" data-target="#matchEditModal"
                                     onClick="setDataEditFootballMatch(
+                                        {{ $key }},
                                         {{ $match->id }}, 
                                         {{ $match->home_team }}, 
                                         {{ $match->away_team }}, 
-                                        '{{ $match->datetime }}',
-                                        '{{ $match->home_team_logo }}',
-                                        '{{ $match->away_team_logo }}'
+                                        '{{ $match->datetime }}'
                                     )"
                                 >
                                     <i class="fi fi-pencil"></i>
@@ -123,7 +122,7 @@
                 </td>
 
                 <td class="text-center text-mobile" style="line-height: 17px;">
-                    <img src="{{ asset('logoteams/'.$match->away_team_logo) }}" width="60" class="mb-2"><br/>
+                    <img id="away_logo_{{ $key }}" src="{{ asset('logoteams/'.$match->away_team_logo) }}" alt="{{ $match->away_team_logo }}" width="60" class="mb-2"><br/>
                     <p class="mb-0 text-dark">{{ $match->away_team_name }}</p>
                     <small>{{ $match->away_team_en }}</small>
                 </td>

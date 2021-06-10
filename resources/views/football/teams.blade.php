@@ -97,6 +97,10 @@
 
 @section('modal')
     @include('football.modal.add_team')
-
     @include('football.modal.edit_team')
+@endsection
+
+
+@section('script')
+    <script src="{{ asset('js/myapp/football_team.js') }}"></script>
 @endsection

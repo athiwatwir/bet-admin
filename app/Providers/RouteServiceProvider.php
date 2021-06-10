@@ -19,6 +19,8 @@ class RouteServiceProvider extends ServiceProvider
      */
     public const HOME = '/dashboard';
 
+    public const GAME_API = 'https://game_api_url/api/v9';
+
     /**
      * The controller namespace for the application.
      *

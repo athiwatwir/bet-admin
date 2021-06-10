@@ -202,6 +202,10 @@
 
 @section('modal')
     @include('football.modal.add_league')
-
     @include('football.modal.edit_league')
+@endsection
+
+
+@section('script')
+    <script src="{{ asset('js/myapp/football_league.js') }}"></script>
 @endsection

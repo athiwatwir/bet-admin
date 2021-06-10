@@ -71,5 +71,7 @@
 
     <script src="{{ asset('js/smarty_js/core.min.js') }}"></script>
     <script src="{{ asset('js/myapp.js') }}"></script>
+
+    @yield('script')
 </body>
 </html>

@@ -95,6 +95,10 @@
 
 @section('modal')
     @include('football.modal.add_match')
-
     @include('football.modal.edit_match')
+@endsection
+
+
+@section('script')
+    <script src="{{ asset('js/myapp/football_match.js') }}"></script>
 @endsection
