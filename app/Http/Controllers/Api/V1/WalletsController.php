@@ -4,10 +4,14 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Wallet;
-
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+
+use App\Models\Wallet;
+use App\Models\Pgsoftgame;
+use App\Models\User;
 
 class WalletsController extends Controller
 {
@@ -67,47 +71,75 @@ class WalletsController extends Controller
     public function createWallet(Request $request)
     {
         $accessToken = auth()->user()->token();
-        $amount = $request->amount == null ? 0 : $request->amount;
 
-        $default_wallet = $this->defaultWallet();
+        $walletDupplicate = $this->walletDupplicate($accessToken->user_id, $request->game_id);
 
-        if($default_wallet->amount >= $amount) {
-            $is_amount = $amount != 0 ? $default_wallet->amount - $amount : $default_wallet->amount;
+        if(!$walletDupplicate) {
 
-            $wallet = Wallet::create([
-                "user_id" => $accessToken->user_id,
-                "game_id" => $request->game_id,
-                "amount" => $amount,
-                "currency" => $default_wallet->currency,
-                "is_default" => "N",
-                "status" => 'CO',
-            ]);
+            $amount = $request->amount == null ? 0 : $request->amount;
 
-            if($amount > 0) {
-                $trans = DB::table('payment_transactions')
-                    ->insert([
-                        'user_id' => $accessToken->user_id,
-                        'from_wallet_id' => $default_wallet->id,
-                        'to_wallet_id' => $wallet->id,
-                        'action_date' => date('Y-m-d h:i:s'),
-                        'type' => 'ย้าย',
-                        'amount' => $amount,
-                        'status' => 'CO',
-                        'created_at' => date('Y-m-d h:i:s'),
-                        'updated_at' => date('Y-m-d h:i:s'),
-                    ]);
+            $default_wallet = $this->defaultWallet();
+
+            if($default_wallet->amount >= $amount) {
+                $is_amount = $amount != 0 ? $default_wallet->amount - $amount : $default_wallet->amount;
+
+                $wallet = Wallet::create([
+                    "user_id" => $accessToken->user_id,
+                    "game_id" => $request->game_id,
+                    "amount" => $amount,
+                    "currency" => $default_wallet->currency,
+                    "is_default" => "N",
+                    "status" => 'CO',
+                ]);
+
+                if($amount > 0) {
+                    if($request->game_id == 22) { // pgsoftgame game_id = 22
+                        $this->transferIn($amount, $accessToken->user_id); //tranfer to pgsoftgame
+                    }
+
+                    $trans = DB::table('payment_transactions')
+                        ->insert([
+                            'user_id' => $accessToken->user_id,
+                            'from_wallet_id' => $default_wallet->id,
+                            'to_wallet_id' => $wallet->id,
+                            'action_date' => date('Y-m-d h:i:s'),
+                            'type' => 'ย้าย',
+                            'amount' => $amount,
+                            'status' => 'CO',
+                            'created_at' => date('Y-m-d h:i:s'),
+                            'updated_at' => date('Y-m-d h:i:s'),
+                        ]);
+                }
+
+                if($wallet){
+                    Wallet::find($default_wallet->id)->update(['amount' => $is_amount]);
+                    return response()->json(['status' => 200], 200);
+                }
+
+                return response()->json(['status' => 404], 404);
+
+            }else{
+                return response()->json(['status' => 301], 301);
             }
-
-            if($wallet){
-                Wallet::find($default_wallet->id)->update(['amount' => $is_amount]);
-                return response()->json(['status' => 200], 200);
-            }
-
-            return response()->json(['status' => 404], 404);
-
         }else{
-            return response()->json(['status' => 301], 301);
+            return response()->json(['status' => 404], 404);
         }
+    }
+
+    private function walletDupplicate($user, $game)
+    {
+        $wallet = Wallet::where('user_id', $user)->where('game_id', $game)->get();
+        return sizeof($wallet) > 0 ? true : false;
+    }
+
+    private function getUserData($id)
+    {
+        return User::find($id);
+    }
+
+    private function getGameData($id)
+    {
+
     }
 
     public function addWallet(Request $request)
@@ -118,31 +150,37 @@ class WalletsController extends Controller
         if($default_wallet->amount >= $request->amount) {
             $default_wallet_amount = $default_wallet->amount - $request->amount;
 
-            $wallet = Wallet::find($request->id);
+            $tranIn = $this->transferIn($request->amount, $accessToken->user_id);
 
-            $is_amount = $wallet->amount + $request->amount;
+            if($tranIn['error'] == null) {
+                $wallet = Wallet::find($request->id);
 
-            $wallet->update(['amount' => $is_amount]);
+                $is_amount = $wallet->amount + $request->amount;
 
-            $trans = DB::table('payment_transactions')
-                ->insert([
-                    'user_id' => $accessToken->user_id,
-                    'from_wallet_id' => $default_wallet->id,
-                    'to_wallet_id' => $wallet->id,
-                    'action_date' => date('Y-m-d h:i:s'),
-                    'type' => 'ย้าย',
-                    'amount' => $request->amount,
-                    'status' => 'CO',
-                    'created_at' => date('Y-m-d h:i:s'),
-                    'updated_at' => date('Y-m-d h:i:s'),
-            ]);
+                $wallet->update(['amount' => $is_amount]);
 
-            if($wallet){
-                Wallet::find($default_wallet->id)->update(['amount' => $default_wallet_amount]);
-                return response()->json(['status' => 200], 200);
+                $trans = DB::table('payment_transactions')
+                    ->insert([
+                        'user_id' => $accessToken->user_id,
+                        'from_wallet_id' => $default_wallet->id,
+                        'to_wallet_id' => $wallet->id,
+                        'action_date' => date('Y-m-d h:i:s'),
+                        'type' => 'ย้าย',
+                        'amount' => $request->amount,
+                        'status' => 'CO',
+                        'created_at' => date('Y-m-d h:i:s'),
+                        'updated_at' => date('Y-m-d h:i:s'),
+                ]);
+
+                if($wallet){
+                    Wallet::find($default_wallet->id)->update(['amount' => $default_wallet_amount]);
+                    return response()->json(['status' => 200], 200);
+                }
+
+                return response()->json(['status' => 404], 404);
             }
-
-            return response()->json(['status' => 404], 404);
+            
+            return response()->json(['message' => $tranIn['error']['message']], 400);
 
         }else{
             return response()->json(['status' => 301], 301);
@@ -157,36 +195,86 @@ class WalletsController extends Controller
         if($from_wallet->amount >= $request->amount) {
             $from_wallet_amount = $from_wallet->amount - $request->amount;
 
-            $wallet = Wallet::find($request->to);
-            $is_amount = $wallet->amount + $request->amount;
+            $tranOut = $this->transferOut($request->amount, $accessToken->user_id);
 
-            $trans = DB::table('payment_transactions')
-                    ->insert([
-                        'user_id' => $accessToken->user_id,
-                        'from_wallet_id' => $request->id,
-                        'to_wallet_id' => $request->to,
-                        'action_date' => date('Y-m-d h:i:s'),
-                        'type' => 'ย้าย',
-                        'amount' => $request->amount,
-                        'status' => 'CO',
-                        'created_at' => date('Y-m-d h:i:s'),
-                        'updated_at' => date('Y-m-d h:i:s'),
-                    ]);
+            if($tranOut['error'] == null) {
+                $wallet = Wallet::find($request->to);
+                $is_amount = $wallet->amount + $request->amount;
 
-            if($trans) {
-                $wallet->update(['amount' => $is_amount]);
+                $trans = DB::table('payment_transactions')
+                        ->insert([
+                            'user_id' => $accessToken->user_id,
+                            'from_wallet_id' => $request->id,
+                            'to_wallet_id' => $request->to,
+                            'action_date' => date('Y-m-d h:i:s'),
+                            'type' => 'ย้าย',
+                            'amount' => $request->amount,
+                            'status' => 'CO',
+                            'created_at' => date('Y-m-d h:i:s'),
+                            'updated_at' => date('Y-m-d h:i:s'),
+                        ]);
 
-                if($wallet){
-                    $from_wallet->update(['amount' => $from_wallet_amount]);
-                    return response()->json(['status' => 200], 200);
+                if($trans) {
+                    $wallet->update(['amount' => $is_amount]);
+
+                    if($wallet){
+                        $from_wallet->update(['amount' => $from_wallet_amount]);
+                        return response()->json(['status' => 200], 200);
+                    }
+
+                    return response()->json(['status' => 404], 404);
                 }
-
-                return response()->json(['status' => 404], 404);
             }
+
+            return response()->json(['message' => $tranOut['error']['message']], 400);
 
         }else{
             return response()->json(['status' => 301], 301);
         }
+    }
+
+    public function transferIn($_amount, $_user_id)
+    {
+        $pgsoftgame = Pgsoftgame::find(1);
+        $user = User::find($_user_id);
+        // return response()->json(['data' => $user->username], 200);
+        $trace_id = Str::uuid();
+        $ref = "ref".date('YmdHis');
+        $amount = number_format((float)$_amount, 2, '.', '');
+
+        $response = Http::asForm()->post($pgsoftgame->pgsoft_api_domain.'Cash/v3/TransferIn?trace_id='.$trace_id, [
+            'operator_token' => $pgsoftgame->operator_token,
+            'secret_key' => $pgsoftgame->secret_key,
+            'player_name' => $user->username,
+            'amount' => $amount,
+            'transfer_reference' => $ref,
+            'currency' => $user->currency
+        ]);
+
+        // $res = json_decode($response->getBody()->getContents(), true);
+        return $response;
+    }
+
+    public function transferOut($_amount, $_user_id)
+    {
+        $pgsoftgame = Pgsoftgame::find(1);
+        $user = User::find($_user_id);
+
+        $trace_id = Str::uuid();
+        $ref = "ref".date('YmdHis');
+        $amount = number_format((float)$_amount, 2, '.', '');
+
+        $response = Http::asForm()->post($pgsoftgame->pgsoft_api_domain.'Cash/v3/TransferOut?trace_id='.$trace_id, [
+            'operator_token' => $pgsoftgame->operator_token,
+            'secret_key' => $pgsoftgame->secret_key,
+            'player_name' => $user->username,
+            'amount' => $amount,
+            'transfer_reference' => $ref,
+            'currency' => $user->currency
+        ]);
+
+        // $res = json_decode($response->getBody()->getContents(), true);
+        return $response;
     }
 
     public function deleteWallet(Request $request)

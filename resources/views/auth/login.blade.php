@@ -25,7 +25,7 @@
         <div class="w-100 align-self-center text-center-md text-center-xs py-2">
 
             <!-- optional class: .form-control-pill -->
-            <form method="POST" action="{{ route('login') }}" class="bs-validate p-5 py-6 rounded d-inline-block bg-white text-dark w-100 max-w-600">
+            <form method="POST" action="{{ url('/login') }}" class="bs-validate p-5 py-6 rounded d-inline-block bg-white text-dark w-100 max-w-600">
                 @csrf
 
                 <!--

@@ -88,6 +88,7 @@ class UsersController extends Controller
 
     public function userBankingUpdate(Request $request)
     {
+        // Log::debug($request);
         $accessToken = auth()->user()->token();
         $bank = UserBanking::create([
             "user_id" => $accessToken->user_id,

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Models\User;
+use App\Models\Staff;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -18,13 +19,11 @@ class AdminsController extends Controller
 
     public function index()
     {
-        $admins = User::where('is_admin', 'Y')
-                    ->where('status', 'CO')
+        $admins = Staff::where('status', 'CO')
                     ->orderBy('created_at', 'desc')
                     ->paginate(10);
 
-        $deleted = DB::table('users')
-                    ->where('is_admin', 'Y')
+        $deleted = DB::table('staffs')
                     ->where('status', 'DL')
                     ->orderBy('created_at', 'desc')
                     ->paginate(10);
@@ -42,7 +41,7 @@ class AdminsController extends Controller
 
     public function view(Request $request)
     {
-        $admin = DB::table('users')->find($request->id);
+        $admin = DB::table('staffs')->find($request->id);
 
         return view('admin.view', ['profile' => $admin, 'username' => $request->username]);
     }
@@ -58,24 +57,21 @@ class AdminsController extends Controller
             'phone' => ['required', 'string', 'min:10', 'max:10'],
         ]);
  
-        $checkUser = User::where('username', $request->username)
+        $checkUser = Staff::where('username', $request->username)
                     ->orWhere('phone', $request->phone)
                     ->orWhere('line', $request->line)
                     ->where('line', '!=', null)
                     ->first();
 
         if(!isset($checkUser)){
-            $user = User::create([
+            $user = Staff::create([
                 "username" => $request->username,
                 "password" => $request->password,
                 "name" => $request->name,
                 "phone" => $request->phone,
                 "line" => $request->line,
-                "currency" => "none",
-                "how_to_know" => "none",
                 "is_active" => "Y",
                 "status" => "CO",
-                "is_admin" => "Y"
             ]);
         }
 
@@ -89,13 +85,13 @@ class AdminsController extends Controller
             'edit_phone' => ['required', 'string', 'min:10', 'max:10'],
         ]);
 
-        $checkUser = User::where('phone', $request->phone)
+        $checkUser = Staff::where('phone', $request->phone)
                     ->orWhere('line', $request->line)
                     ->where('line', '!=', null)
                     ->first();
 
         if(!isset($checkUser)){
-            $admin = User::find($request->edit_id)->update([
+            $admin = Staff::find($request->edit_id)->update([
                 'name' => $request->edit_name,
                 'phone' => $request->edit_phone,
                 'line' => $request->edit_line
@@ -115,7 +111,7 @@ class AdminsController extends Controller
             'new_password' => ['required', 'string', 'max:255'],
         ]);
 
-        $admin = User::find($request->admin_id)->update([
+        $admin = Staff::find($request->admin_id)->update([
             'password' => $request->new_password,
         ]);
 
@@ -124,7 +120,7 @@ class AdminsController extends Controller
 
     public function active(Request $request)
     {
-        $admin = User::find($request->id);
+        $admin = Staff::find($request->id);
         
         $is_active = $admin->is_active == 'N' ? 'Y' : 'N';
 
@@ -137,11 +133,11 @@ class AdminsController extends Controller
 
     public function delete(Request $request)
     {
-        $admin = User::find($request->id)->update([
+        $admin = Staff::find($request->id)->update([
             'is_active' => 'N',
             'status' => 'DL'
         ]);
 
-        return redirect()->back()->with('success', 'ลบผู้ใช้งาน '. $request->username .' เรียบร้อยแล้ว');
+        return redirect()->route('admins')->with('success', 'ลบผู้ดูแลระบบ '. $request->username .' เรียบร้อยแล้ว');
     }
 }

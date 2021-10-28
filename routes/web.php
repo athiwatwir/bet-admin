@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\AdminController;
 use App\Http\Controllers\AccountSettingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UsersController;
@@ -33,7 +34,9 @@ Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');
 
-Route::middleware(['admin'])->group(function () {
+Route::post('/login', [AdminController::class, 'adminLogin']);
+
+Route::middleware(['auth:webadmin'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/account-setting', [AccountSettingController::class, 'index'])->name('account-setting');
