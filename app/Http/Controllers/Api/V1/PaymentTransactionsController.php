@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
+use App\Models\PaymentTransactionLog;
+
 class PaymentTransactionsController extends Controller
 {
     public function userPaymentTransactions()
@@ -21,7 +23,7 @@ class PaymentTransactionsController extends Controller
                     ->leftJoin('wallets as to_wallet', 'payment_transactions.to_wallet_id', '=', 'to_wallet.id')
                     ->leftJoin('games as from_game', 'from_wallet.game_id', '=', 'from_game.id')
                     ->leftJoin('games as to_game', 'to_wallet.game_id', '=', 'to_game.id')
-                    ->select('payment_transactions.*', 'payment_transactions.admin_id as by_admin',
+                    ->select('payment_transactions.*', 'payment_transactions.staff_id as by_admin',
                             'c_bank_accounts.bank_id as bank_name', 'c_bank_accounts.account_name', 'c_bank_accounts.account_number',
                             'user_bankings.bank_id as user_bank_name', 'user_bankings.bank_account_name', 'user_bankings.bank_account_number',
                             'from_game.name as from_game', 'from_wallet.is_default as from_default', 'from_wallet.id as from_id',

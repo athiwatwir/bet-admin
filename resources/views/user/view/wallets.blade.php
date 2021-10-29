@@ -68,11 +68,15 @@
                                         </td>
 
                                         <td class="hidden-lg-down text-center">
-                                            <strong class="text-success">{{ number_format($is_wallet->amount) }}</strong> <small>{{ $is_wallet->currency }}</small>
+                                            <strong class="text-success">
+                                                @if($is_wallet->game_name == 'PG Softgame')
+                                                    {{ number_format($pg_wallet, 1) }}
+                                                @endif
+                                            </strong> <small>{{ $is_wallet->currency }}</small>
                                         </td>
 
                                         <td class="text-center">
-                                            <div class="flex text-right">
+                                            <!-- <div class="flex text-right">
                                                 <a class="mr-3" href="#!" title="เพิ่มเงินในกระเป๋าเกม{{ $is_wallet->game_name }}" 
                                                     data-toggle="modal" data-target="#increaseWalletModal" onClick="setDataIncreaseWalletAmount({{ $is_wallet->id }}, {{ $is_wallet->amount }}, '{{ $is_wallet->game_name }}', '{{ $username }}')"
                                                 >
@@ -84,7 +88,7 @@
                                                     <i class="fi fi-minus mr-0 text-danger"></i>
                                                 </a>
                                                 
-                                            </div>
+                                            </div> -->
                                         </td>
 
                                     </tr>

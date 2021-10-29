@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Log;
 use App\Models\Wallet;
 use App\Models\Pgsoftgame;
 use App\Models\User;
+use App\Models\PaymentTransactionLog;
 
 class WalletsController extends Controller
 {
@@ -102,17 +103,31 @@ class WalletsController extends Controller
                             'user_id' => $accessToken->user_id,
                             'from_wallet_id' => $default_wallet->id,
                             'to_wallet_id' => $wallet->id,
-                            'action_date' => date('Y-m-d h:i:s'),
+                            'action_date' => date('Y-m-d H:i:s'),
                             'type' => 'ย้าย',
                             'amount' => $amount,
                             'status' => 'CO',
-                            'created_at' => date('Y-m-d h:i:s'),
-                            'updated_at' => date('Y-m-d h:i:s'),
+                            'created_at' => date('Y-m-d H:i:s'),
+                            'updated_at' => date('Y-m-d H:i:s'),
                         ]);
+                    $transId = DB::getPdo()->lastInsertId();
+
+                    if($trans) {
+                        PaymentTransactionLog::create([
+                            'payment_transaction_id' => $transId,
+                            'user_id' => $accessToken->user_id,
+                            'from_wallet_id' => $default_wallet->id,
+                            'to_wallet_id' => $wallet->id,
+                            'code' => 'TRANSFER',
+                            'amount' => $amount,
+                            'status' => 'CO'
+                        ]);
+                    }
                 }
 
                 if($wallet){
                     Wallet::find($default_wallet->id)->update(['amount' => $is_amount]);
+
                     return response()->json(['status' => 200], 200);
                 }
 
@@ -164,16 +179,28 @@ class WalletsController extends Controller
                         'user_id' => $accessToken->user_id,
                         'from_wallet_id' => $default_wallet->id,
                         'to_wallet_id' => $wallet->id,
-                        'action_date' => date('Y-m-d h:i:s'),
+                        'action_date' => date('Y-m-d H:i:s'),
                         'type' => 'ย้าย',
                         'amount' => $request->amount,
                         'status' => 'CO',
-                        'created_at' => date('Y-m-d h:i:s'),
-                        'updated_at' => date('Y-m-d h:i:s'),
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s'),
                 ]);
+                $transId = DB::getPdo()->lastInsertId();
 
                 if($wallet){
                     Wallet::find($default_wallet->id)->update(['amount' => $default_wallet_amount]);
+
+                    PaymentTransactionLog::create([
+                        'payment_transaction_id' => $transId,
+                        'user_id' => $accessToken->user_id,
+                        'from_wallet_id' => $default_wallet->id,
+                        'to_wallet_id' => $wallet->id,
+                        'code' => 'TRANSFER',
+                        'amount' => $request->amount,
+                        'status' => 'CO'
+                    ]);
+
                     return response()->json(['status' => 200], 200);
                 }
 
@@ -206,19 +233,31 @@ class WalletsController extends Controller
                             'user_id' => $accessToken->user_id,
                             'from_wallet_id' => $request->id,
                             'to_wallet_id' => $request->to,
-                            'action_date' => date('Y-m-d h:i:s'),
+                            'action_date' => date('Y-m-d H:i:s'),
                             'type' => 'ย้าย',
                             'amount' => $request->amount,
                             'status' => 'CO',
-                            'created_at' => date('Y-m-d h:i:s'),
-                            'updated_at' => date('Y-m-d h:i:s'),
+                            'created_at' => date('Y-m-d H:i:s'),
+                            'updated_at' => date('Y-m-d H:i:s'),
                         ]);
+                $transId = DB::getPdo()->lastInsertId();
 
                 if($trans) {
                     $wallet->update(['amount' => $is_amount]);
 
+                    PaymentTransactionLog::create([
+                        'payment_transaction_id' => $transId,
+                        'user_id' => $accessToken->user_id,
+                        'from_wallet_id' => $request->id,
+                        'to_wallet_id' => $request->to,
+                        'code' => 'TRANSFER',
+                        'amount' => $request->amount,
+                        'status' => 'CO'
+                    ]);
+
                     if($wallet){
                         $from_wallet->update(['amount' => $from_wallet_amount]);
+
                         return response()->json(['status' => 200], 200);
                     }
 
@@ -290,16 +329,29 @@ class WalletsController extends Controller
                         'user_id' => $accessToken->user_id,
                         'from_wallet_id' => $request->id,
                         'to_wallet_id' => $default_wallet->id,
-                        'action_date' => date('Y-m-d h:i:s'),
+                        'action_date' => date('Y-m-d H:i:s'),
                         'type' => 'ย้าย',
                         'amount' => $wallet->amount,
                         'status' => 'CO',
-                        'created_at' => date('Y-m-d h:i:s'),
-                        'updated_at' => date('Y-m-d h:i:s'),
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s'),
                     ]);
+        $transId = DB::getPdo()->lastInsertId();
 
         if($trans) {
             $wallet->update(['status' => 'DL', 'amount' => 0]);
+
+            PaymentTransactionLog::create([
+                'payment_transaction_id' => $transId,
+                'user_id' => $accessToken->user_id,
+                'from_wallet_id' => $request->id,
+                'to_wallet_id' => $default_wallet->id,
+                'code' => 'TRANSFER',
+                'amount' => $wallet->amount,
+                'status' => 'CO',
+                'description' => 'User Delete Wallet.'
+            ]);
+
             Wallet::find($default_wallet->id)->update(['amount' => $is_amount]);
         }
 
@@ -318,14 +370,25 @@ class WalletsController extends Controller
                     ->insert([
                         'user_id' => $accessToken->user_id,
                         'c_bank_account_id' => $request->c_bank_account_id,
-                        'action_date' => date('Y-m-d h:i:s'),
+                        'action_date' => date('Y-m-d H:i:s'),
                         'type' => 'ฝาก',
                         'amount' => $request->amount,
                         'slip' => $fileName,
-                        'created_at' => date('Y-m-d h:i:s'),
-                        'updated_at' => date('Y-m-d h:i:s'),
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s'),
                     ]);
+        $transId = DB::getPdo()->lastInsertId();
+        
         if($trans) {
+            PaymentTransactionLog::create([
+                'payment_transaction_id' => $transId,
+                'user_id' => $accessToken->user_id,
+                'to_wallet_id' => $default_wallet->id,
+                'c_bank_account_id' => $request->c_bank_account_id,
+                'code' => 'DEPOSIT',
+                'amount' => $request->amount
+            ]);
+
             return response()->json(['status' => 200], 200);
         }
 
@@ -344,14 +407,23 @@ class WalletsController extends Controller
                     ->insert([
                         'user_id' => $accessToken->user_id,
                         'user_banking_id' => $request->user_bank_id,
-                        'action_date' => date('Y-m-d h:i:s'),
+                        'action_date' => date('Y-m-d H:i:s'),
                         'type' => 'ถอน',
                         'amount' => $request->amount,
-                        'created_at' => date('Y-m-d h:i:s'),
-                        'updated_at' => date('Y-m-d h:i:s'),
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s'),
                     ]);
+
+            $transId = DB::getPdo()->lastInsertId();
             if($trans) {
                 Wallet::find($default_wallet->id)->update(['amount' => $is_amount]);
+                PaymentTransactionLog::create([
+                    'payment_transaction_id' => $transId,
+                    'user_id' => $accessToken->user_id,
+                    'user_banking_id' => $request->user_bank_id,
+                    'code' => 'WITHDRAW',
+                    'amount' => $request->amount
+                ]);
                 return response()->json(['status' => 200], 200);
             }
         }else{

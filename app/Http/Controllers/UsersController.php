@@ -7,6 +7,8 @@ use App\Models\User;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 
 use App\Http\Controllers\PaginateController;
 use App\Http\Controllers\PaymentTransactionController;
@@ -62,12 +64,25 @@ class UsersController extends Controller
         $default_wallet = (new WalletsController)->getDefaultWalletByUserId($request->id);
         $transactions = (new PaymentTransactionController)->getPaymentTransactionByUserId($request->id);
         $banks = $this->getBanks();
+        $pgSoftGameWallet = $this->getPgsoftgameWallet($user->username);
 
         return view('user.view', [
                     'profile' => $user, 'ubank' => $ubank, 'banks' => $banks, 'username' => $request->username,
-                    'wallets' => $wallets, 'default_wallet' => $default_wallet,
+                    'wallets' => $wallets, 'default_wallet' => $default_wallet, 'pg_wallet' => $pgSoftGameWallet,
                     'transaction' => $transactions
                     ]);
+    }
+
+    // get PGSoftGame Wallet Temporary
+    private function getPgsoftgameWallet($username)
+    {
+        $response = Http::asForm()->post('https://api.pg-bo.me/external/Cash/v3/GetPlayerWallet?trace_id='.Str::uuid(),[
+            'operator_token' => '32cd845d7701497deaa1bc6458c61b55',
+            'secret_key' => '19e16714fab6e147362a18d0cf37c8a4',
+            'player_name' => $username,
+        ]);
+
+        return $response['data']['totalBalance'];
     }
 
     public function editProfile(Request $request)

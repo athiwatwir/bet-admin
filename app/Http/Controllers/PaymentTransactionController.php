@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
+use App\Models\PaymentTransactionLog;
+
 class PaymentTransactionController extends Controller
 {
     public function __construct()
@@ -58,7 +60,7 @@ class PaymentTransactionController extends Controller
             $wallet_amount = $wallet->amount + $trans->amount;
 
             DB::table('wallets')->where('id', $wallet->id)->update(['amount' => $wallet_amount]);
-            DB::table('payment_transactions')->where('id', $request->id)->update(['status' => 'CO', 'updated_at' => date('Y-m-d h:i:s')]);
+            DB::table('payment_transactions')->where('id', $request->id)->update(['status' => 'CO', 'updated_at' => date('Y-m-d H:i:s')]);
             
             $c_bank_account = DB::table('c_bank_accounts')
                                 ->where('id', $trans->c_bank_account_id)
@@ -73,9 +75,12 @@ class PaymentTransactionController extends Controller
                     ->where('id', $request->id)
                     ->update([
                         'status' => 'CO', 
-                        'updated_at' => date('Y-m-d h:i:s')
+                        'updated_at' => date('Y-m-d H:i:s')
                     ]);
         }
+
+        PaymentTransactionLog::where('payment_transaction_id', $request->id)
+                                    ->update(['status' => 'CO', 'staff_id' => Auth::user()->id]);
 
         return redirect()->back();
     }
@@ -88,6 +93,9 @@ class PaymentTransactionController extends Controller
                     'status' => 'VO'
                 ]);
 
+        PaymentTransactionLog::where('payment_transaction_id', $request->id)
+                                ->update(['status' => 'VO', 'staff_id' => Auth::user()->id]);
+
         return redirect()->back();
     }
 
@@ -96,7 +104,7 @@ class PaymentTransactionController extends Controller
     {
         return DB::table('payment_transactions')
                 ->leftJoin('users', 'payment_transactions.user_id', '=', 'users.id')
-                ->leftJoin('users as admin', 'payment_transactions.admin_id', '=', 'admin.id')
+                ->leftJoin('staffs as admin', 'payment_transactions.staff_id', '=', 'admin.id')
                 ->leftJoin('c_bank_accounts', 'payment_transactions.c_bank_account_id', '=', 'c_bank_accounts.id')
                 ->leftJoin('user_bankings', 'payment_transactions.user_banking_id', '=', 'user_bankings.id')
                 ->leftJoin('wallets as from_wallet', 'payment_transactions.from_wallet_id', '=', 'from_wallet.id')
@@ -121,18 +129,35 @@ class PaymentTransactionController extends Controller
 
     public function insertTransactionByAdmin($amount, $reason, $type, $user_id, $to_wallet)
     {
-        return DB::table('payment_transactions')
+        $trans = DB::table('payment_transactions')
                 ->insert([
                     'user_id' => $user_id,
-                    'admin_id' => Auth::user()->id,
+                    'staff_id' => Auth::user()->id,
                     'to_wallet_id' => $to_wallet,
-                    'action_date' => date('Y-m-d h:i:s'),
+                    'action_date' => date('Y-m-d H:i:s'),
                     'type' => $type,
                     'amount' => $amount,
                     'status' => 'CO',
                     'description' => $reason,
-                    'created_at' => date('Y-m-d h:i:s'),
-                    'updated_at' => date('Y-m-d h:i:s'),
+                    'created_at' => date('Y-m-d H:i:s'),
+                    'updated_at' => date('Y-m-d H:i:s'),
                 ]);
+
+        $transId = DB::getPdo()->lastInsertId();
+
+        if($trans) {
+            PaymentTransactionLog::create([
+                'payment_transaction_id' => $transId,
+                'user_id' => $user_id,
+                'staff_id' => Auth::user()->id,
+                'to_wallet_id' => $to_wallet,
+                'code' => 'ADJUST',
+                'amount' => $amount,
+                'status' => 'CO',
+                'description' => $type
+            ]);
+
+            return $trans;
+        }
     }
 }
