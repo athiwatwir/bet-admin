@@ -14,6 +14,7 @@ use App\Http\Controllers\WalletsController;
 use App\Http\Controllers\GameGroupsController;
 use App\Http\Controllers\GamesController;
 use App\Http\Controllers\FootballLeagueController;
+use App\Http\Controllers\ReportsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,6 +69,7 @@ Route::middleware(['auth:webadmin'])->group(function () {
     Route::get('/members', [MembersController::class, 'index'])->name('members');
 
     Route::get('/cbank', [CBankAccountController::class, 'index'])->name('cbank');
+    Route::get('/reports', [ReportsController::class, 'index'])->name('reports');
 
     Route::get('/banks', [BanksController::class, 'index'])->name('banks');
     Route::get('/banks/active/{id}/{bank_name}', [BanksController::class, 'active']);

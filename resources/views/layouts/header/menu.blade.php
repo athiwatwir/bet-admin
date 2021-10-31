@@ -2,15 +2,13 @@
 <div class="collapse navbar-collapse px-5 pl-0-xs pr-0-xs" id="navbarMainNav">
 
 @include('layouts.header.logo_mobile')
-
 <!-- Dropdowns -->
 <ul class="navbar-nav align-items-center">
     <li class="nav-item dropdown">
         <a href="#" class="nav-link nav-link-caret-hide dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="mainNavFeatures">
-            <i class="fi fi-shield-ok float-start m-0"></i>
-            <span>ผู้ใช้งาน</span> 
+            <i class="fas fa-users-cog float-start m-0 mt-1"></i>
+            <span>จัดการผู้ใช้งาน</span> 
         </a>
-
         <div class="dropdown-menu dropdown-menu-hover w--300 p-0 border border-light overflow-hidden" aria-labelledby="mainNavFeatures">
             <div class="row no-gutters bg-gradient-secondary">
 
@@ -18,7 +16,7 @@
                 <div class="col-2 d-none d-lg-block"><!-- empty -->
                     <!-- text-rotate-90 , text-rotate-180 -->
                     <p class="h6 font-weight-medium mb-0 text-white text-rotate-180 text-center position-absolute d-middle">
-                        สมาชิก • ผู้ดูแลระบบ
+                        จัดการผู้ใช้งาน
                     </p>
                 </div>
 
@@ -49,12 +47,11 @@
         </div>
     </li>
 
-
     <!-- Transaction -->
     <li class="nav-item dropdown">
         <a href="#" class="nav-link nav-link-caret-hide dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="mainNavFeatures">
-            <i class="fi fi-shield-ok float-start m-0"></i>
-            <span>รายการเคลื่อนไหว</span> 
+            <i class="fas fa-comments-dollar float-start m-0 mt-1"></i>
+            <span>การเงิน</span>
         </a>
 
         <div class="dropdown-menu dropdown-menu-hover w--300 p-0 border border-light overflow-hidden" aria-labelledby="mainNavFeatures">
@@ -64,7 +61,7 @@
                 <div class="col-2 d-none d-lg-block"><!-- empty -->
                     <!-- text-rotate-90 , text-rotate-180 -->
                     <p class="h6 font-weight-medium mb-0 text-white text-rotate-180 text-center position-absolute d-middle">
-                        xxxx
+                        การเงิน
                     </p>
                 </div>
 
@@ -72,7 +69,7 @@
                     <ul class="mx-0 px-0 my-2">
                         <li class="dropdown-item text-wrap">
                             <a href="{{ url('/transaction/payment') }}" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
-                                <i class="fi fi-users float-start fs--25 mt--n2"></i>
+                                <i class="fas fa-search-dollar float-start fs--25 mt--n2"></i>
                                 <span class="h5-xs d-block fs--18">การชำระเงิน</span>
                                 <span class="fs--11 text-muted text-uppercase">
                                     รายการการเคลื่อนไหวทางการเงิน
@@ -85,7 +82,6 @@
             </div>
         </div>
     </li>
-
 
     <!-- Games -->
     <li class="nav-item dropdown">
@@ -132,8 +128,6 @@
             </div>
         </div>
     </li>
-
-
     <!-- Football -->
     <li class="nav-item dropdown">
         <a href="#" class="nav-link nav-link-caret-hide dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="mainNavFeatures">
@@ -189,7 +183,6 @@
             </div>
         </div>
     </li>
-    
 
     <!-- SETTING -->
     <li class="nav-item dropdown">
@@ -197,26 +190,18 @@
             <i class="fi fi-cogs float-start m-0"></i>
             <span>ตั้งค่า</span>
         </a>
-
         <div class="dropdown-menu dropdown-menu-hover w--300 p-0 border border-light overflow-hidden" aria-labelledby="mainNavFeatures">
-
             <div class="row no-gutters bg-gradient-secondary">
-
-
                 <!-- REMOVE BAR IF NOT NEEDED -->
                 <div class="col-2 d-none d-lg-block"><!-- empty -->
-                    
+                
                     <!-- text-rotate-90 , text-rotate-180 -->
                     <p class="h6 font-weight-medium mb-0 text-white text-rotate-180 text-center position-absolute d-middle">
                         การตั้งค่า
                     </p>
-
                 </div>
-
                 <div class="col bg-white overflow-hidden">
-
                     <ul class="mx-0 px-0 my-2">
-
                         <li class="dropdown-item text-wrap">
                             <a href="#!" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
                                 <i class="fi fi-round-lightning float-start fs--25 mt--n2"></i>
@@ -246,19 +231,17 @@
                                 </span>
                             </a>
                         </li>
-
                     </ul>
-
                 </div>
-
             </div>
-
         </div>
-
+    </li>
+    <li class="nav-item">
+        <a href="{{ route('reports') }}" class="nav-link nav-link-caret-hide" id="">
+            <i class="fas fa-chart-pie float-start m-0 mt-1"></i>
+            <span>รายงาน</span>
+        </a>
     </li>
 
 </ul>
-<!-- /Dropdowns -->
-
 </div>
-<!-- /NAVIGATION -->
