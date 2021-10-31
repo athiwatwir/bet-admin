@@ -1,3 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;700&display=swap');
+
+h1,h2,h3,h4{
+    font-family: 'Noto Sans Thai', sans-serif !important;
+    font-weight: 700 !important;
+}
+
 .btn-vv-sm {
     padding: 0 10px;
 }

@@ -37,6 +37,8 @@
 	<meta name="theme-color" content="#377dff">
 
     <link href="{{ asset('css/mystyle.css') }}" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/4e1914be33.js" crossorigin="anonymous"></script>
+    
 </head>
 <body class="layout-admin header-sticky" data-s2t-class="btn-primary btn-sm bg-gradient-default rounded-circle b-0">
     <div id="wrapper" class="d-flex align-items-stretch flex-column">

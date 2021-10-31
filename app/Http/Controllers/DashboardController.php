@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+Use \Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -13,6 +16,40 @@ class DashboardController extends Controller
 
     public function index() 
     {
-        return view('dashboard');
+        
+        $date = Carbon::now();
+        $dateArr =  $date->toArray();
+        $monthYearStr = sprintf('%s%s',$dateArr['month'],$dateArr['year']);
+
+        $userCount = DB::table('users')->count();
+
+        $newUserCount = DB::table('users')
+                            ->whereMonth('created_at', $dateArr['month'])
+                            ->whereYear('created_at', $dateArr['year'])
+                            ->count();
+
+        $depositAmt = DB::table('payment_transactions')
+                            ->select(DB::raw('SUM(amount) as total_amt'),DB::raw("DATE_FORMAT(created_at, '%m%Y') as mmyyyy"))
+                            ->where([[DB::raw("DATE_FORMAT(created_at, '%m%Y')"),$monthYearStr],['type','ฝาก'],['status','CO']])
+                            ->groupBy('mmyyyy')
+                            ->first();
+
+        $withdrawAmt = DB::table('payment_transactions')
+                            ->select(DB::raw('SUM(amount) as total_amt'),DB::raw("DATE_FORMAT(created_at, '%m%Y') as mmyyyy"))
+                            ->where([[DB::raw("DATE_FORMAT(created_at, '%m%Y')"),$monthYearStr],['type','ถอน'],['status','CO']])
+                            ->groupBy('mmyyyy')
+                            ->first();
+
+        //Log::info((array)$depositAmt);
+
+        $cardInfo = [
+            'userTotalAmt'=>$userCount,
+            'newUserTotalAmt'=>$newUserCount,
+            'depositAmt'=>$depositAmt->total_amt,
+            'withdrawAmt'=>$withdrawAmt->total_amt
+        ];
+
+
+        return view('dashboard', ['cardInfo' => $cardInfo]);
     }
 }

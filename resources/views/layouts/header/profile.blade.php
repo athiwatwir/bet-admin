@@ -23,6 +23,8 @@
 
         </div>
 
+        <!--
+
         <div class="dropdown-divider"></div>
 
         <a href="#!" target="_blank" class="dropdown-item text-truncate font-weight-medium">
@@ -48,6 +50,7 @@
         </a>
 
         <div class="dropdown-divider mb-0"></div>
+        -->
 
         <a class="dropdown-item" href="{{ route('logout') }}"
             onclick="event.preventDefault();
