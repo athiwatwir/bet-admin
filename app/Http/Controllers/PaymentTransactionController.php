@@ -22,7 +22,7 @@ class PaymentTransactionController extends Controller
     {
         $trans = DB::table('payment_transactions')
                     ->leftJoin('users', 'payment_transactions.user_id', '=', 'users.id')
-                    ->leftJoin('users as admin', 'payment_transactions.admin_id', '=', 'admin.id')
+                    ->leftJoin('staffs as admin', 'payment_transactions.staff_id', '=', 'admin.id')
                     ->leftJoin('c_bank_accounts', 'payment_transactions.c_bank_account_id', '=', 'c_bank_accounts.id')
                     ->leftJoin('user_bankings', 'payment_transactions.user_banking_id', '=', 'user_bankings.id')
                     ->leftJoin('wallets as from_wallet', 'payment_transactions.from_wallet_id', '=', 'from_wallet.id')
@@ -135,7 +135,7 @@ class PaymentTransactionController extends Controller
                     'staff_id' => Auth::user()->id,
                     'to_wallet_id' => $to_wallet,
                     'action_date' => date('Y-m-d H:i:s'),
-                    'type' => $type,
+                    'code' => 'ADJUST',
                     'amount' => $amount,
                     'status' => 'CO',
                     'description' => $reason,

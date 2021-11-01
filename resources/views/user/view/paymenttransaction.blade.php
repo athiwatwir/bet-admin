@@ -26,24 +26,22 @@
                             @foreach ($transaction as $key => $trans)
 
                                 <tr id="message_id_{{ $key }}" class="text-dark 
-                                                                @if($trans->type == 'ฝาก') bg-deposit 
-                                                                @elseif($trans->type == 'ถอน') bg-withdraw  
-                                                                @elseif($trans->type == 'ย้าย') bg-transfer
-                                                                @elseif($trans->type == 'เพิ่ม') bg-increase
-                                                                @elseif($trans->type == 'ลด') bg-decrease
+                                                                @if($trans->code == 'DEPOSIT') bg-deposit 
+                                                                @elseif($trans->code == 'WITHDRAW') bg-withdraw  
+                                                                @elseif($trans->code == 'TRANSFER') bg-transfer
+                                                                @elseif($trans->code == 'ADJUST') bg-increase
                                                                 @endif ">
 
                                     <td style="line-height: 17px;">
                                         <p class="mb-0">
                                             <span class="badge 
-                                                        @if($trans->type == 'ฝาก') badge-success 
-                                                        @elseif($trans->type == 'ถอน') badge-danger 
-                                                        @elseif($trans->type == 'ย้าย') badge-warning
-                                                        @elseif($trans->type == 'เพิ่ม') badge-primary
-                                                        @elseif($trans->type == 'ลด') badge-secondary
+                                                        @if($trans->code == 'DEPOSIT') badge-success 
+                                                        @elseif($trans->code == 'WITHDRAW') badge-danger 
+                                                        @elseif($trans->code == 'TRANSFER') badge-warning
+                                                        @elseif($trans->code == 'ADJUST') badge-primary
                                                         @endif 
                                                         font-weight-normal fs--16"
-                                            >{{ $trans->type }}
+                                            >{{ $trans->code }}
                                             </span>
                                         </p>
                                         @if(isset($trans->description))
@@ -71,15 +69,15 @@
                                                         @endif
                                                     </small>
                                                 @else
-                                                    @if($trans->type == 'ฝาก')
+                                                    @if($trans->code == 'DEPOSIT')
                                                         {{ $trans->cbank_name }} | 
                                                         <small>{{ $trans->account_name }}</small> | 
                                                         <small>{{ $trans->account_number }}</small>
-                                                    @elseif($trans->type == 'ถอน')
+                                                    @elseif($trans->code == 'WITHDRAW')
                                                         {{ $trans->ubank_name }} | 
                                                         <small>{{ $trans->bank_account_name }}</small> | 
                                                         <small>{{ $trans->bank_account_number }}</small>
-                                                    @elseif($trans->type == 'ย้าย')
+                                                    @elseif($trans->code == 'TRANSFER')
                                                         <small>
                                                             @if($trans->from_default == 'Y')
                                                                 กระเป๋าหลัก
@@ -99,11 +97,10 @@
                                                 @endif
                                             </span>
                                             <span class="d-block text-muted">
-                                                จำนวน : <small><strong class=" @if($trans->type == 'ฝาก') text-success 
-                                                    @elseif($trans->type == 'ถอน') text-danger 
-                                                    @elseif($trans->type == 'ย้าย') text-warning
-                                                    @elseif($trans->type == 'เพิ่ม') text-primary
-                                                    @elseif($trans->type == 'ลด') text-secondary
+                                                จำนวน : <small><strong class=" @if($trans->code == 'DEPOSIT') text-success 
+                                                    @elseif($trans->code == 'WITHDRAW') text-danger 
+                                                    @elseif($trans->code == 'TRANSFER') text-warning
+                                                    @elseif($trans->code == 'ADJUST') text-primary
                                                     @endif "
                                                 >
                                                     {{ number_format($trans->amount) }}
@@ -147,15 +144,15 @@
                                                 @endif
                                             </small>
                                         @else
-                                            @if($trans->type == 'ฝาก')
+                                            @if($trans->code == 'DEPOSIT')
                                                 {{ $trans->cbank_name }}<br/>
                                                 <small>{{ $trans->account_name }}</small><br/>
                                                 <small>{{ $trans->account_number }}</small>
-                                            @elseif($trans->type == 'ถอน')
+                                            @elseif($trans->code == 'WITHDRAW')
                                                 {{ $trans->ubank_name }}<br/>
                                                 <small>{{ $trans->bank_account_name }}</small><br/>
                                                 <small>{{ $trans->bank_account_number }}</small>
-                                            @elseif($trans->type == 'ย้าย')
+                                            @elseif($trans->code == 'TRANSFER')
                                                 <small>
                                                     @if($trans->from_default == 'Y')
                                                         กระเป๋าหลัก
@@ -176,11 +173,10 @@
                                     </td>
 
                                     <td class="hidden-lg-down text-center">
-                                        <strong class=" @if($trans->type == 'ฝาก') text-success 
-                                                    @elseif($trans->type == 'ถอน') text-danger 
-                                                    @elseif($trans->type == 'ย้าย') text-warning
-                                                    @elseif($trans->type == 'เพิ่ม') text-primary
-                                                    @elseif($trans->type == 'ลด') text-secondary
+                                        <strong class=" @if($trans->code == 'DEPOSIT') text-success 
+                                                    @elseif($trans->code == 'WITHDRAW') text-danger 
+                                                    @elseif($trans->code == 'TRANSFER') text-warning
+                                                    @elseif($trans->code == 'ADJUST') text-primary
                                                     @endif "
                                         >{{ number_format($trans->amount) }}
                                         </strong>
