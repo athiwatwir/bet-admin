@@ -30,13 +30,13 @@ class DashboardController extends Controller
 
         $depositAmt = DB::table('payment_transactions')
                             ->select(DB::raw('SUM(amount) as total_amt'),DB::raw("DATE_FORMAT(created_at, '%m%Y') as mmyyyy"))
-                            ->where([[DB::raw("DATE_FORMAT(created_at, '%m%Y')"),$monthYearStr],['type','ฝาก'],['status','CO']])
+                            ->where([[DB::raw("DATE_FORMAT(created_at, '%m%Y')"),$monthYearStr],['code','DEPOSIT'],['status','CO']])
                             ->groupBy('mmyyyy')
                             ->first();
 
         $withdrawAmt = DB::table('payment_transactions')
                             ->select(DB::raw('SUM(amount) as total_amt'),DB::raw("DATE_FORMAT(created_at, '%m%Y') as mmyyyy"))
-                            ->where([[DB::raw("DATE_FORMAT(created_at, '%m%Y')"),$monthYearStr],['type','ถอน'],['status','CO']])
+                            ->where([[DB::raw("DATE_FORMAT(created_at, '%m%Y')"),$monthYearStr],['code','WITHDRAW'],['status','CO']])
                             ->groupBy('mmyyyy')
                             ->first();
 
