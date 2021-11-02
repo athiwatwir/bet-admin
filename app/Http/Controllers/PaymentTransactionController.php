@@ -49,7 +49,7 @@ class PaymentTransactionController extends Controller
     {
         $trans = DB::table('payment_transactions')->find($request->id);
 
-        if($trans->type == 'ฝาก') {
+        if($trans->code == 'DEPOSIT') {
 
             $wallet = DB::table('wallets')
                             ->where('user_id', $trans->user_id)
@@ -70,7 +70,7 @@ class PaymentTransactionController extends Controller
                                     'status' => 'CO'
                                 ]);
 
-        }else if($trans->type == 'ถอน') {
+        }else if($trans->code == 'WITHDRAW') {
             DB::table('payment_transactions')
                     ->where('id', $request->id)
                     ->update([
