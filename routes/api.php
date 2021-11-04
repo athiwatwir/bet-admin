@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\V1\UsersController;
 use App\Http\Controllers\Api\V1\WalletsController;
 use App\Http\Controllers\Api\V1\PaymentTransactionsController;
 use App\Http\Controllers\Api\V1\GamesController;
+use App\Http\Controllers\Api\V1\LogsController;
 
 use App\Http\Controllers\Api\V2\PgSoftGameController;
 
@@ -63,6 +64,10 @@ Route::prefix('v1')->group(function () {
         Route::prefix('game')->group(function () {
             Route::get('play/{id}', [GamesController::class, 'playGame']);
             Route::get('login/{table}', [GamesController::class, 'gameLogin']);
+        });
+
+        Route::prefix('logs')->group(function () {
+            Route::post('user-activities', [LogsController::class, 'updateUserLog']);
         });
     });
 

@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Models\Wallet;
 use App\Models\UserPgsoftgame;
 use App\Models\PasswordOtp;
+use App\Models\UserLog;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -55,6 +56,7 @@ class PassportAuthController extends Controller
 
             $this->createUserWallet($user->id, $request->currency);
             $this->createPgSoftGameAccount($user->id);
+            $this->userLogCreate($user->id, request()->getClientIp());
 
             $token = $user->createToken('LaravelAuthApp')->accessToken;
     
@@ -104,6 +106,8 @@ class PassportAuthController extends Controller
             $name = auth()->user()->name;
             $user = auth()->user()->username;
             $id = auth()->user()->id;
+
+            // $this->userLogCreate($id, request()->getClientIp());
             return response()->json(['token' => $token, 'user' => $user, 'name' => $name, 'id' => $id, 'status' => 200], 200);
         } else {
             return response()->json(['message' => 'ไม่สามารถเข้าสู่ระบบได้ กรุณาตรวจสอบ', 'status' => 401], 401);
@@ -195,5 +199,15 @@ class PassportAuthController extends Controller
     private function getUserByPhone($phone)
     {
         return User::where('phone', $phone)->where('is_active', 'Y')->where('is_admin', 'N')->first();
+    }
+
+    private function userLogCreate($user, $ip)
+    {
+        UserLog::create([
+            'user_id' => $user,
+            'activity' => 'register',
+            'url' => '/register',
+            'ipaddress' => $ip
+        ]);
     }
 }

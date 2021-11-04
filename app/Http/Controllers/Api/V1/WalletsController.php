@@ -272,7 +272,7 @@ class WalletsController extends Controller
         }
     }
 
-    public function transferIn($_amount, $_user_id)
+    private function transferIn($_amount, $_user_id)
     {
         $pgsoftgame = Pgsoftgame::find(1);
         $user = User::find($_user_id);
@@ -294,7 +294,7 @@ class WalletsController extends Controller
         return $response;
     }
 
-    public function transferOut($_amount, $_user_id)
+    private function transferOut($_amount, $_user_id)
     {
         $pgsoftgame = Pgsoftgame::find(1);
         $user = User::find($_user_id);
