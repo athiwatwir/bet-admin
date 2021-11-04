@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\V1\WalletsController;
 use App\Http\Controllers\Api\V1\PaymentTransactionsController;
 use App\Http\Controllers\Api\V1\GamesController;
 use App\Http\Controllers\Api\V1\LogsController;
+use App\Http\Controllers\Api\V1\ServicesController;
 
 use App\Http\Controllers\Api\V2\PgSoftGameController;
 
@@ -64,6 +65,7 @@ Route::prefix('v1')->group(function () {
         Route::prefix('game')->group(function () {
             Route::get('play/{id}', [GamesController::class, 'playGame']);
             Route::get('login/{table}', [GamesController::class, 'gameLogin']);
+            Route::get('wallet/{game}', [WalletsController::class, 'getUserWallet_v2']);
         });
 
         Route::prefix('logs')->group(function () {
@@ -72,6 +74,10 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::post('test-get-token', [GamesController::class, 'createGameTk']);
+
+    Route::prefix('services')->group(function () {
+        Route::get('update-game-wallet', [ServicesController::class, 'updateGameWallet']);
+    });
 });
 
 Route::prefix('v2')->group(function () {

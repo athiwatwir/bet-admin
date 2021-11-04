@@ -432,4 +432,18 @@ class WalletsController extends Controller
 
         return response()->json(['status' => 401], 401);
     }
+
+    public function getUserWallet_v2(Request $request, $game)
+    {
+        $accessToken = auth()->user()->token();
+        $gameid = $this->getGameId($game);
+        $wallet = DB::table('wallets')->where('user_id', $accessToken->user_id)->where('game_id', $gameid[0]->id)->get();
+        // Log::debug($wallet);
+        return response()->json(['data' => $wallet[0]->amount], 200);
+    }
+
+    private function getGameId($game)
+    {
+        return DB::table('games')->where('name', $game)->get();
+    }
 }
