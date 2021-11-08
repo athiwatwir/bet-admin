@@ -159,3 +159,12 @@ function cancelEditAdminProfile() {
 function setImagePaymentTransactionSlip(url) {
     document.getElementById("slip_img").src = '/slip/' + url
 }
+
+function setDataUserLevel(id, name, deposit, withdraw, transfer, isdefault) {
+    document.querySelector('#userlevel_id').value = id
+    document.querySelector('#levelname_edit').value = name
+    document.querySelector('#limit_deposit_edit').value = deposit
+    document.querySelector('#limit_withdraw_edit').value = withdraw
+    document.querySelector('#limit_transfer_edit').value = transfer
+    document.querySelector('#is_default_edit').checked = isdefault === 'Y' ? true : false
+}

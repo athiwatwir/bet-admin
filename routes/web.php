@@ -15,6 +15,7 @@ use App\Http\Controllers\GameGroupsController;
 use App\Http\Controllers\GamesController;
 use App\Http\Controllers\FootballLeagueController;
 use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\UserLevelController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,6 +68,13 @@ Route::middleware(['auth:webadmin'])->group(function () {
     });
 
     Route::get('/members', [MembersController::class, 'index'])->name('members');
+
+    Route::prefix('/user-levels')->group(function () {
+        Route::get('/', [UserLevelController::class, 'index']);
+        Route::post('/create', [UserLevelController::class, 'create']);
+        Route::post('/edit', [UserLevelController::class, 'update']);
+        Route::get('/delete/{id}', [UserLevelController::class, 'delete']);
+    });
 
     Route::get('/cbank', [CBankAccountController::class, 'index'])->name('cbank');
     Route::get('/reports', [ReportsController::class, 'index'])->name('reports');
