@@ -20,9 +20,25 @@ class UsersController extends Controller
         $user = User::where('id', '=', $accessToken->user_id)
                     ->select('name', 'username', 'phone', 'line')
                     ->first();
-        
+
         if(isset($user)){
             return response()->json(['user' => $user, 'status' => 200], 200);
+        }else{
+            return response()->json(['message' => 'เกิดข้อผิดพลาดให้การเรียกข้อมูล กรุณาลองใหม่อีกครั้ง', 'status' => 401], 401);
+        }
+    }
+
+    public function level(Request $request)
+    {
+        $accessToken = auth()->user()->token();
+        // Log::debug('user_id = '.$accessToken->user_id);
+        $level = User::leftJoin('user_levels', 'users.user_level_id', '=', 'user_levels.id')
+                    ->where('users.id', '=', $accessToken->user_id)
+                    ->select('user_levels.name', 'user_levels.limit_transfer', 'user_levels.limit_withdraw', 'user_levels.limit_deposit')
+                    ->first();
+                    
+        if(isset($level)){
+            return response()->json(['level' => $level, 'status' => 200], 200);
         }else{
             return response()->json(['message' => 'เกิดข้อผิดพลาดให้การเรียกข้อมูล กรุณาลองใหม่อีกครั้ง', 'status' => 401], 401);
         }

@@ -161,56 +161,61 @@ class WalletsController extends Controller
     {
         $accessToken = auth()->user()->token();
         $default_wallet = $this->defaultWallet();
+        $level = $this->userLevel($accessToken->user_id);
 
-        if($default_wallet->amount >= $request->amount) {
-            $default_wallet_amount = $default_wallet->amount - $request->amount;
+        if($request->amount < $level->limit_transfer) {
+            if($default_wallet->amount >= $request->amount) {
+                $default_wallet_amount = $default_wallet->amount - $request->amount;
 
-            $tranIn = $this->transferIn($request->amount, $accessToken->user_id);
+                $tranIn = $this->transferIn($request->amount, $accessToken->user_id);
 
-            if($tranIn['error'] == null) {
-                $wallet = Wallet::find($request->id);
+                if($tranIn['error'] == null) {
+                    $wallet = Wallet::find($request->id);
 
-                $is_amount = $wallet->amount + $request->amount;
+                    $is_amount = $wallet->amount + $request->amount;
 
-                $wallet->update(['amount' => $is_amount]);
+                    $wallet->update(['amount' => $is_amount]);
 
-                $trans = DB::table('payment_transactions')
-                    ->insert([
-                        'user_id' => $accessToken->user_id,
-                        'from_wallet_id' => $default_wallet->id,
-                        'to_wallet_id' => $wallet->id,
-                        'action_date' => date('Y-m-d H:i:s'),
-                        'code' => 'TRANSFER',
-                        'amount' => $request->amount,
-                        'status' => 'CO',
-                        'created_at' => date('Y-m-d H:i:s'),
-                        'updated_at' => date('Y-m-d H:i:s'),
-                ]);
-                $transId = DB::getPdo()->lastInsertId();
-
-                if($wallet){
-                    Wallet::find($default_wallet->id)->update(['amount' => $default_wallet_amount]);
-
-                    PaymentTransactionLog::create([
-                        'payment_transaction_id' => $transId,
-                        'user_id' => $accessToken->user_id,
-                        'from_wallet_id' => $default_wallet->id,
-                        'to_wallet_id' => $wallet->id,
-                        'code' => 'TRANSFER',
-                        'amount' => $request->amount,
-                        'status' => 'CO'
+                    $trans = DB::table('payment_transactions')
+                        ->insert([
+                            'user_id' => $accessToken->user_id,
+                            'from_wallet_id' => $default_wallet->id,
+                            'to_wallet_id' => $wallet->id,
+                            'action_date' => date('Y-m-d H:i:s'),
+                            'code' => 'TRANSFER',
+                            'amount' => $request->amount,
+                            'status' => 'CO',
+                            'created_at' => date('Y-m-d H:i:s'),
+                            'updated_at' => date('Y-m-d H:i:s'),
                     ]);
+                    $transId = DB::getPdo()->lastInsertId();
 
-                    return response()->json(['status' => 200], 200);
+                    if($wallet){
+                        Wallet::find($default_wallet->id)->update(['amount' => $default_wallet_amount]);
+
+                        PaymentTransactionLog::create([
+                            'payment_transaction_id' => $transId,
+                            'user_id' => $accessToken->user_id,
+                            'from_wallet_id' => $default_wallet->id,
+                            'to_wallet_id' => $wallet->id,
+                            'code' => 'TRANSFER',
+                            'amount' => $request->amount,
+                            'status' => 'CO'
+                        ]);
+
+                        return response()->json(['status' => 200], 200);
+                    }
+
+                    return response()->json(['status' => 404], 404);
                 }
+                
+                return response()->json(['message' => $tranIn['error']['message']], 400);
 
-                return response()->json(['status' => 404], 404);
+            }else{
+                return response()->json(['status' => 301], 301);
             }
-            
-            return response()->json(['message' => $tranIn['error']['message']], 400);
-
         }else{
-            return response()->json(['status' => 301], 301);
+            return response()->json(['message' => 'ยอดเงินโอนเกินกว่ายอดสูงสุดที่กำหนดไว้', 'status' => 400], 400);
         }
     }
 
@@ -218,57 +223,62 @@ class WalletsController extends Controller
     {
         $accessToken = auth()->user()->token();
         $from_wallet = Wallet::find($request->id);
+        $level = $this->userLevel($accessToken->user_id);
 
-        if($from_wallet->amount >= $request->amount) {
-            $from_wallet_amount = $from_wallet->amount - $request->amount;
+        if($request->amount < $level->limit_transfer) {
+            if($from_wallet->amount >= $request->amount) {
+                $from_wallet_amount = $from_wallet->amount - $request->amount;
 
-            $tranOut = $this->transferOut($request->amount, $accessToken->user_id);
+                $tranOut = $this->transferOut($request->amount, $accessToken->user_id);
 
-            if($tranOut['error'] == null) {
-                $wallet = Wallet::find($request->to);
-                $is_amount = $wallet->amount + $request->amount;
+                if($tranOut['error'] == null) {
+                    $wallet = Wallet::find($request->to);
+                    $is_amount = $wallet->amount + $request->amount;
 
-                $trans = DB::table('payment_transactions')
-                        ->insert([
+                    $trans = DB::table('payment_transactions')
+                            ->insert([
+                                'user_id' => $accessToken->user_id,
+                                'from_wallet_id' => $request->id,
+                                'to_wallet_id' => $request->to,
+                                'action_date' => date('Y-m-d H:i:s'),
+                                'code' => 'TRANSFER',
+                                'amount' => $request->amount,
+                                'status' => 'CO',
+                                'created_at' => date('Y-m-d H:i:s'),
+                                'updated_at' => date('Y-m-d H:i:s'),
+                            ]);
+                    $transId = DB::getPdo()->lastInsertId();
+
+                    if($trans) {
+                        $wallet->update(['amount' => $is_amount]);
+
+                        PaymentTransactionLog::create([
+                            'payment_transaction_id' => $transId,
                             'user_id' => $accessToken->user_id,
                             'from_wallet_id' => $request->id,
                             'to_wallet_id' => $request->to,
-                            'action_date' => date('Y-m-d H:i:s'),
                             'code' => 'TRANSFER',
                             'amount' => $request->amount,
-                            'status' => 'CO',
-                            'created_at' => date('Y-m-d H:i:s'),
-                            'updated_at' => date('Y-m-d H:i:s'),
+                            'status' => 'CO'
                         ]);
-                $transId = DB::getPdo()->lastInsertId();
 
-                if($trans) {
-                    $wallet->update(['amount' => $is_amount]);
+                        if($wallet){
+                            $from_wallet->update(['amount' => $from_wallet_amount]);
 
-                    PaymentTransactionLog::create([
-                        'payment_transaction_id' => $transId,
-                        'user_id' => $accessToken->user_id,
-                        'from_wallet_id' => $request->id,
-                        'to_wallet_id' => $request->to,
-                        'code' => 'TRANSFER',
-                        'amount' => $request->amount,
-                        'status' => 'CO'
-                    ]);
+                            return response()->json(['status' => 200], 200);
+                        }
 
-                    if($wallet){
-                        $from_wallet->update(['amount' => $from_wallet_amount]);
-
-                        return response()->json(['status' => 200], 200);
+                        return response()->json(['status' => 404], 404);
                     }
-
-                    return response()->json(['status' => 404], 404);
                 }
+
+                return response()->json(['message' => $tranOut['error']['message']], 400);
+
+            }else{
+                return response()->json(['status' => 301], 301);
             }
-
-            return response()->json(['message' => $tranOut['error']['message']], 400);
-
         }else{
-            return response()->json(['status' => 301], 301);
+            return response()->json(['message' => 'ยอดเงินโอนเกินกว่ายอดสูงสุดที่กำหนดไว้', 'status' => 400], 400);
         }
     }
 
@@ -358,79 +368,98 @@ class WalletsController extends Controller
         return response()->json(['status' => 200], 200);
     }
 
+    private function userLevel($id)
+    {
+        $level = DB::table('users')
+                    ->leftJoin('user_levels', 'users.user_level_id', '=', 'user_levels.id')
+                    ->where('users.id', $id)
+                    ->first();
+        return $level;
+    }
+
     public function depositWallet(Request $request)
     {
         $accessToken = auth()->user()->token();
         $default_wallet = $this->defaultWallet();
+        $level = $this->userLevel($accessToken->user_id);
 
-        $fileName = time().'_'.$request->file('attachment')->getClientOriginalName();
-        $request->file('attachment')->move(public_path('/slips'), $fileName);
+        if($request->amount < $level->limit_deposit) {
+            $fileName = time().'_'.$request->file('attachment')->getClientOriginalName();
+            $request->file('attachment')->move(public_path('/slips'), $fileName);
 
-        $trans = DB::table('payment_transactions')
-                    ->insert([
-                        'user_id' => $accessToken->user_id,
-                        'c_bank_account_id' => $request->c_bank_account_id,
-                        'action_date' => date('Y-m-d H:i:s'),
-                        'code' => 'DEPOSIT',
-                        'amount' => $request->amount,
-                        'slip' => $fileName,
-                        'created_at' => date('Y-m-d H:i:s'),
-                        'updated_at' => date('Y-m-d H:i:s'),
-                    ]);
-        $transId = DB::getPdo()->lastInsertId();
-        
-        if($trans) {
-            PaymentTransactionLog::create([
-                'payment_transaction_id' => $transId,
-                'user_id' => $accessToken->user_id,
-                'to_wallet_id' => $default_wallet->id,
-                'c_bank_account_id' => $request->c_bank_account_id,
-                'code' => 'DEPOSIT',
-                'amount' => $request->amount
-            ]);
+            $trans = DB::table('payment_transactions')
+                        ->insert([
+                            'user_id' => $accessToken->user_id,
+                            'c_bank_account_id' => $request->c_bank_account_id,
+                            'action_date' => date('Y-m-d H:i:s'),
+                            'code' => 'DEPOSIT',
+                            'amount' => $request->amount,
+                            'slip' => $fileName,
+                            'created_at' => date('Y-m-d H:i:s'),
+                            'updated_at' => date('Y-m-d H:i:s'),
+                        ]);
+            $transId = DB::getPdo()->lastInsertId();
+            
+            if($trans) {
+                PaymentTransactionLog::create([
+                    'payment_transaction_id' => $transId,
+                    'user_id' => $accessToken->user_id,
+                    'to_wallet_id' => $default_wallet->id,
+                    'c_bank_account_id' => $request->c_bank_account_id,
+                    'code' => 'DEPOSIT',
+                    'amount' => $request->amount
+                ]);
 
-            return response()->json(['status' => 200], 200);
+                return response()->json(['status' => 200], 200);
+            }
+
+            return response()->json(['status' => 401], 401);
+        }else{
+            return response()->json(['message' => 'ยอดฝากเงินเกินกว่ายอดสูงสุดที่กำหนดไว้', 'status' => 400], 400);
         }
-
-        return response()->json(['status' => 401], 401);
     }
 
     public function withdrawWallet(Request $request)
     {
         $accessToken = auth()->user()->token();
         $default_wallet = $this->defaultWallet();
+        $level = $this->userLevel($accessToken->user_id);
 
-        if($default_wallet->amount >= $request->amount) {
-            $is_amount = $default_wallet->amount - $request->amount;
+        if($request->amount < $level->limit_withdraw) {
+            if($default_wallet->amount >= $request->amount) {
+                $is_amount = $default_wallet->amount - $request->amount;
 
-            $trans = DB::table('payment_transactions')
-                    ->insert([
+                $trans = DB::table('payment_transactions')
+                        ->insert([
+                            'user_id' => $accessToken->user_id,
+                            'user_banking_id' => $request->user_bank_id,
+                            'action_date' => date('Y-m-d H:i:s'),
+                            'code' => 'WITHDRAW',
+                            'amount' => $request->amount,
+                            'created_at' => date('Y-m-d H:i:s'),
+                            'updated_at' => date('Y-m-d H:i:s'),
+                        ]);
+
+                $transId = DB::getPdo()->lastInsertId();
+                if($trans) {
+                    Wallet::find($default_wallet->id)->update(['amount' => $is_amount]);
+                    PaymentTransactionLog::create([
+                        'payment_transaction_id' => $transId,
                         'user_id' => $accessToken->user_id,
                         'user_banking_id' => $request->user_bank_id,
-                        'action_date' => date('Y-m-d H:i:s'),
                         'code' => 'WITHDRAW',
-                        'amount' => $request->amount,
-                        'created_at' => date('Y-m-d H:i:s'),
-                        'updated_at' => date('Y-m-d H:i:s'),
+                        'amount' => $request->amount
                     ]);
-
-            $transId = DB::getPdo()->lastInsertId();
-            if($trans) {
-                Wallet::find($default_wallet->id)->update(['amount' => $is_amount]);
-                PaymentTransactionLog::create([
-                    'payment_transaction_id' => $transId,
-                    'user_id' => $accessToken->user_id,
-                    'user_banking_id' => $request->user_bank_id,
-                    'code' => 'WITHDRAW',
-                    'amount' => $request->amount
-                ]);
-                return response()->json(['status' => 200], 200);
+                    return response()->json(['status' => 200], 200);
+                }
+            }else{
+                return response()->json(['status' => 301], 301);
             }
-        }else{
-            return response()->json(['status' => 301], 301);
-        }
 
-        return response()->json(['status' => 401], 401);
+            return response()->json(['status' => 401], 401);
+        }else{
+            return response()->json(['message' => 'ยอดถอนเงินเกินกว่ายอดสูงสุดที่กำหนดไว้', 'status' => 400], 400);
+        }
     }
 
     public function getUserWallet_v2(Request $request, $game)

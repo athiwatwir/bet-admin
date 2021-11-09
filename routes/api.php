@@ -50,6 +50,7 @@ Route::prefix('v1')->group(function () {
             Route::get('wallets', [WalletsController::class, 'userWallets']);
             Route::get('delete-wallet/{id}', [WalletsController::class, 'deleteWallet']);
             Route::get('histories-wallet', [PaymentTransactionsController::class, 'userPaymentTransactions']);
+            Route::get('level', [UsersController::class, 'level']);
 
             Route::post('update', [UsersController::class, 'update']);
             Route::post('change-password', [UsersController::class, 'changePassword']);
