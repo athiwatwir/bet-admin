@@ -70,7 +70,7 @@ Route::prefix('v1')->group(function () {
         });
 
         Route::prefix('logs')->group(function () {
-            Route::post('user-activities', [LogsController::class, 'updateUserLog']);
+            Route::post('user-activities', [LogsController::class, 'userLogs']);
         });
     });
 
