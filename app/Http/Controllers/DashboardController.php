@@ -45,7 +45,7 @@ class DashboardController extends Controller
         $cardInfo = [
             'userTotalAmt'=>$userCount,
             'newUserTotalAmt'=>$newUserCount,
-            'depositAmt'=>isset($depositAmt->total_amt)?$depositAmt->total_am:0,
+            'depositAmt'=>isset($depositAmt->total_amt)?$depositAmt->total_amt:0,
             'withdrawAmt'=>isset($withdrawAmt->total_amt)?$withdrawAmt->total_amt:0
         ];
 
