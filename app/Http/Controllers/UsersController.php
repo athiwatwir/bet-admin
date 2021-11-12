@@ -82,7 +82,9 @@ class UsersController extends Controller
             'player_name' => $username,
         ]);
 
-        return $response['data']['totalBalance'];
+        if($response['error'] == null) {
+            return $response['data']['totalBalance'];
+        }
     }
 
     public function editProfile(Request $request)
