@@ -1,6 +1,6 @@
 @extends('layouts.core')
 
-@section('title', 'รายการบัญชีธนาคารสำหรับรับเงินโอน')
+@section('title', 'รายการบัญชีธนาคาร')
 
 @section('content')
 <div class="row gutters-sm">
@@ -17,7 +17,7 @@
                 </div>
 
                 <span class="d-block text-muted text-truncate font-weight-medium pt-1">
-                    รายการบัญชีสำหรับรับเงินโอนทั้งหมด
+                    
                 </span>
             </div>
             <!-- /portlet : header -->
