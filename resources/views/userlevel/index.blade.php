@@ -1,6 +1,6 @@
 @extends('layouts.core')
 
-@section('title', 'การจัดการเลเวลสมาชิก')
+@section('title', 'การจัดการกลุ่มลูกค้า')
 
 @section('content')
 <div class="row gutters-sm">
@@ -22,13 +22,13 @@
                 <div class="float-end">
 
                     <a href="message-write.html" class="btn btn-sm btn-primary btn-pill px-2 py-1 fs--15 mt--n3" data-toggle="modal" data-target="#createUserLevel">
-                        + เพิ่มเลเวล
+                        + เพิ่มกลุ่มลูกค้า
                     </a>
 
                 </div>
 
                 <span class="d-block text-muted text-truncate font-weight-medium pt-1">
-                    เลเวลทั้งหมด
+                    กลุ่มลูกค้าทั้งหมด
                 </span>
             </div>
             <!-- /portlet : header -->
@@ -48,7 +48,7 @@
                                 </th>
                                 <th>
                                     <span class="px-2 p-0-xs">
-                                        เลเวล
+                                        กลุ่มลูกค้า
                                     </span>
                                 </th>
                                 <th class="hidden-lg-down text-center">ยอดฝากสูงสุด</th>

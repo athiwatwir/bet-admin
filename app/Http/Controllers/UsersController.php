@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use App\Http\Controllers\PaginateController;
 use App\Http\Controllers\PaymentTransactionController;
 use App\Http\Controllers\WalletsController;
+use App\Http\Controllers\UserLevelController;
 
 class UsersController extends Controller
 {
@@ -65,11 +66,13 @@ class UsersController extends Controller
         $transactions = (new PaymentTransactionController)->getPaymentTransactionByUserId($request->id);
         $banks = $this->getBanks();
         $pgSoftGameWallet = $this->getPgsoftgameWallet($user->username);
+        $levels = (new UserLevelController)->getAllUserLevel();
+        // Log::debug($level);
 
         return view('user.view', [
                     'profile' => $user, 'ubank' => $ubank, 'banks' => $banks, 'username' => $request->username,
                     'wallets' => $wallets, 'default_wallet' => $default_wallet, 'pg_wallet' => $pgSoftGameWallet,
-                    'transaction' => $transactions
+                    'transaction' => $transactions, 'levels' => $levels
                     ]);
     }
 
@@ -103,6 +106,7 @@ class UsersController extends Controller
                     'name' => $request->name,
                     'phone' => $request->phone,
                     'line' => $request->line,
+                    'user_level_id' => $request->level
                 ]);
 
         if($user) return redirect()->back()->with('success', 'แก้ไขรายละเอียดผู้ใช้งานเรียบร้อยแล้ว');

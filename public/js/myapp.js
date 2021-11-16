@@ -115,6 +115,7 @@ function editProfile() {
     document.getElementById("name").disabled = false
     document.getElementById("phone").disabled = false
     document.getElementById("line").disabled = false
+    document.querySelector('#level').disabled = false
     document.getElementById("is-edit-profile-btn").style.display = "block";
 }
 
@@ -122,6 +123,7 @@ function cancelEditProfile() {
     document.getElementById("name").disabled = true
     document.getElementById("phone").disabled = true
     document.getElementById("line").disabled = true
+    document.querySelector('#level').disabled = true
     document.getElementById("is-edit-profile-btn").style.display = "none";
 }
 
