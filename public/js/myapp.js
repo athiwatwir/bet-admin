@@ -115,6 +115,7 @@ function editProfile() {
     document.getElementById("name").disabled = false
     document.getElementById("phone").disabled = false
     document.getElementById("line").disabled = false
+    document.querySelector('#level').disabled = false
     document.getElementById("is-edit-profile-btn").style.display = "block";
 }
 
@@ -122,6 +123,7 @@ function cancelEditProfile() {
     document.getElementById("name").disabled = true
     document.getElementById("phone").disabled = true
     document.getElementById("line").disabled = true
+    document.querySelector('#level').disabled = true
     document.getElementById("is-edit-profile-btn").style.display = "none";
 }
 
@@ -156,8 +158,14 @@ function cancelEditAdminProfile() {
 }
 // END Admin Profile
 
-function setImagePaymentTransactionSlip(url) {
-    document.getElementById("slip_img").src = '/slip/' + url
+function setImagePaymentTransactionSlip(url, bank_name, bank_name_en, account_name, account_number, date, time) {
+    let newDate = date.split("-")
+    document.querySelector('#bank_name').innerHTML = bank_name + ' (' + bank_name_en + ')'
+    document.querySelector('#bank_account_name').innerHTML = account_name
+    document.querySelector('#bank_account_number').innerHTML = account_number + ' <small>(4 ตัวท้าย)</small>'
+    document.querySelector('#bank_payment_date').innerHTML = newDate[2] + '/' + newDate[1] + '/' + newDate[0]
+    document.querySelector('#bank_payment_time').innerHTML = time
+    document.getElementById("slip_img").src = '/slips/' + url
 }
 
 function setDataUserLevel(id, name, deposit, withdraw, transfer, isdefault) {

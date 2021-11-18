@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -49,6 +50,7 @@ class GamesController extends Controller
 
         $games = DB::table('games')
                 ->insert([
+                    'id' => Str::uuid(),
                     'game_group_id' => $request->game_group_id,
                     'name' => $request->name,
                     'url' => $request->url,

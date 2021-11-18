@@ -100,6 +100,22 @@
                         </div>
                     </div>
 
+                    <div class="form-group row">
+                        <label for="level" class="col-md-3 col-form-label text-md-right">{{ __('กลุ่มลูกค้า') }}</label>
+
+                        <div class="col-md-9">
+                            <select id="level" name="level" class="form-control select-form" disabled>
+                                @foreach($levels as $level)
+                                    @if($level->id == $profile->user_level_id)
+                                        <option value="{{ $level->id }}" selected>{{ $level->name }}</option>
+                                    @else
+                                        <option value="{{ $level->id }}">{{ $level->name }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
                     <input type="hidden" name="id" value="{{ $profile->id }}">
 
                     <div id="is-edit-profile-btn" class="form-group row" style="display: none;">
@@ -133,7 +149,7 @@
                         <label for="banks" class="col-md-3 col-form-label text-md-right">{{ __('ธนาคาร') }} <span class="text-danger">*</span></label>
 
                         <div class="col-md-9">
-                            <select id="banks" name="banks" class="form-control" disabled>
+                            <select id="banks" name="banks" class="form-control select-form" disabled>
                                 @if(isset($ubank))
                                     @foreach($banks as $bank)
                                         @if($bank->id == $ubank->bank_id)
@@ -218,5 +234,8 @@
     }
     .form-control {
         height: calc(0.5em + 1.56rem + 12px);
+    }
+    .select-form:disabled {
+        background: #e9ecef !important;
     }
 </style>

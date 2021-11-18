@@ -95,4 +95,14 @@ class UserLevelController extends Controller
     {
         UserLevel::find($id)->delete();
     }
+
+    public function getAllUserLevel()
+    {
+        return UserLevel::get();
+    }
+
+    public function getUserLevelById($id)
+    {
+        return UserLevel::find($id)->get();
+    }
 }

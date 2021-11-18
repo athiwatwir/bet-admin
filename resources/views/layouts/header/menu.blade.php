@@ -45,9 +45,9 @@
                         <li class="dropdown-item text-wrap">
                             <a href="{{ url('/user-levels') }}" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
                                 <i class="fi fi-users float-start fs--25 mt--n2"></i>
-                                <span class="h5-xs d-block fs--18">เลเวล</span>
+                                <span class="h5-xs d-block fs--18">กลุ่มลูกค้า</span>
                                 <span class="fs--11 text-muted text-uppercase">
-                                    เลเวลสมาชิก
+                                    กลุ่มลูกค้า
                                 </span>
                             </a>
                         </li>

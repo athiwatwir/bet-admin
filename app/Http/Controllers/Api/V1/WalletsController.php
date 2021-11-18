@@ -163,7 +163,7 @@ class WalletsController extends Controller
         $default_wallet = $this->defaultWallet();
         $level = $this->userLevel($accessToken->user_id);
 
-        if($request->amount < $level->limit_transfer) {
+        if($request->amount <= $level->limit_transfer) {
             if($default_wallet->amount >= $request->amount) {
                 $default_wallet_amount = $default_wallet->amount - $request->amount;
 
@@ -225,7 +225,7 @@ class WalletsController extends Controller
         $from_wallet = Wallet::find($request->id);
         $level = $this->userLevel($accessToken->user_id);
 
-        if($request->amount < $level->limit_transfer) {
+        if($request->amount <= $level->limit_transfer) {
             if($from_wallet->amount >= $request->amount) {
                 $from_wallet_amount = $from_wallet->amount - $request->amount;
 
@@ -383,14 +383,21 @@ class WalletsController extends Controller
         $default_wallet = $this->defaultWallet();
         $level = $this->userLevel($accessToken->user_id);
 
-        if($request->amount < $level->limit_deposit) {
+        if($request->amount <= $level->limit_deposit) {
             $fileName = time().'_'.$request->file('attachment')->getClientOriginalName();
             $request->file('attachment')->move(public_path('/slips'), $fileName);
 
+            $transId = Str::uuid();
             $trans = DB::table('payment_transactions')
                         ->insert([
+                            'id' => $transId,
                             'user_id' => $accessToken->user_id,
                             'c_bank_account_id' => $request->c_bank_account_id,
+                            'from_bank_id' => $request->bank_id,
+                            'account_name' => $request->account_name,
+                            'account_number' => $request->account_number,
+                            'payment_date' => $request->payment_date,
+                            'payment_time' => $request->payment_time,
                             'action_date' => date('Y-m-d H:i:s'),
                             'code' => 'DEPOSIT',
                             'amount' => $request->amount,
@@ -398,7 +405,7 @@ class WalletsController extends Controller
                             'created_at' => date('Y-m-d H:i:s'),
                             'updated_at' => date('Y-m-d H:i:s'),
                         ]);
-            $transId = DB::getPdo()->lastInsertId();
+            
             
             if($trans) {
                 PaymentTransactionLog::create([
@@ -425,7 +432,7 @@ class WalletsController extends Controller
         $default_wallet = $this->defaultWallet();
         $level = $this->userLevel($accessToken->user_id);
 
-        if($request->amount < $level->limit_withdraw) {
+        if($request->amount <= $level->limit_withdraw) {
             if($default_wallet->amount >= $request->amount) {
                 $is_amount = $default_wallet->amount - $request->amount;
 

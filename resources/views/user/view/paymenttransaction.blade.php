@@ -185,7 +185,11 @@
                                     <td class="hidden-lg-down text-center">
                                         @if(isset($trans->slip))
                                             <a href="#!" title="ดูสลิปโอนเงิน" 
-                                                data-toggle="modal" data-target="#paymentSlipModal" onClick="setImagePaymentTransactionSlip('{{ $trans->slip }}')">
+                                                data-toggle="modal" data-target="#paymentSlipModal" 
+                                                onClick="setImagePaymentTransactionSlip(
+                                                    '{{ $trans->slip }}', '{{ $trans->from_bank_nane }}', '{{ $trans->from_bank_name_en }}', 
+                                                    '{{ $trans->from_account_name }}', '{{ $trans->from_account_number }}', 
+                                                    '{{ $trans->payment_date }}', '{{ $trans->payment_time }}')">
                                                 <i class="fi fi-image"></i>
                                             </a>
                                         @endif
