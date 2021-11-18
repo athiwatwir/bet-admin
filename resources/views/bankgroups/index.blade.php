@@ -57,42 +57,43 @@
                         </thead>
 
                         <tbody id="item_list">
+                            @if(isset($group_default))
+                                <tr class="text-dark">
+                                    <td class="hidden-lg-down text-center">
+                                        
+                                    </td>
 
-                            <tr class="text-dark">
-                                <td class="hidden-lg-down text-center">
-                                    
-                                </td>
+                                    <td style="line-height: 17px;">
+                                        <p class="mb-0 d-flex">
+                                            <a href="{{ route('bankgroup-view', ['id' => $group_default->id]) }}">
+                                                <strong class="text-primary mr-2">{{ $group_default->name }}</strong> 
+                                            </a>
+                                            <small>[ {{ $group_default->banks_count }} ]</small>
+                                            <small class="ml-2">
+                                                <span class="badge badge-primary font-weight-normal">ค่าเริ่มต้น</span>
+                                            </small>
+                                        </p>
 
-                                <td style="line-height: 17px;">
-                                    <p class="mb-0 d-flex">
-                                        <a href="{{ route('bankgroup-view', ['id' => $group_default->id]) }}">
-                                            <strong class="text-primary mr-2">{{ $group_default->name }}</strong> 
-                                        </a>
-                                        <small>[ {{ $group_default->banks_count }} ]</small>
-                                        <small class="ml-2">
-                                            <span class="badge badge-primary font-weight-normal">ค่าเริ่มต้น</span>
-                                        </small>
-                                    </p>
+                                        <!-- MOBILE ONLY -->
+                                        <div class="fs--13 d-block d-xl-none">
+                                            <span class="badge badge-success font-weight-normal mt-1">เปิดใช้งาน</span>
+                                        </div>
+                                        <!-- /MOBILE ONLY -->
+                                    </td>
 
-                                    <!-- MOBILE ONLY -->
-                                    <div class="fs--13 d-block d-xl-none">
+                                    <td class="hidden-lg-down text-center">
                                         <span class="badge badge-success font-weight-normal mt-1">เปิดใช้งาน</span>
-                                    </div>
-                                    <!-- /MOBILE ONLY -->
-                                </td>
+                                    </td>
 
-                                <td class="hidden-lg-down text-center">
-                                    <span class="badge badge-success font-weight-normal mt-1">เปิดใช้งาน</span>
-                                </td>
+                                    <td class="text-center">
+                                        <a class="text-truncate mr-2" href="#!" title="แก้ไข" data-toggle="modal" data-target="#bankGroupEditModal" 
+                                            onClick="setBankGroupDataEdit('{{ $group_default->id }}', '{{ $group_default->name }}', '{{ $group_default->isactive }}', '{{ $group_default->isdefault }}')">
+                                            <i class="fi fi-pencil"></i>
+                                        </a>
+                                    </td>
 
-                                <td class="text-center">
-                                    <a class="text-truncate mr-2" href="#!" title="แก้ไข" data-toggle="modal" data-target="#bankGroupEditModal" 
-                                        onClick="setBankGroupDataEdit('{{ $group_default->id }}', '{{ $group_default->name }}', '{{ $group_default->isactive }}', '{{ $group_default->isdefault }}')">
-                                        <i class="fi fi-pencil"></i>
-                                    </a>
-                                </td>
-
-                            </tr>
+                                </tr>
+                            @endif
                             @foreach($bank_groups as $key => $bgroup)
                                 <tr id="message_id_{{ $key }}" class="text-dark">
 
