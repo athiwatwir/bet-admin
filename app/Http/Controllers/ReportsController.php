@@ -13,8 +13,12 @@ class ReportsController extends Controller
         $this->middleware('auth');
     }
 
+    public $ReportTypes = [
+        'P001'=>'รายการเคลื่อนไหวทางการเงิน'
+    ];
+
     public function index(){
 
-         return view('reports.index', []);
+         return view('reports.index', ['reportTypes' => $this->ReportTypes]);
     }
 }
