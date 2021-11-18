@@ -15,10 +15,11 @@
                 </div>
 
                 <span class="d-block text-muted text-truncate font-weight-medium pt-1">
-                    <a href="#" class="btn btn-sm btn-primary btn-pill mb-1 mr-3 ml-3">รายการทั้งหมด</a>
-                    <a href="{{ route('transaction-deposit') }}" class="btn btn-sm btn-primary btn-soft btn-pill mb-1 mr-3">รายการเติมเงิน</a>
-                    <a href="#" class="btn btn-sm btn-primary btn-soft btn-pill mb-1 mr-3">รายการโอนในระบบ</a>
-                    <a href="#" class="btn btn-sm btn-primary btn-soft btn-pill mb-1 mr-3">รายการถอนเงิน</a>
+                    <a href="@if($type == '') #! @else {{ route('transaction-all') }} @endif" class="btn btn-sm btn-primary @if($type == '') @else btn-soft @endif btn-pill mb-1 mr-3 ml-3">รายการทั้งหมด</a>
+                    <a href="@if($type == 'DEPOSIT') #! @else {{ route('transaction-deposit') }} @endif" class="btn btn-sm btn-primary @if($type == 'DEPOSIT') @else btn-soft @endif btn-pill mb-1 mr-3">รายการเติมเงิน</a>
+                    <a href="@if($type == 'TRANSFER') #! @else {{ route('transaction-transfer') }} @endif" class="btn btn-sm btn-primary @if($type == 'TRANSFER') @else btn-soft @endif btn-pill mb-1 mr-3">รายการโอนในระบบ</a>
+                    <a href="@if($type == 'WITHDRAW') #! @else {{ route('transaction-withdraw') }} @endif" class="btn btn-sm btn-primary @if($type == 'WITHDRAW') @else btn-soft @endif btn-pill mb-1 mr-3">รายการถอนเงิน</a>
+                    <a href="@if($type == 'ADJUST') #! @else {{ route('transaction-adjust') }} @endif" class="btn btn-sm btn-primary @if($type == 'ADJUST') @else btn-soft @endif btn-pill mb-1 mr-3">รายการปรับจากผู้ดูแล</a>
                 </span>
             </div>
             <!-- /portlet : header -->
@@ -29,9 +30,6 @@
                 <div class="table-responsive mt-2">
 
                     <div class="row">
-                        <div class="col-md-12 px-4">
-                            <h5>รายการเคลื่อนไหวทางการเงินทั้งหมด</h5>
-                        </div>
                         <div class="col-md-12 px-5">
                             <table class="table table-align-middle border-bottom mb-6 mt-2">
 
@@ -65,15 +63,23 @@
 
                                             <td style="line-height: 17px;">
                                                 <p class="mb-0">
-                                                    <span class="badge 
-                                                                @if($trans->code == 'DEPOSIT') badge-success 
-                                                                @elseif($trans->code == 'WITHDRAW') badge-danger 
-                                                                @elseif($trans->code == 'TRANSFER') badge-warning
-                                                                @elseif($trans->code == 'ADJUST') badge-primary
-                                                                @endif 
-                                                                font-weight-normal fs--16"
-                                                    >{{ $trans->code }}
-                                                    </span>
+                                                    @if($trans->code == 'DEPOSIT')
+                                                        <span class="badge badge-success font-weight-normal fs--16">
+                                                            เติมเงิน
+                                                        </span>
+                                                    @elseif($trans->code == 'WITHDRAW')
+                                                        <span class="badge badge-danger font-weight-normal fs--16">
+                                                            ถอนเงิน
+                                                        </span>
+                                                    @elseif($trans->code == 'TRANSFER')
+                                                        <span class="badge badge-warning font-weight-normal fs--16">
+                                                            โอนเงินในระบบ
+                                                        </span>
+                                                    @elseif($trans->code == 'ADJUST')
+                                                        <span class="badge badge-primary font-weight-normal fs--16">
+                                                            ปรับเปลี่ยน
+                                                        </span>
+                                                    @endif
                                                 </p>
                                                 @if(isset($trans->description))
                                                     <small><small><span class="text-danger">**</span> {{ $trans->description }}</small></small>

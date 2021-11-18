@@ -92,7 +92,11 @@ Route::middleware(['auth:webadmin'])->group(function () {
     });
 
     Route::get('/cbank', [CBankAccountController::class, 'index'])->name('cbank');
-    Route::get('/reports', [ReportsController::class, 'index'])->name('reports');
+
+    Route::prefix('/reports')->group(function () {
+        Route::get('/', [ReportsController::class, 'index'])->name('reports');
+        Route::get('/search', [ReportsController::class, 'search']);
+    });
 
     Route::get('/banks', [BanksController::class, 'index'])->name('banks');
     Route::get('/banks/active/{id}/{bank_name}', [BanksController::class, 'active']);
@@ -114,6 +118,7 @@ Route::middleware(['auth:webadmin'])->group(function () {
         Route::get('/deposit', [PaymentTransactionController::class, 'deposit'])->name('transaction-deposit');
         Route::get('/transfer', [PaymentTransactionController::class, 'transfer'])->name('transaction-transfer');
         Route::get('/withdraw', [PaymentTransactionController::class, 'withdraw'])->name('transaction-withdraw');
+        Route::get('/adjust', [PaymentTransactionController::class, 'adjust'])->name('transaction-adjust');
     });
 
     Route::prefix('/games')->group(function () {

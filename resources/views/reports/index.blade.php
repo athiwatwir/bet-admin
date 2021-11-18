@@ -6,7 +6,7 @@
 	<div class="col-12 col-md-8 offset-md-2 mb-3 bg-light p-2 rounded">
 		<div class="portlet">
 			<div class="portlet-body">
-				<form method="GET">
+				<form method="GET" action="{{ url('/reports/search') }}">
 					<div class="row">
 						<div class="col-12 col-md-4 form-group">
 
@@ -77,15 +77,15 @@
 		</div>
 	</div>
 </div>
-<?php if(isset($results)){ ?>
+@if(isset($results))
 <div class="row gutters-sm">
 	<div class="col-12">
 		<div class="portlet">
-			<div class="portlet-body">
-
+			<div class="portlet-body pt-0 pt-2">
+				@include('reports.transaction_result')
 			</div>
 		</div>
 	</div>
 </div>
-<?php } ?>
+@endif
 @endsection

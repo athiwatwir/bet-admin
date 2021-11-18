@@ -45,18 +45,35 @@ class PaymentTransactionController extends Controller
                     ->orderBy('payment_transactions.created_at', 'desc')
                     ->paginate(20);
 
-        return view('transaction.payments', ['transaction'=> $trans]);
+        return view('transaction.payments', ['transaction'=> $trans, 'type' =>'']);
     }
 
     public function deposit()
     {
         $deposit = $this->getTransaction('DEPOSIT');
-        return view('transaction.deposit', ['transaction'=> $deposit]);
+        return view('transaction.payments', ['transaction'=> $deposit, 'type' =>'DEPOSIT']);
+    }
+
+    public function transfer()
+    {
+        $transfer = $this->getTransaction('TRANSFER');
+        return view('transaction.payments', ['transaction'=> $transfer, 'type' =>'TRANSFER']);
+    }
+
+    public function withdraw()
+    {
+        $withdraw = $this->getTransaction('WITHDRAW');
+        return view('transaction.payments', ['transaction'=> $withdraw, 'type' =>'WITHDRAW']);
+    }
+
+    public function adjust()
+    {
+        $withdraw = $this->getTransaction('ADJUST');
+        return view('transaction.payments', ['transaction'=> $withdraw, 'type' =>'ADJUST']);
     }
 
     private function getTransaction($code)
     {
-        // $where = isset($code) ? "'payment_transactions.code', $code" : '';
         $trans = DB::table('payment_transactions')
                     ->leftJoin('users', 'payment_transactions.user_id', '=', 'users.id')
                     ->leftJoin('staffs as admin', 'payment_transactions.staff_id', '=', 'admin.id')
