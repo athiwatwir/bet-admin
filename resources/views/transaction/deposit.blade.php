@@ -15,8 +15,8 @@
                 </div>
 
                 <span class="d-block text-muted text-truncate font-weight-medium pt-1">
-                    <a href="#" class="btn btn-sm btn-primary btn-pill mb-1 mr-3 ml-3">รายการทั้งหมด</a>
-                    <a href="{{ route('transaction-deposit') }}" class="btn btn-sm btn-primary btn-soft btn-pill mb-1 mr-3">รายการเติมเงิน</a>
+                    <a href="#" class="btn btn-sm btn-primary btn-soft btn-pill mb-1 mr-3 ml-3">รายการทั้งหมด</a>
+                    <a href="#" class="btn btn-sm btn-primary btn-pill mb-1 mr-3">รายการเติมเงิน</a>
                     <a href="#" class="btn btn-sm btn-primary btn-soft btn-pill mb-1 mr-3">รายการโอนในระบบ</a>
                     <a href="#" class="btn btn-sm btn-primary btn-soft btn-pill mb-1 mr-3">รายการถอนเงิน</a>
                 </span>

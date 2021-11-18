@@ -13,6 +13,7 @@ use App\Models\Wallet;
 use App\Models\Pgsoftgame;
 use App\Models\User;
 use App\Models\PaymentTransactionLog;
+use App\Models\BankGroup;
 
 class WalletsController extends Controller
 {
@@ -44,13 +45,15 @@ class WalletsController extends Controller
                             ->orderBy('wallets.created_at', 'desc')
                             ->get();
 
-        $c_bank_accounts = DB::table('c_bank_accounts')
-                            ->join('banks', 'c_bank_accounts.bank_id', '=', 'banks.id')
-                            ->where('c_bank_accounts.is_active', 'Y')
-                            ->where('c_bank_accounts.status', 'CO')
-                            ->select(['c_bank_accounts.id', 'c_bank_accounts.account_name', 'c_bank_accounts.account_number',
-                                        'banks.name as bank_name'])
-                            ->get();
+        // $c_bank_accounts = DB::table('c_bank_accounts')
+        //                     ->join('banks', 'c_bank_accounts.bank_id', '=', 'banks.id')
+        //                     ->where('c_bank_accounts.is_active', 'Y')
+        //                     ->where('c_bank_accounts.status', 'CO')
+        //                     ->select(['c_bank_accounts.id', 'c_bank_accounts.account_name', 'c_bank_accounts.account_number',
+        //                                 'banks.name as bank_name'])
+        //                     ->get();
+
+        $bank_list = $this->getUserBankGroupList($accessToken->user_id);
 
         $user_bank = DB::table('user_bankings')
                         ->join('banks', 'user_bankings.bank_id', '=', 'banks.id')
@@ -63,10 +66,26 @@ class WalletsController extends Controller
                         ->first();
         
         if(isset($wallet)){
-            return response()->json(['wallet' => $wallet, 'wallets' => $wallets, 'banks' => $c_bank_accounts, 'user_bank' => $user_bank, 'status' => 200], 200);
+            return response()->json(['wallet' => $wallet, 'wallets' => $wallets, 'banks' => $bank_list, 'user_bank' => $user_bank, 'status' => 200], 200);
         }
 
         return response()->json(['status' => 404], 404);
+    }
+
+    private function getUserBankGroupList($id)
+    {
+        $user = User::find($id);
+        $group = BankGroup::where('id', $user->bank_group_id)->with('banks')->first();
+        $bank_groups = [];
+        foreach($group->banks as $key => $bank) {
+            $bank_name = DB::table('banks')->find($bank->bank_id);
+            $bank_groups[$key]['id'] = $bank->bank_id;
+            $bank_groups[$key]['account_name'] = $bank->account_name;
+            $bank_groups[$key]['account_number'] = $bank->account_number;
+            $bank_groups[$key]['bank_name'] = $bank_name->name;
+        }
+
+        return $bank_groups;
     }
 
     public function createWallet(Request $request)

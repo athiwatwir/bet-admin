@@ -21,7 +21,7 @@
 
                 <div class="float-end">
 
-                    <a href="message-write.html" class="btn btn-sm btn-primary btn-pill px-2 py-1 fs--15 mt--n3">
+                    <a href="#" class="btn btn-sm btn-primary btn-pill px-2 py-1 fs--15 mt--n3">
                         + เพิ่มสมาชิก
                     </a>
 

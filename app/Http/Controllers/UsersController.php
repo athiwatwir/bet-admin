@@ -14,6 +14,7 @@ use App\Http\Controllers\PaginateController;
 use App\Http\Controllers\PaymentTransactionController;
 use App\Http\Controllers\WalletsController;
 use App\Http\Controllers\UserLevelController;
+use App\Http\Controllers\BankGroupController;
 
 class UsersController extends Controller
 {
@@ -67,12 +68,13 @@ class UsersController extends Controller
         $banks = $this->getBanks();
         $pgSoftGameWallet = $this->getPgsoftgameWallet($user->username);
         $levels = (new UserLevelController)->getAllUserLevel();
+        $bankGroups = (new BankGroupController)->getAllBankGroups();
         // Log::debug($level);
 
         return view('user.view', [
                     'profile' => $user, 'ubank' => $ubank, 'banks' => $banks, 'username' => $request->username,
                     'wallets' => $wallets, 'default_wallet' => $default_wallet, 'pg_wallet' => $pgSoftGameWallet,
-                    'transaction' => $transactions, 'levels' => $levels
+                    'transaction' => $transactions, 'levels' => $levels, 'bank_groups' => $bankGroups
                     ]);
     }
 
@@ -106,7 +108,8 @@ class UsersController extends Controller
                     'name' => $request->name,
                     'phone' => $request->phone,
                     'line' => $request->line,
-                    'user_level_id' => $request->level
+                    'user_level_id' => $request->level,
+                    'bank_group_id' => $request->bank_group
                 ]);
 
         if($user) return redirect()->back()->with('success', 'แก้ไขรายละเอียดผู้ใช้งานเรียบร้อยแล้ว');

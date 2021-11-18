@@ -15,6 +15,7 @@ use App\Models\UserPgsoftgame;
 use App\Models\PasswordOtp;
 use App\Models\UserLog;
 use App\Models\UserLevel;
+use App\Models\BankGroup;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -43,9 +44,11 @@ class PassportAuthController extends Controller
 
         if(!isset($checkUser)){
             $level = $this->setUserLevel();
+            $bankGroup = $this->setUserBankGroup();
 
             $user = User::create([
                 "user_level_id" => $level->id,
+                "bank_group_id" => $bankGroup->id,
                 "username" => $request->username,
                 "password" => $request->password,
                 "name" => $request->name,
@@ -93,6 +96,11 @@ class PassportAuthController extends Controller
     private function setUserLevel()
     {
         return UserLevel::where('isdefault', 'Y')->first();
+    }
+
+    private function setUserBankGroup()
+    {
+        return BankGroup::where('isdefault', 'Y')->first();
     }
  
     /**

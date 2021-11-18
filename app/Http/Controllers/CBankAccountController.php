@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\CBankAccount;
 
+use App\Http\Controllers\BankGroupController;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -24,14 +26,16 @@ class CBankAccountController extends Controller
                     ->paginate(10);
 
         $banks = DB::table('banks')->where('status', 'CO')->get();
+        $bank_groups = (new BankGroupController)->getAllBankGroups();
 
-        return view('cbank.index', ['cbanks'=> $cbank, 'banks' => $banks]);
+        return view('cbank.index', ['cbanks'=> $cbank, 'banks' => $banks, 'bank_groups' => $bank_groups]);
     }
 
     public function createCBank(Request $request)
     {
         $cbank = CBankAccount::create([
             "bank_id" => $request->bank_id,
+            "bank_group_id" => $request->bank_group,
             "account_name" => $request->account_name,
             "account_number" => $request->account_number,
             "is_active" => "Y",
@@ -51,6 +55,7 @@ class CBankAccountController extends Controller
             "bank_id" => $request->edit_bank,
             "account_name" => $request->edit_account_name,
             "account_number" => $request->edit_account_number,
+            "bank_group_id" => $request->edit_bank_group
         ]);
 
         if($cbank) {

@@ -16,6 +16,7 @@ use App\Http\Controllers\GamesController;
 use App\Http\Controllers\FootballLeagueController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\UserLevelController;
+use App\Http\Controllers\BankGroupController;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,6 +77,20 @@ Route::middleware(['auth:webadmin'])->group(function () {
         Route::get('/delete/{id}', [UserLevelController::class, 'delete']);
     });
 
+    Route::prefix('/settings')->group(function () {
+        Route::prefix('/bank-groups')->group(function () {
+            Route::get('/', [BankGroupController::class, 'index'])->name('bankgroups');
+            Route::post('/', [BankGroupController::class, 'create']);
+            Route::post('/edit', [BankGroupController::class, 'edit']);
+            Route::get('/delete/{id}', [BankGroupController::class, 'delete'])->name('bankgroup-delete');
+
+            Route::get('/view/{id}', [BankGroupController::class, 'view'])->name('bankgroup-view');
+            Route::post('/add', [BankGroupController::class, 'add']);
+            Route::get('/cancle/{id}', [BankGroupController::class, 'cancle']);
+            Route::post('/transfer', [BankGroupController::class, 'transfer']);
+        });
+    });
+
     Route::get('/cbank', [CBankAccountController::class, 'index'])->name('cbank');
     Route::get('/reports', [ReportsController::class, 'index'])->name('reports');
 
@@ -92,9 +107,13 @@ Route::middleware(['auth:webadmin'])->group(function () {
     Route::get('/active-cbank/{id}/{account_name}/{account_number}', [CBankAccountController:: class, 'activeCBank']);
 
     Route::prefix('/transaction')->group(function () {
-        Route::get('/payment', [PaymentTransactionController::class, 'index']);
+        Route::get('/payment', [PaymentTransactionController::class, 'index'])->name('transaction-all');
         Route::get('/confirm-payment-transaction/{id}', [PaymentTransactionController::class, 'confirmPaymentTransaction']);
         Route::get('/void-payment-transaction/{id}', [PaymentTransactionController::class, 'voidPaymentTransaction']);
+
+        Route::get('/deposit', [PaymentTransactionController::class, 'deposit'])->name('transaction-deposit');
+        Route::get('/transfer', [PaymentTransactionController::class, 'transfer'])->name('transaction-transfer');
+        Route::get('/withdraw', [PaymentTransactionController::class, 'withdraw'])->name('transaction-withdraw');
     });
 
     Route::prefix('/games')->group(function () {

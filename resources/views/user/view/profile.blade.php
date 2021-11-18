@@ -116,6 +116,28 @@
                         </div>
                     </div>
 
+                    <div class="form-group row">
+                        <label for="bank_group" class="col-md-3 col-form-label text-md-right">{{ __('กลุ่มบัญชีธนาคาร') }}</label>
+
+                        <div class="col-md-9">
+                            <select id="bank_group" name="bank_group" class="form-control select-form" disabled>
+                                @foreach($bank_groups as $bank_group)
+                                    @if($bank_group->id == $profile->bank_group_id)
+                                        <option value="{{ $bank_group->id }}" selected>
+                                            {{ $bank_group->name }} 
+                                            [ {{ $bank_group->banks_count }} ] 
+                                        </option>
+                                    @else
+                                        <option value="{{ $bank_group->id }}">
+                                            {{ $bank_group->name }} 
+                                            [ {{ $bank_group->banks_count }} ] 
+                                        </option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
                     <input type="hidden" name="id" value="{{ $profile->id }}">
 
                     <div id="is-edit-profile-btn" class="form-group row" style="display: none;">
@@ -234,6 +256,9 @@
     }
     .form-control {
         height: calc(0.5em + 1.56rem + 12px);
+    }
+    .select-form {
+        padding: 5px 20px;
     }
     .select-form:disabled {
         background: #e9ecef !important;

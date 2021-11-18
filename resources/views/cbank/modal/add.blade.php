@@ -57,6 +57,19 @@
                             @enderror
                         </div>
                     </div>
+
+                    <div class="form-group row">
+                        <label for="bank_group" class="col-md-4 col-form-label text-md-right">{{ __('กลุ่มบัญชีธนาคาร') }} <span class="text-danger">*</span></label>
+
+                        <div class="col-md-6">
+                            <select id="bank_group" class="form-control" name="bank_group" required autocomplete="bank_group">
+                                <option value="" selected disabled>-- เลือกกลุ่มบัญชีธนาคาร --</option>
+                                @foreach($bank_groups as $bank_group)
+                                    <option value="{{ $bank_group->id }}">{{ $bank_group->name }} @if($bank_group->isdefault == 'Y') (ค่าเริ่มต้น) @endif</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">ยกเลิก</button>

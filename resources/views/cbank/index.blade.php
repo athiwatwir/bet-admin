@@ -43,9 +43,9 @@
                                         ชื่อธนาคาร
                                     </span>
                                 </th>
-                                <th class="w--200 hidden-lg-down text-center">ชื่อบัญชี</th>
-                                <th class="w--200 hidden-lg-down text-center">เลขบัญชี</th>
-                                <th class="w--100 hidden-lg-down text-center">สถานะ</th>
+                                <th class="hidden-lg-down text-center">ชื่อบัญชี</th>
+                                <th class="hidden-lg-down text-center">เลขบัญชี</th>
+                                <th class="hidden-lg-down text-center">สถานะ</th>
                                 <th class="w--150">&nbsp;</th>
                             </tr>
                         </thead>
@@ -107,7 +107,7 @@
 
                                         <a class="text-truncate mr-1" href="#!" title="แก้ไขบัญชีธนาคาร" 
                                             data-toggle="modal" data-target="#editCBankModal" 
-                                            onClick="setDataEditModal({{ $cbank->id }}, {{ $cbank->bank_id }}, '{{ $cbank->account_name }}', {{ $cbank->account_number }})"
+                                            onClick="setDataEditModal('{{ $cbank->id }}', '{{ $cbank->bank_id }}', '{{ $cbank->account_name }}', {{ $cbank->account_number }}, '{{ $cbank->bank_group_id }}')"
                                         >
                                             <i class="fi fi-pencil mr-0"></i>
                                         </a>

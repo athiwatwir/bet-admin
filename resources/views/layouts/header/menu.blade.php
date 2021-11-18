@@ -158,7 +158,7 @@
                         </a>
                     </li>
                     <li class="dropdown-item">
-                        <a class="dropdown-link" href="{{ route('cbank') }}" >
+                        <a class="dropdown-link" href="{{ route('bankgroups') }}" >
                             กลุ่มบัญชีธนาคาร
                         </a>
                     </li>

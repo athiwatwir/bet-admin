@@ -1,8 +1,9 @@
-function setDataEditModal(id, bID, aName, aNumber) {
+function setDataEditModal(id, bID, aName, aNumber, bgID) {
     document.getElementById('edit_id').value = id
     document.getElementById('edit_bank').value = bID
     document.getElementById('edit_account_name').value = aName
     document.getElementById('edit_account_number').value = aNumber
+    document.getElementById('edit_bank_group').value = bgID
 }
 
 function setDataAdminEditModal(id, username, name, phone, line) {
@@ -116,6 +117,7 @@ function editProfile() {
     document.getElementById("phone").disabled = false
     document.getElementById("line").disabled = false
     document.querySelector('#level').disabled = false
+    document.querySelector('#bank_group').disabled = false
     document.getElementById("is-edit-profile-btn").style.display = "block";
 }
 
@@ -124,6 +126,7 @@ function cancelEditProfile() {
     document.getElementById("phone").disabled = true
     document.getElementById("line").disabled = true
     document.querySelector('#level').disabled = true
+    document.querySelector('#bank_group').disabled = true
     document.getElementById("is-edit-profile-btn").style.display = "none";
 }
 
@@ -175,4 +178,21 @@ function setDataUserLevel(id, name, deposit, withdraw, transfer, isdefault) {
     document.querySelector('#limit_withdraw_edit').value = withdraw
     document.querySelector('#limit_transfer_edit').value = transfer
     document.querySelector('#is_default_edit').checked = isdefault === 'Y' ? true : false
+}
+
+function setBankGroupDataEdit(id, name, isactive, isdefault) {
+    document.querySelector('#bankgroup_id').value = id
+    document.querySelector('#bankgroup_name').value = name
+    if(isdefault === 'N') {
+        document.querySelector("#is-not-active").style.display = "flex";
+        document.querySelector("#is-not-default").style.display = "flex";
+        document.querySelector('#bankgroup_isactive').checked = isactive === 'Y' ? true : false
+    }else if(isdefault === 'Y'){
+        document.querySelector("#is-not-active").style.display = "none";
+        document.querySelector("#is-not-default").style.display = "none";
+    }
+}
+
+function getDataToTransfer(id) {
+    document.querySelector('#transfer_id').value = id
 }
