@@ -19,7 +19,7 @@
                     <a href="@if($type == 'DEPOSIT') #! @else {{ route('transaction-deposit') }} @endif" class="btn btn-sm btn-primary @if($type == 'DEPOSIT') @else btn-soft @endif btn-pill mb-1 mr-3">คำร้องการฝากเงิน</a>
                     <a href="@if($type == 'TRANSFER') #! @else {{ route('transaction-transfer') }} @endif" class="btn btn-sm btn-primary @if($type == 'TRANSFER') @else btn-soft @endif btn-pill mb-1 mr-3">รายการโอนในระบบ</a>
                     <a href="@if($type == 'WITHDRAW') #! @else {{ route('transaction-withdraw') }} @endif" class="btn btn-sm btn-primary @if($type == 'WITHDRAW') @else btn-soft @endif btn-pill mb-1 mr-3">การถอนเงิน</a>
-                    <a href="@if($type == 'ADJUST') #! @else {{ route('transaction-adjust') }} @endif" class="btn btn-sm btn-primary @if($type == 'ADJUST') @else btn-soft @endif btn-pill mb-1 mr-3">Adjust</a>
+                    <a href="@if($type == 'ADJUST') #! @else {{ route('transaction-adjust') }} @endif" class="btn btn-sm btn-primary @if($type == 'ADJUST') @else btn-soft @endif btn-pill mb-1 mr-3">ปรับเปลี่ยนยอดเงิน</a>
                 </span>
             </div>
             <!-- /portlet : header -->
@@ -30,8 +30,21 @@
                 <div class="table-responsive mt-2">
 
                     <div class="row">
+                        @if($type == 'ADJUST')
+                        <div class="col-md-12 mb-4">
+                            <button class="btn btn-sm btn-indigo transition-hover-top" id="_set-adjust-user-btn">ปรับเปลี่ยนยอดเงินสมาชิก</button>
+                            <button class="btn btn-sm btn-indigo btn-soft-static transition-hover-top" id="_set-adjust-user-btn-cancle" style="display: none;">ยกเลิก</button>
+                        </div>
+                        @endif
                         <div class="col-md-12 px-5">
-                            <table class="table table-align-middle border-bottom mb-6 mt-2">
+                            @if($type == 'ADJUST')
+                            <div class="row" id="_user-transaction-adjust" style="display: none;">
+                                <div class="col-md-8 offset-2">
+                                    @include('transaction.adjust')
+                                </div>
+                            </div>
+                            @endif
+                            <table class="table table-align-middle border-bottom mb-6 mt-2" id="_table-transaction-adjust">
 
                                 <thead>
                                     <tr class="text-muted fs--13 bg-light">
@@ -222,9 +235,19 @@
                                                 <strong class=" @if($trans->code == 'DEPOSIT') text-success 
                                                             @elseif($trans->code == 'WITHDRAW') text-danger 
                                                             @elseif($trans->code == 'TRANSFER') text-warning
-                                                            @elseif($trans->code == 'ADJUST') text-primary
                                                             @endif "
-                                                >{{ number_format($trans->amount) }}
+                                                >
+                                                @if($trans->code == 'ADJUST')
+                                                    @if($trans->code_status == 'Plus')
+                                                        <span class="text-success">+ {{ number_format($trans->amount) }}</span>
+                                                    @elseif($trans->code_status == 'Minus')
+                                                        <span class="text-danger">- {{ number_format($trans->amount) }}</span>
+                                                    @else
+                                                        <span class="text-dark">{{ number_format($trans->amount) }}</span>
+                                                    @endif
+                                                @else
+                                                    {{ number_format($trans->amount) }}
+                                                @endif
                                                 </strong>
                                             </td>
 
@@ -361,4 +384,6 @@
 
 @section('modal')
     @include('user.modal.payment_slip')
+    @include('user.modal.wallet_increase')
+    @include('user.modal.wallet_decrease')
 @endsection

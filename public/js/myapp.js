@@ -196,3 +196,17 @@ function setBankGroupDataEdit(id, name, isactive, isdefault) {
 function getDataToTransfer(id) {
     document.querySelector('#transfer_id').value = id
 }
+
+document.querySelector('#_set-adjust-user-btn').addEventListener('click', () => {
+    document.querySelector('#_set-adjust-user-btn').style.display = 'none'
+    document.querySelector('#_table-transaction-adjust').style.display = 'none'
+    document.querySelector('#_set-adjust-user-btn-cancle').style.display = 'initial'
+    document.querySelector('#_user-transaction-adjust').style.display = 'initial'
+})
+
+document.querySelector('#_set-adjust-user-btn-cancle').addEventListener('click', () => {
+    document.querySelector('#_set-adjust-user-btn').style.display = 'initial'
+    document.querySelector('#_table-transaction-adjust').style.display = 'inline-table'
+    document.querySelector('#_set-adjust-user-btn-cancle').style.display = 'none'
+    document.querySelector('#_user-transaction-adjust').style.display = 'none'
+})

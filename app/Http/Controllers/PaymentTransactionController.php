@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 use App\Models\PaymentTransactionLog;
+use App\Models\User;
 
 class PaymentTransactionController extends Controller
 {
@@ -69,7 +71,8 @@ class PaymentTransactionController extends Controller
     public function adjust()
     {
         $withdraw = $this->getTransaction('ADJUST');
-        return view('transaction.payments', ['transaction'=> $withdraw, 'type' =>'ADJUST']);
+        $users = $this->getUser();
+        return view('transaction.payments', ['transaction'=> $withdraw, 'users' => $users, 'type' =>'ADJUST']);
     }
 
     private function getTransaction($code)
@@ -101,6 +104,16 @@ class PaymentTransactionController extends Controller
                     ->paginate(20);
 
         return $trans;
+    }
+
+    private function getUser()
+    {
+        return DB::table('users')->leftJoin('wallets', 'users.id', '=', 'wallets.user_id')
+                    ->where('users.is_active', 'Y')
+                    ->where('users.status', 'CO')
+                    ->where('wallets.is_default', 'Y')
+                    ->select('users.*', 'wallets.id as wallet_id', 'wallets.amount as wallet_amount')
+                    ->get();
     }
 
     public function confirmPaymentTransaction(Request $request)
@@ -190,13 +203,19 @@ class PaymentTransactionController extends Controller
 
     public function insertTransactionByAdmin($amount, $reason, $type, $user_id, $to_wallet)
     {
+        $code_status = '';
+        if($type == 'เพิ่ม') $code_status = 'Plus';
+        if($type == 'ลด') $code_status = 'Minus';
+
         $trans = DB::table('payment_transactions')
                 ->insert([
+                    'id' => Str::uuid(),
                     'user_id' => $user_id,
                     'staff_id' => Auth::user()->id,
                     'to_wallet_id' => $to_wallet,
                     'action_date' => date('Y-m-d H:i:s'),
                     'code' => 'ADJUST',
+                    'code_status' => $code_status,
                     'amount' => $amount,
                     'status' => 'CO',
                     'description' => $reason,
