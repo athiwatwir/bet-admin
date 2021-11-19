@@ -125,7 +125,7 @@
             </li>
             <li class="dropdown-item dropdown">
                  <a class="dropdown-link js-stoppropag" href="#!" data-toggle="dropdown">
-                    <i class="fas fa-desktop"></i></i> ตั้งค่าหน้าเว็บ
+                    <i class="fas fa-desktop"></i> ตั้งค่าหน้าเว็บ
                 </a>
                 <ul class="dropdown-menu dropdown-menu-hover shadow-primary-xs">
                     <li class="dropdown-item">
@@ -141,6 +141,23 @@
                     <li class="dropdown-item">
                         <a class="dropdown-link" href="#!" >
                             ปรับปรุงระบบ
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="dropdown-item dropdown">
+                 <a class="dropdown-link js-stoppropag" href="#!" data-toggle="dropdown">
+                    <i class="far fa-bell"></i> ตั้งค่าการแจ้งเตือน
+                </a>
+                <ul class="dropdown-menu dropdown-menu-hover shadow-primary-xs">
+                    <li class="dropdown-item">
+                        <a class="dropdown-link" href="#!" >
+                            LINE Notification
+                        </a>
+                    </li>
+                    <li class="dropdown-item">
+                        <a class="dropdown-link" href="#!" >
+                            SMS
                         </a>
                     </li>
                 </ul>
