@@ -40,7 +40,7 @@ class BankGroupController extends Controller
 
     private function checkNameDuplicate($name, $id)
     {
-        if(isset($id)) $check = BankGroup::where('name', $name)->first();
+        if(!isset($id)) $check = BankGroup::where('name', $name)->first();
         else $check = BankGroup::where('id', '!=', $id)->where('name', $name)->first();
         
         if(isset($check)) return true;
