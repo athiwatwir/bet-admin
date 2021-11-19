@@ -51,6 +51,15 @@
                                 </span>
                             </a>
                         </li>
+                        <li class="dropdown-item text-wrap">
+                            <a href="#!" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
+                                <i class="fas fa-history float-start fs--25 mt--n2"></i>
+                                <span class="h5-xs d-block fs--18">ประวัติการเข้าใข้งาน</span>
+                                <span class="fs--11 text-muted text-uppercase">
+                                    ข้อมูลการเข้าใช้งานของผู้ใช้ง
+                                </span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -88,15 +97,15 @@
 
     <!-- SETTING -->
     <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="mainNavHome">
+        <a class="nav-link dropdown-toggle js-stoppropag" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="mainNavHome">
             ตั้งค่า
         </a>
         <ul class="dropdown-menu dropdown-menu-clean dropdown-menu-hover" aria-labelledby="mainNavHome">
-            <li class="dropdown-item">
+            <li class="dropdown-item dropdown">
                 <a class="dropdown-link" href="#!" data-toggle="dropdown">
                     <i class="fas fa-university"></i> ธนาคาร
                 </a>
-                <ul class="dropdown-menu dropdown-menu-hover b-0 m-0 shadow-primary-xs">
+                <ul class="dropdown-menu dropdown-menu-hover shadow-primary-xs">
                     <li class="dropdown-item">
                         <a class="dropdown-link" href="{{ route('cbank') }}" >
                             บัญชีธนาคาร
@@ -110,6 +119,28 @@
                     <li class="dropdown-item">
                         <a class="dropdown-link" href="{{ route('banks') }}" >
                             รายชื่อธนาคาร
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="dropdown-item dropdown">
+                 <a class="dropdown-link js-stoppropag" href="#!" data-toggle="dropdown">
+                    <i class="fas fa-desktop"></i></i> ตั้งค่าหน้าเว็บ
+                </a>
+                <ul class="dropdown-menu dropdown-menu-hover shadow-primary-xs">
+                    <li class="dropdown-item">
+                        <a class="dropdown-link" href="#!" >
+                            ทั่วไป
+                        </a>
+                    </li>
+                    <li class="dropdown-item">
+                        <a class="dropdown-link" href="#!" >
+                            Banner
+                        </a>
+                    </li>
+                    <li class="dropdown-item">
+                        <a class="dropdown-link" href="#!" >
+                            ปรับปรุงระบบ
                         </a>
                     </li>
                 </ul>
