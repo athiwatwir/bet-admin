@@ -44,6 +44,8 @@ class WalletsController extends Controller
                             ->select(['wallets.id', 'games.name as game_name', 'wallets.amount', 'wallets.currency'])
                             ->orderBy('wallets.created_at', 'desc')
                             ->get();
+        
+        // $chkwallet = is_array($wallets) ? $wallets : '';
 
         // $c_bank_accounts = DB::table('c_bank_accounts')
         //                     ->join('banks', 'c_bank_accounts.bank_id', '=', 'banks.id')
@@ -75,7 +77,7 @@ class WalletsController extends Controller
     private function getUserBankGroupList($id)
     {
         $user = User::find($id);
-        $group = BankGroup::where('id', $user->bank_group_id)->with('banks')->first();
+        $group = BankGroup::where('id', $user->bank_group_id)->withCount('banks')->first();
         $bank_groups = [];
         foreach($group->banks as $key => $bank) {
             $bank_name = DB::table('banks')->find($bank->bank_id);

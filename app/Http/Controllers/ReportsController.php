@@ -26,11 +26,13 @@ class ReportsController extends Controller
     public function search(Request $request)
     {
         $results = '';
+        $report = '';
         if($request->type === 'P001') {
+            $report = 'รายการเคลื่อนไหวทางการเงิน';
             $results = $this->transactionData($request->startdate, $request->enddate);
         }
 
-        return view('reports.index', ['reportTypes' => $this->ReportTypes, 'results' => $results]);
+        return view('reports.index', ['reportTypes' => $this->ReportTypes, 'is_report' => $report, 'start' => $request->startdate, 'end' => $request->enddate, 'results' => $results]);
     }
 
     private function transactionData($start, $end)
@@ -50,8 +52,11 @@ class ReportsController extends Controller
                     ->leftJoin('banks as cbank', 'c_bank_accounts.bank_id', '=', 'cbank.id')
                     ->leftJoin('games as from_game', 'from_wallet.game_id', '=', 'from_game.id')
                     ->leftJoin('games as to_game', 'to_wallet.game_id', '=', 'to_game.id')
+                    ->leftJoin('payment_transaction_logs', 'payment_transactions.id', '=', 'payment_transaction_logs.payment_transaction_id')
+                    ->leftJoin('staffs as staff', 'payment_transaction_logs.staff_id', '=', 'staff.id')
                     ->whereBetween('payment_transactions.action_date', [$start_date, $end_date])
                     ->select('payment_transactions.*', 
+                            'staff.username as staff_username', 'staff.name as staff_name',
                             'users.username', 'users.name', 'users.currency', 'admin.username as by_admin',
                             'c_bank_accounts.bank_id as bank_name', 'c_bank_accounts.account_name', 'c_bank_accounts.account_number',
                             'banks.name as from_bank_nane', 'banks.name_en as from_bank_name_en',
@@ -61,10 +66,10 @@ class ReportsController extends Controller
                             'from_wallet.is_default as from_default','to_wallet.is_default as to_default',
                             'ubank.name as ubank_name', 'cbank.name as cbank_name',
                             )
-                    ->orderBy('payment_transactions.created_at', 'desc')
-                    ->paginate(100);
+                    ->orderBy('payment_transactions.created_at', 'asc')
+                    ->get();
 
-        Log::debug($trans);
+        // Log::debug($trans);
         return $trans;
     }
 }

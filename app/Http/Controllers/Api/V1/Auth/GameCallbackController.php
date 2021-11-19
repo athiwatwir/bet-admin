@@ -27,6 +27,6 @@ class GameCallbackController extends Controller
 
     public function gameCallBack(Request $request)
     {
-        Log::debug($request);
+        // Log::debug($request);
     }
 }
