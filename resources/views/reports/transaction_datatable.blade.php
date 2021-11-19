@@ -23,7 +23,7 @@
     data-col-reorder="true" 
     data-responsive="true" 
     data-header-fixed="true" 
-    data-select-onclick="true" 
+    data-select-onclick="false" 
     data-enable-paging="true" 
     data-enable-col-sorting="false" 
     data-autofill="false" 
