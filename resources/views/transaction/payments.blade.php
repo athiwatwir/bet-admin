@@ -16,10 +16,10 @@
 
                 <span class="d-block text-muted text-truncate font-weight-medium pt-1">
                     <a href="@if($type == '') #! @else {{ route('transaction-all') }} @endif" class="btn btn-sm btn-primary @if($type == '') @else btn-soft @endif btn-pill mb-1 mr-3 ml-3">รายการทั้งหมด</a>
-                    <a href="@if($type == 'DEPOSIT') #! @else {{ route('transaction-deposit') }} @endif" class="btn btn-sm btn-primary @if($type == 'DEPOSIT') @else btn-soft @endif btn-pill mb-1 mr-3">รายการเติมเงิน</a>
+                    <a href="@if($type == 'DEPOSIT') #! @else {{ route('transaction-deposit') }} @endif" class="btn btn-sm btn-primary @if($type == 'DEPOSIT') @else btn-soft @endif btn-pill mb-1 mr-3">คำร้องการฝากเงิน</a>
                     <a href="@if($type == 'TRANSFER') #! @else {{ route('transaction-transfer') }} @endif" class="btn btn-sm btn-primary @if($type == 'TRANSFER') @else btn-soft @endif btn-pill mb-1 mr-3">รายการโอนในระบบ</a>
-                    <a href="@if($type == 'WITHDRAW') #! @else {{ route('transaction-withdraw') }} @endif" class="btn btn-sm btn-primary @if($type == 'WITHDRAW') @else btn-soft @endif btn-pill mb-1 mr-3">รายการถอนเงิน</a>
-                    <a href="@if($type == 'ADJUST') #! @else {{ route('transaction-adjust') }} @endif" class="btn btn-sm btn-primary @if($type == 'ADJUST') @else btn-soft @endif btn-pill mb-1 mr-3">รายการปรับจากผู้ดูแล</a>
+                    <a href="@if($type == 'WITHDRAW') #! @else {{ route('transaction-withdraw') }} @endif" class="btn btn-sm btn-primary @if($type == 'WITHDRAW') @else btn-soft @endif btn-pill mb-1 mr-3">การถอนเงิน</a>
+                    <a href="@if($type == 'ADJUST') #! @else {{ route('transaction-adjust') }} @endif" class="btn btn-sm btn-primary @if($type == 'ADJUST') @else btn-soft @endif btn-pill mb-1 mr-3">Adjust</a>
                 </span>
             </div>
             <!-- /portlet : header -->
