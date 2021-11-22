@@ -5,7 +5,7 @@
             <form method="POST" action="{{ url('/user-levels/edit') }}">
             @csrf
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">แก้ไขเลเวลผู้ใช้งาน</h5>
+                    <h5 class="modal-title" id="exampleModalLongTitle">แก้ไขเลเวลกลุ่มลูกค้า <span id="modal-header-user-level"></span></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
@@ -46,7 +46,7 @@
                     <div class="form-group row">
                         <div class="col-md-6 offset-4">
                             <label class="checkbox-inline">
-                                <input type="checkbox" id="is_default_edit" name="is_default" value="default" class="ml-2"> ตั้งเป็นค่าเริ่มต้น
+                                <input type="checkbox" id="is_default_edit" name="is_default" value="default" class="ml-2"> <span id="is-user-level-default-label"></span>
                             </label>
                         </div>
                     </div>

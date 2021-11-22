@@ -85,10 +85,20 @@ class UserLevelController extends Controller
         return redirect()->back()->with('error', 'เกิดข้อผิดพลาด กรุณาลองใหม่');
     }
 
+    public function active($id, $name)
+    {
+        $user_level = UserLevel::find($id);
+        $status = $user_level->isactive == 'Y' ? 'N' : 'Y';
+        $user_level->update(['isactive' => $status]);
+
+        if($user_level) return redirect()->back()->with('success', 'ปรับการแสดงผลกลุ่มลูกค้า '.$name.' เรียบร้อยแล้ว...');
+        return redirect()->back()->with('error', 'เกิดข้อผิดพลาด กรุณาลองใหม่');
+    }
+
     private function setDefault($id)
     {
         UserLevel::where('isdefault', 'Y')->update(['isdefault' => 'N']);
-        UserLevel::find($id)->update(['isdefault' => 'Y']);
+        UserLevel::find($id)->update(['isactive' => 'Y', 'isdefault' => 'Y']);
     }
 
     public function delete($id)
@@ -98,7 +108,7 @@ class UserLevelController extends Controller
 
     public function getAllUserLevel()
     {
-        return UserLevel::get();
+        return UserLevel::where('isactive', 'Y')->get();
     }
 
     public function getUserLevelById($id)

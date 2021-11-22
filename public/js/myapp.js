@@ -232,10 +232,17 @@ function setImagePaymentTransactionSlip(url, bank_name, bank_name_en, account_na
 function setDataUserLevel(id, name, deposit, withdraw, transfer, isdefault) {
     document.querySelector('#userlevel_id').value = id
     document.querySelector('#levelname_edit').value = name
+    document.querySelector('#modal-header-user-level').innerHTML = name
     document.querySelector('#limit_deposit_edit').value = deposit
     document.querySelector('#limit_withdraw_edit').value = withdraw
     document.querySelector('#limit_transfer_edit').value = transfer
-    document.querySelector('#is_default_edit').checked = isdefault === 'Y' ? true : false
+    if(isdefault === 'Y') {
+        document.querySelector('#is_default_edit').style.display = 'none' 
+        document.querySelector('#is-user-level-default-label').innerHTML = '<strong class="text-danger">เป็นค่าเริ่มต้น</strong>'
+    }else if(isdefault === 'N') {
+        document.querySelector('#is_default_edit').style.display = 'inherit'
+        document.querySelector('#is-user-level-default-label').innerHTML = 'ตั้งเป็นค่าเริ่มต้น'
+    }
 }
 
 function setBankGroupDataEdit(id, name, isactive, isdefault) {

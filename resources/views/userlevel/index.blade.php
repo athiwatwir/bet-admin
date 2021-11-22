@@ -54,6 +54,7 @@
                                 <th class="hidden-lg-down text-center">ยอดฝากสูงสุด</th>
                                 <th class="hidden-lg-down text-center">ยอดถอนสูงสุด</th>
                                 <th class="hidden-lg-down text-center">ยอดโอนสูงสุด</th>
+                                <th class="hidden-lg-down text-center">สถานะ</th>
                                 <th class="w--150 hidden-lg-down text-center"></th>
                             </tr>
                         </thead>
@@ -79,6 +80,13 @@
                                             <span class="d-block text-muted">ฝาก : {{ number_format($level->limit_deposit) }}</span>
                                             <span class="d-block text-muted">ถอน : {{ number_format($level->limit_withdraw) }}</span>
                                             <span class="d-block text-muted">ย้าย : {{ number_format($level->limit_transfer) }}</span>
+                                            <span class="d-block text-muted">
+                                                @if($level->isactive == 'Y')
+                                                    <span class="badge badge-success font-weight-normal mt-1">เปิดใช้งาน</span>
+                                                @else
+                                                    <span class="badge badge-danger font-weight-normal mt-1">ปิดใช้งาน</span>
+                                                @endif
+                                            </span>
                                         </div>
                                         <!-- /MOBILE ONLY -->
                                     </td>
@@ -95,30 +103,48 @@
                                         {{ number_format($level->limit_transfer) }}
                                     </td>
 
+                                    <td class="hidden-lg-down text-center">
+                                        @if($level->isactive == 'Y')
+                                            <span class="badge badge-success font-weight-normal mt-1">เปิดใช้งาน</span>
+                                        @else
+                                            <span class="badge badge-danger font-weight-normal mt-1">ปิดใช้งาน</span>
+                                        @endif
+                                    </td>
+
                                     <td class="text-center">
                                         <a class="text-truncate mr-2" href="#!" title="แก้ไข" data-toggle="modal" data-target="#editUserLevel" onClick="setDataUserLevel('{{$level->id}}', '{{$level->name}}', {{$level->limit_deposit}}, {{$level->limit_withdraw}}, {{$level->limit_transfer}}, '{{$level->isdefault}}')">
                                             <i class="fi fi-pencil"></i>
                                         </a>
-                                        <a  href="#!" 
-                                            class="text-truncate js-ajax-confirm" 
-                                            data-href="/user-levels/delete/{{ $level->id }}"
-                                            data-ajax-confirm-body="ยืนยันการลบเลเวล {{ $level->name }} ?" 
+                                        @if($level->isdefault == 'N')
+                                            <a class="text-truncate mr-2" href="/user-levels/active/{{ $level->id }}/{{ $level->name }}">
+                                                @if($level->isactive == 'Y')
+                                                    <span class="text-success" title="ปิดการใช้งาน"><i class="fi fi-eye"></i></span>
+                                                @else
+                                                    <span class="text-danger" title="เปิดการใช้งาน"><i class="fi fi-eye-disabled"></i></span>
+                                                @endif
+                                            </a>
+                                        
+                                            <a  href="#!" 
+                                                class="text-truncate js-ajax-confirm" 
+                                                data-href="/user-levels/delete/{{ $level->id }}"
+                                                data-ajax-confirm-body="ยืนยันการลบเลเวล {{ $level->name }} ?" 
 
-                                            data-ajax-confirm-mode="ajax" 
-                                            data-ajax-confirm-method="GET" 
+                                                data-ajax-confirm-mode="ajax" 
+                                                data-ajax-confirm-method="GET" 
 
-                                            data-ajax-confirm-btn-yes-class="btn-sm btn-danger" 
-                                            data-ajax-confirm-btn-yes-text="ลบข้อมูล" 
-                                            data-ajax-confirm-btn-yes-icon="fi fi-check" 
+                                                data-ajax-confirm-btn-yes-class="btn-sm btn-danger" 
+                                                data-ajax-confirm-btn-yes-text="ลบข้อมูล" 
+                                                data-ajax-confirm-btn-yes-icon="fi fi-check" 
 
-                                            data-ajax-confirm-btn-no-class="btn-sm btn-light" 
-                                            data-ajax-confirm-btn-no-text="ยกเลิก" 
-                                            data-ajax-confirm-btn-no-icon="fi fi-close"
+                                                data-ajax-confirm-btn-no-class="btn-sm btn-light" 
+                                                data-ajax-confirm-btn-no-text="ยกเลิก" 
+                                                data-ajax-confirm-btn-no-icon="fi fi-close"
 
-                                            data-ajax-confirm-success-target="#level_id_{{ $key }}" 
-                                            data-ajax-confirm-success-target-action="remove">
-                                            <i class="fi fi-thrash text-danger"></i>
-                                        </a>
+                                                data-ajax-confirm-success-target="#level_id_{{ $key }}" 
+                                                data-ajax-confirm-success-target-action="remove">
+                                                <i class="fi fi-thrash text-danger"></i>
+                                            </a>
+                                        @endif
                                     </td>
 
                                 </tr>

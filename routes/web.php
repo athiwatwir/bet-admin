@@ -76,6 +76,7 @@ Route::middleware(['auth:webadmin'])->group(function () {
         Route::post('/create', [UserLevelController::class, 'create']);
         Route::post('/edit', [UserLevelController::class, 'update']);
         Route::get('/delete/{id}', [UserLevelController::class, 'delete']);
+        Route::get('/active/{id}/{name}', [UserLevelController::class, 'active']);
     });
 
     Route::prefix('/settings')->group(function () {
