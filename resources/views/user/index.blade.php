@@ -70,13 +70,14 @@
                                     <tr id="message_id_{{ $key }}" class="text-dark">
 
                                         <td class="hidden-lg-down text-center">
-                                            {{ $key + 1 }}.
+                                            <small>{{ $key + 1 }}.</small>
                                         </td>
 
                                         <td style="line-height: 17px;">
                                             <a class="text-dark" href="/users/{{ $user->username }}/{{ $user->id }}/view" title="ดูรายละเอียดของผู้ใช้งานนี้">
                                                 <p class="mb-0 d-flex">
-                                                    <strong class="text-dark">{{ $user->username }}</strong> 
+                                                    <strong class="text-dark mr-2">{{ $user->username }}</strong> 
+                                                    <strong><i class="far fa-edit text-primary" style="margin-top: -8px;" title="รายละเอียดสมาชิก {{ $user->username }}"></i></strong>
                                                 </p>
                                                 <small style="font-size: 70%;">ชื่อ-สกุล : {{ $user->name }}</small>
                                             </a>
