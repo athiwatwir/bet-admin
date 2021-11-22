@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use App\Models\User;
-use App\Models\Staff;
-
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+
+use App\Models\User;
+use App\Models\Staff;
 
 class AdminsController extends Controller
 {
@@ -42,8 +44,22 @@ class AdminsController extends Controller
     public function view(Request $request)
     {
         $admin = DB::table('staffs')->find($request->id);
-
         return view('admin.view', ['profile' => $admin, 'username' => $request->username]);
+    }
+
+    public function changePassword(Request $request)
+    {
+        $admin_id = Auth::id();
+        $staff = Staff::find($admin_id);
+        if (Hash::check($request->admin_old_password, $staff->password)) {
+            $staff->update([
+                'password' => $request->admin_new_password,
+            ]);
+        }else{
+            return redirect()->back()->with('error', 'รหัสผ่านเดิมไม่ถูกต้อง กรุณาตรวจสอบ...');
+        }
+
+        return redirect()->back()->with('success', 'แก้ไขรหัสผ่านเรียบร้อยแล้ว...');
     }
 
     public function register(Request $request)

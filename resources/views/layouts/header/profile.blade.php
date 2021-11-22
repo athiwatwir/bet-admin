@@ -52,10 +52,15 @@
         <div class="dropdown-divider mb-0"></div>
         -->
 
+        <a href="{{ route('view', ['username' => Auth::user()->name, 'id' => Auth::id()]) }}" class="dropdown-item text-truncate font-weight-medium">
+            ตั้งค่าบัญชี
+            <small class="d-block text-muted">ข้อมูลส่วนตัว, รหัสผ่าน</small>
+        </a>
+
         <a class="dropdown-item" href="{{ route('logout') }}"
             onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();">
-            {{ __('Logout') }}
+            {{ __('ออกจากระบบ') }}
         </a>
 
         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

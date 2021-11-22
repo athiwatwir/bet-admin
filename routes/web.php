@@ -66,6 +66,7 @@ Route::middleware(['auth:webadmin'])->group(function () {
         Route::post('/register', [AdminsController::class, 'register']);
         Route::post('/edit/profile', [AdminsController::class, 'edit']);
         Route::post('/re-password', [AdminsController::class, 'rePassword']);
+        Route::post('/change-password', [AdminsController::class, 'changePassword']);
     });
 
     Route::get('/members', [MembersController::class, 'index'])->name('members');
