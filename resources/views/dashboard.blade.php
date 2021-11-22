@@ -125,7 +125,7 @@
     </div>
     <div class="col-md-12 mt-1 px-5 py-4 border rounded bg-white shadow-md">
         @if($search_date != '')
-            <p>รายการค้นหาระหว่างวันที่ {{ $search_date['start'] }} ถึง {{ $search_date['end'] }}</p>
+            <p class="text-dark"><strong>รายการค้นหาระหว่างวันที่ {{ $search_date['start'] }} ถึง {{ $search_date['end'] }}</strong> <a href="{{ route('dashboard') }}" class="btn btn-vv-sm btn-danger ml-2" title="ยกเลิก">X</a></p>
         @endif
         @include('dashboard.payment_transactions')
     </div>
