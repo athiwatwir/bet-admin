@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
 use App\Models\UserLevel;
+use App\Models\User;
 
 class UserLevelController extends Controller
 {
@@ -16,7 +17,7 @@ class UserLevelController extends Controller
 
     public function index()
     {
-        $level = UserLevel::orderBy('name', 'ASC')->paginate(10);
+        $level = UserLevel::orderBy('name', 'ASC')->withCount('users')->paginate(10);
         return view('userlevel.index', ['levels' => $level]);
     }
 
@@ -103,7 +104,15 @@ class UserLevelController extends Controller
 
     public function delete($id)
     {
-        UserLevel::find($id)->delete();
+        $default_level = UserLevel::where('isdefault', 'Y')->first();
+        $users = User::where('user_level_id', $id)->get();
+        foreach($users as $user) {
+            User::find($user->id)->update(['user_level_id' => $default_level->id]);
+        }
+
+        $user_level_deleted = UserLevel::find($id)->delete();
+        if($user_level_deleted) return redirect()->back()->with('success', 'ลบกลุ่มลูกคาเรียบร้อยแล้ว');
+        return redirect()->back()->with('error', 'เกิดข้อผิดพลาด กรุณาลองใหม่');
     }
 
     public function getAllUserLevel()

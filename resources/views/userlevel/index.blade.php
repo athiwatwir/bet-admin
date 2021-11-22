@@ -54,6 +54,7 @@
                                 <th class="hidden-lg-down text-center">ยอดฝากสูงสุด</th>
                                 <th class="hidden-lg-down text-center">ยอดถอนสูงสุด</th>
                                 <th class="hidden-lg-down text-center">ยอดโอนสูงสุด</th>
+                                <th class="hidden-lg-down text-center">จำนวนสมชิกกลุ่ม</th>
                                 <th class="hidden-lg-down text-center">สถานะ</th>
                                 <th class="w--150 hidden-lg-down text-center"></th>
                             </tr>
@@ -72,7 +73,7 @@
 
                                     <td style="line-height: 17px;">
                                         <span class="@if($level->isdefault == 'Y') text-danger @endif">
-                                            {{ $level->name }}
+                                            {{ $level->name }} @if($level->isdefault == 'Y') <small class="text-dark fs--11">(ค่าเริ่มต้น)</small> @endif
                                         </span>
 
                                         <!-- MOBILE ONLY -->
@@ -104,6 +105,10 @@
                                     </td>
 
                                     <td class="hidden-lg-down text-center">
+                                        {{ $level->users_count }}
+                                    </td>
+
+                                    <td class="hidden-lg-down text-center">
                                         @if($level->isactive == 'Y')
                                             <span class="badge badge-success font-weight-normal mt-1">เปิดใช้งาน</span>
                                         @else
@@ -127,10 +132,9 @@
                                             <a  href="#!" 
                                                 class="text-truncate js-ajax-confirm" 
                                                 data-href="/user-levels/delete/{{ $level->id }}"
-                                                data-ajax-confirm-body="ยืนยันการลบเลเวล {{ $level->name }} ?" 
-
-                                                data-ajax-confirm-mode="ajax" 
-                                                data-ajax-confirm-method="GET" 
+                                                data-ajax-confirm-body="<center>ยืนยันการลบกลุ่มลูกค้า {{ $level->name }} ?<br/>
+                                                                สมาชิกที่อยู่ในกลุ่มนี้จะถูกย้ายไปยัง กลุ่มค่าเริ่มต้น ทั้งหมด<br/>
+                                                                ยืนยันการลบ ?" 
 
                                                 data-ajax-confirm-btn-yes-class="btn-sm btn-danger" 
                                                 data-ajax-confirm-btn-yes-text="ลบข้อมูล" 
@@ -138,10 +142,7 @@
 
                                                 data-ajax-confirm-btn-no-class="btn-sm btn-light" 
                                                 data-ajax-confirm-btn-no-text="ยกเลิก" 
-                                                data-ajax-confirm-btn-no-icon="fi fi-close"
-
-                                                data-ajax-confirm-success-target="#level_id_{{ $key }}" 
-                                                data-ajax-confirm-success-target-action="remove">
+                                                data-ajax-confirm-btn-no-icon="fi fi-close">
                                                 <i class="fi fi-thrash text-danger"></i>
                                             </a>
                                         @endif
