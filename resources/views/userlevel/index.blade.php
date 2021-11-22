@@ -54,7 +54,7 @@
                                 <th class="hidden-lg-down text-center">ยอดฝากสูงสุด</th>
                                 <th class="hidden-lg-down text-center">ยอดถอนสูงสุด</th>
                                 <th class="hidden-lg-down text-center">ยอดโอนสูงสุด</th>
-                                <th class="hidden-lg-down text-center">จำนวนสมชิกกลุ่ม</th>
+                                <th class="hidden-lg-down text-center">จำนวนสมาชิกกลุ่ม</th>
                                 <th class="hidden-lg-down text-center">สถานะ</th>
                                 <th class="w--150 hidden-lg-down text-center"></th>
                             </tr>
