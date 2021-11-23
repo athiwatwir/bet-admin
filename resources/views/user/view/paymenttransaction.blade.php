@@ -64,15 +64,23 @@
 
                             <td style="line-height: 17px;">
                                 <p class="mb-0">
-                                    <span class="badge 
-                                                @if($trans->code == 'DEPOSIT') badge-success 
-                                                @elseif($trans->code == 'WITHDRAW') badge-danger 
-                                                @elseif($trans->code == 'TRANSFER') badge-warning
-                                                @elseif($trans->code == 'ADJUST') badge-primary
-                                                @endif 
-                                                font-weight-normal fs--16"
-                                    >{{ $trans->code }}
-                                    </span>
+                                    @if($trans->code == 'DEPOSIT')
+                                        <span class="badge badge-success font-weight-normal fs--16">
+                                            เติมเงิน
+                                        </span>
+                                    @elseif($trans->code == 'WITHDRAW')
+                                        <span class="badge badge-danger font-weight-normal fs--16">
+                                            ถอนเงิน
+                                        </span>
+                                    @elseif($trans->code == 'TRANSFER')
+                                        <span class="badge badge-warning font-weight-normal fs--16">
+                                            โอนเงินในระบบ
+                                        </span>
+                                    @elseif($trans->code == 'ADJUST')
+                                        <span class="badge badge-primary font-weight-normal fs--16">
+                                            ปรับเปลี่ยน
+                                        </span>
+                                    @endif
                                 </p>
                                 @if(isset($trans->description))
                                     <small><small><span class="text-danger">**</span> {{ $trans->description }}</small></small>
