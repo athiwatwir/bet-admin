@@ -27,52 +27,83 @@
 
             <!-- portlet : body -->
             <div class="portlet-body pt-0 pt-2">
-                <div class="table-responsive mt-2">
 
-                    <div class="row">
+                <div class="row">
+                    @if($type == 'ADJUST')
+                    <div class="col-md-12 mb-4">
+                        <button class="btn btn-sm btn-indigo transition-hover-top" id="_set-adjust-user-btn">ปรับเปลี่ยนยอดเงินสมาชิก</button>
+                        <button class="btn btn-sm btn-indigo btn-soft-static transition-hover-top" id="_set-adjust-user-btn-cancle" style="display: none;">ยกเลิก</button>
+                    </div>
+                    @endif
+                    <div class="col-md-12 px-5">
                         @if($type == 'ADJUST')
-                        <div class="col-md-12 mb-4">
-                            <button class="btn btn-sm btn-indigo transition-hover-top" id="_set-adjust-user-btn">ปรับเปลี่ยนยอดเงินสมาชิก</button>
-                            <button class="btn btn-sm btn-indigo btn-soft-static transition-hover-top" id="_set-adjust-user-btn-cancle" style="display: none;">ยกเลิก</button>
+                        <div class="row" id="_user-transaction-adjust" style="display: none;">
+                            <div class="col-md-8 offset-2">
+                                @include('transaction.adjust')
+                            </div>
                         </div>
                         @endif
-                        <div class="col-md-12 px-5">
-                            @if($type == 'ADJUST')
-                            <div class="row" id="_user-transaction-adjust" style="display: none;">
-                                <div class="col-md-8 offset-2">
-                                    @include('transaction.adjust')
-                                </div>
-                            </div>
-                            @endif
-                            <table class="table table-align-middle border-bottom mb-6 mt-2" id="_table-transaction-adjust">
+                        <div class="row" id="_table-transaction-adjust">
+                            <div class="col-md-12">
+                                <table class="table-datatable table table-bordered table-hover table-striped"
+                                    data-lng-empty="ไม่มีข้อมูล..." 
+                                    data-lng-page-info="แสดงผลข้อมูลที่ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ ข้อมูล" 
+                                    data-lng-filtered="(filtered from _MAX_ total entries)" 
+                                    data-lng-loading="กำลังโหลด..." 
+                                    data-lng-processing="กำลังดำเนินการ..." 
+                                    data-lng-search="ค้นหาข้อมูล..." 
+                                    data-lng-norecords="ไม่มีข้อมูลที่ค้นหา..." 
+                                    data-lng-sort-ascending=": activate to sort column ascending" 
+                                    data-lng-sort-descending=": activate to sort column descending" 
 
-                                <thead>
-                                    <tr class="text-muted fs--13 bg-light">
-                                        <th>
-                                            <span class="px-2 p-0-xs">
-                                                ประเภทรายการ
-                                            </span>
-                                        </th>
-                                        <th class="hidden-lg-down text-center">รายการของ</th>
-                                        <th class="hidden-lg-down text-center">วัน-เวลา</th>
-                                        <th class="hidden-lg-down text-center">ไปยังบัญชี</th>
-                                        <th class="hidden-lg-down text-center">จำนวนเงิน</th>
-                                        <th class="hidden-lg-down text-center">สลิป</th>
-                                        <th class="hidden-lg-down text-center">สถานะ</th>
-                                        <th>&nbsp;</th>
-                                    </tr>
-                                </thead>
+                                    data-lng-column-visibility="ปิดการแสดงผลคอลัมน์" 
+                                    data-lng-csv="CSV" 
+                                    data-lng-pdf="PDF" 
+                                    data-lng-xls="XLS" 
+                                    data-lng-copy="Copy" 
+                                    data-lng-print="Print" 
+                                    data-lng-all="ทั้งหมด" 
 
-                                <tbody id="item_list">
+                                    data-main-search="true" 
+                                    data-column-search="false" 
+                                    data-row-reorder="false" 
+                                    data-col-reorder="true" 
+                                    data-responsive="true" 
+                                    data-header-fixed="true" 
+                                    data-select-onclick="false" 
+                                    data-enable-paging="true" 
+                                    data-enable-col-sorting="false" 
+                                    data-autofill="false" 
+                                    data-group="false" 
+                                    data-items-per-page="50" 
 
+                                    data-lng-export="<i class='fi fi-squared-dots fs--18 line-height-1'></i>" 
+                                    dara-export-pdf-disable-mobile="true" 
+                                    data-export='["csv", "pdf", "xls"]' 
+                                    data-options='["copy", "print"]' 
+                                >
+
+                                    <thead>
+                                        <tr class="text-muted fs--13">
+                                            <th>ประเภทรายการ</th>
+                                            <th class="text-center">รายการของ</th>
+                                            <th class="text-center">วัน-เวลา</th>
+                                            <th class="text-center">ไปยังบัญชี</th>
+                                            <th class="text-center">จำนวนเงิน</th>
+                                            <th class="text-center">สลิป</th>
+                                            <th class="text-center">สถานะ</th>
+                                            <th>&nbsp;</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
                                     @foreach ($transaction as $key => $trans)
-
-                                        <tr id="message_id_{{ $key }}" class="text-dark 
-                                                                        @if($trans->code == 'DEPOSIT') bg-deposit 
-                                                                        @elseif($trans->code == 'WITHDRAW') bg-withdraw  
-                                                                        @elseif($trans->code == 'TRANSFER') bg-transfer
-                                                                        @elseif($trans->code == 'ADJUST') bg-increase
-                                                                        @endif ">
+                                        <tr class="text-dark 
+                                                @if($trans->code == 'DEPOSIT') bg-deposit 
+                                                @elseif($trans->code == 'WITHDRAW') bg-withdraw  
+                                                @elseif($trans->code == 'TRANSFER') bg-transfer
+                                                @elseif($trans->code == 'ADJUST') bg-increase
+                                                @endif ">
 
                                             <td style="line-height: 17px;">
                                                 <p class="mb-0">
@@ -97,99 +128,19 @@
                                                 @if(isset($trans->description))
                                                     <small><small><span class="text-danger">**</span> {{ $trans->description }}</small></small>
                                                 @endif
-
-                                                <!-- MOBILE ONLY ----------------------------------------------->
-                                                <div class="fs--13 d-block d-xl-none">
-                                                <span class="d-block text-muted">
-                                                        วัน-เวลา : {{ date('d-m-Y', strtotime($trans->action_date)) }} | 
-                                                        <small>{{ date('H:i:s', strtotime($trans->action_date)) }}</small>
-                                                    </span>
-                                                    <span class="d-block text-muted">
-                                                        ไปยัง : 
-                                                        @if(isset($trans->by_admin))
-                                                            <small>
-                                                                <strong>ผู้ดูแลระบบ : {{ $trans->by_admin }}</strong>
-                                                            </small>
-                                                            <small><i class="fi fi-arrow-right-full text-primary"></i></small>
-                                                            <small>
-                                                                @if($trans->to_default == 'Y')
-                                                                    กระเป๋าหลัก
-                                                                @else
-                                                                    กระเป๋าเกม : {{ $trans->to_game }}
-                                                                @endif
-                                                            </small>
-                                                        @else
-                                                            @if($trans->code == 'DEPOSIT')
-                                                                {{ $trans->cbank_name }} | 
-                                                                <small>{{ $trans->account_name }}</small> | 
-                                                                <small>{{ $trans->account_number }}</small>
-                                                            @elseif($trans->code == 'WITHDRAW')
-                                                                {{ $trans->ubank_name }} | 
-                                                                <small>{{ $trans->bank_account_name }}</small> | 
-                                                                <small>{{ $trans->bank_account_number }}</small>
-                                                            @elseif($trans->code == 'TRANSFER')
-                                                                <small>
-                                                                    @if($trans->from_default == 'Y')
-                                                                        กระเป๋าหลัก
-                                                                    @else
-                                                                        กระเป๋าเกม : {{ $trans->from_game }}
-                                                                    @endif
-                                                                </small>
-                                                                <small><i class="fi fi-arrow-right-full text-primary"></i></small>
-                                                                <small>
-                                                                    @if($trans->to_default == 'Y')
-                                                                        กระเป๋าหลัก
-                                                                    @else
-                                                                        กระเป๋าเกม : {{ $trans->to_game }}
-                                                                    @endif
-                                                                </small>
-                                                            @endif
-                                                        @endif
-                                                    </span>
-                                                    <span class="d-block text-muted">
-                                                        จำนวน : <small><strong class=" @if($trans->code == 'DEPOSIT') text-success 
-                                                            @elseif($trans->code == 'WITHDRAW') text-danger 
-                                                            @elseif($trans->code == 'TRANSFER') text-warning
-                                                            @elseif($trans->code == 'ADJUST') text-primary
-                                                            @endif "
-                                                        >
-                                                            {{ number_format($trans->amount) }}
-                                                        </strong> {{ $trans->currency }}</small>
-                                                        @if(isset($trans->slip))
-                                                        <a href="#!" title="ดูสลิปโอนเงิน" 
-                                                            data-toggle="modal" data-target="#paymentSlipModal" 
-                                                                onClick="setImagePaymentTransactionSlip(
-                                                                    '{{ $trans->slip }}', '{{ $trans->from_bank_nane }}', '{{ $trans->from_bank_name_en }}', 
-                                                                    '{{ $trans->from_account_name }}', '{{ $trans->from_account_number }}', 
-                                                                    '{{ $trans->payment_date }}', '{{ $trans->payment_time }}')">
-                                                            <i class="fi fi-image"></i>
-                                                        </a>
-                                                        @endif
-                                                    </span>
-                                                    <span class="d-block text-muted">
-                                                        @if($trans->status == 'CO') 
-                                                            <small class="badge badge-success font-weight-normal">ยืนยันแล้ว</small>
-                                                        @elseif($trans->status == 'VO')
-                                                            <small class="badge badge-danger font-weight-normal">ปฏิเสธแล้ว</small>
-                                                        @else
-                                                            <small class="badge badge-secondary font-weight-normal">รอยืนยัน</small>
-                                                        @endif
-                                                    </span>
-                                                </div>
-                                                <!-- /MOBILE ONLY ----------------------------------------------->
                                             </td>
 
-                                            <td class="hidden-lg-down text-center" style="line-height: 16px;">
+                                            <td class="text-center" style="line-height: 16px;">
                                                 {{ $trans->username }}<br/>
                                                 <small class="">{{ $trans->name }}</small>
                                             </td>
 
-                                            <td class="hidden-lg-down text-center" style="line-height: 17px;">
+                                            <td class="text-center" style="line-height: 17px;">
                                                 {{ date('d-m-Y', strtotime($trans->action_date)) }}<br/>
                                                 <small>{{ date('H:i:s', strtotime($trans->action_date)) }}</small>
                                             </td>
 
-                                            <td class="hidden-lg-down text-center" style="line-height: 16px;">
+                                            <td class="text-center" style="line-height: 16px;">
                                                 @if(isset($trans->by_admin))
                                                     <small>
                                                         <strong>ผู้ดูแลระบบ : {{ $trans->by_admin }}</strong>
@@ -231,7 +182,7 @@
                                                 @endif
                                             </td>
 
-                                            <td class="hidden-lg-down text-center">
+                                            <td class="text-center">
                                                 <strong class=" @if($trans->code == 'DEPOSIT') text-success 
                                                             @elseif($trans->code == 'WITHDRAW') text-danger 
                                                             @elseif($trans->code == 'TRANSFER') text-warning
@@ -251,7 +202,7 @@
                                                 </strong>
                                             </td>
 
-                                            <td class="hidden-lg-down text-center">
+                                            <td class="text-center">
                                                 @if(isset($trans->slip))
                                                     <a href="#!" title="ดูสลิปโอนเงิน" 
                                                         data-toggle="modal" data-target="#paymentSlipModal" 
@@ -264,7 +215,7 @@
                                                 @endif
                                             </td>
 
-                                            <td class="hidden-lg-down text-center">
+                                            <td class="text-center">
                                                 @if($trans->status == 'CO') 
                                                     <small class="badge badge-success font-weight-normal">ยืนยันแล้ว</small>
                                                 @elseif($trans->status == 'VO')
@@ -321,65 +272,54 @@
 
                                         </tr>
                                     @endforeach
+                                    </tbody>
 
-                                </tbody>
-
-                            </table>
+                                    <tfoot>
+                                        <tr class="text-muted fs--13">
+                                            <th>ประเภทรายการ</th>
+                                            <th class="text-center">รายการของ</th>
+                                            <th class="text-center">วัน-เวลา</th>
+                                            <th class="text-center">ไปยังบัญชี</th>
+                                            <th class="text-center">จำนวนเงิน</th>
+                                            <th class="text-center">สลิป</th>
+                                            <th class="text-center">สถานะ</th>
+                                            <th>&nbsp;</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- options and pagination -->
-                <div class="row text-center-xs">
-
-                    <div class="hidden-lg-down col-12 col-xl-6">
-
-                        <!-- SELECTED ITEMS -->
-                        
-                        <!-- /SELECTED ITEMS -->
-
-                    </div>
-
-
-                    <div class="col-12 col-xl-6">
-
-                        <!-- pagination -->
-                        <nav aria-label="pagination">
-                            <ul class="pagination pagination-pill justify-content-end justify-content-center justify-content-md-end">
-
-                                <li class="{{ $transaction->onFirstPage() ? 'page-item btn-pill disabled' : 'page-item btn-pill' }}">
-                                    <a class="page-link" href="{{ $transaction->previousPageUrl() }}" tabindex="-1" aria-disabled="true">ก่อนหน้า</a>
-                                </li>
-                                
-                                <li class="page-item active" aria-current="page">
-                                    {{ $transaction->links() }}
-                                </li>
-                                
-                                <li class="{{ $transaction->currentPage() == $transaction->lastPage() ? 'page-item disabled' : 'page-item' }}">
-                                    <a class="page-link" href="{{ $transaction->nextPageUrl() }}">ถัดไป</a>
-                                </li>
-
-                            </ul>
-
-                            <div class="justify-content-end justify-content-center justify-content-md-end text-right">
-                                <small>หน้า : {{ $transaction->currentPage() }} / {{ $transaction->lastPage() }}</small>
-                            </div>
-                        </nav>
-                        <!-- pagination -->
-
-                    </div>
-
-                </div>
-                
+            
             </div>
         </div>
     </div>
 </div>
 <style>
-    .table-responsive {
-        overflow-x: initial;
+    .dt-buttons.btn-group.flex-wrap {
+        display: none;
     }
 </style>
+
+@if($type == 'ADJUST')
+    <script>
+        document.querySelector('#_set-adjust-user-btn').addEventListener('click', () => {
+            document.querySelector('#_set-adjust-user-btn').style.display = 'none'
+            document.querySelector('#_table-transaction-adjust').style.display = 'none'
+            document.querySelector('#_set-adjust-user-btn-cancle').style.display = 'initial'
+            document.querySelector('#_user-transaction-adjust').style.display = 'initial'
+        })
+
+        document.querySelector('#_set-adjust-user-btn-cancle').addEventListener('click', () => {
+            document.querySelector('#_set-adjust-user-btn').style.display = 'initial'
+            document.querySelector('#_table-transaction-adjust').style.display = 'inline-table'
+            document.querySelector('#_set-adjust-user-btn-cancle').style.display = 'none'
+            document.querySelector('#_user-transaction-adjust').style.display = 'none'
+        })
+    </script>
+@endif
+
 @endsection
 
 @section('modal')

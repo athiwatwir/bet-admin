@@ -16,7 +16,7 @@ class BanksController extends Controller
 
     public function index()
     {
-        $banks = DB::table('banks')->where('status', 'CO')->paginate(50);
+        $banks = DB::table('banks')->where('status', 'CO')->get();
         return view('banks.index', ['banks' => $banks]);
     }
 

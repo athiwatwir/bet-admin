@@ -31,258 +31,172 @@
 
 
             <!-- portlet : body -->
-            <div class="portlet-body pt-0">
+            <div class="portlet-body pt-2 px-5">
 
-                <form novalidate class="bs-validate" id="form_id" method="post" action="#!">
-                @csrf
-                    <input type="hidden" id="action" name="action" value=""><!-- value populated by js -->
+                <table class="table-datatable table table-bordered table-hover table-striped"
+                    data-lng-empty="ไม่มีข้อมูล..." 
+                    data-lng-page-info="แสดงผลกลุ่มเกมที่ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ กลุ่มเกม" 
+                    data-lng-filtered="(filtered from _MAX_ total entries)" 
+                    data-lng-loading="กำลังโหลด..." 
+                    data-lng-processing="กำลังดำเนินการ..." 
+                    data-lng-search="ค้นหากลุ่มเกม..." 
+                    data-lng-norecords="ไม่มีกลุ่มเกมที่ค้นหา..." 
+                    data-lng-sort-ascending=": activate to sort column ascending" 
+                    data-lng-sort-descending=": activate to sort column descending" 
 
-                    <div class="table-responsive">
+                    data-lng-column-visibility="ปิดการแสดงผลคอลัมน์" 
+                    data-lng-csv="CSV" 
+                    data-lng-pdf="PDF" 
+                    data-lng-xls="XLS" 
+                    data-lng-copy="Copy" 
+                    data-lng-print="Print" 
+                    data-lng-all="ทั้งหมด" 
 
-                        <table class="table table-align-middle border-bottom mb-6">
+                    data-main-search="true" 
+                    data-column-search="false" 
+                    data-row-reorder="false" 
+                    data-col-reorder="true" 
+                    data-responsive="true" 
+                    data-header-fixed="true" 
+                    data-select-onclick="false" 
+                    data-enable-paging="true" 
+                    data-enable-col-sorting="false" 
+                    data-autofill="false" 
+                    data-group="false" 
+                    data-items-per-page="50" 
 
-                            <thead>
-                                <tr class="text-muted fs--13 bg-light">
-                                    <th class="w--30 hidden-lg-down">
-                                        <label class="form-checkbox form-checkbox-primary float-start">
-                                            <input class="checkall" data-checkall-container="#item_list" type="checkbox" name="checkbox">
-                                            <i></i>
-                                        </label>
-                                    </th>
-                                    <th>
-                                        <span class="px-2 p-0-xs">
-                                            ชื่อกลุ่ม
-                                        </span>
-                                    </th>
-                                    <th class="w--200 hidden-lg-down text-center">รายการเกมในกลุ่ม</th>
-                                    <th class="w--200 hidden-lg-down text-center">สถานะ</th>
-                                    <th class="w--200">&nbsp;</th>
-                                </tr>
-                            </thead>
+                    data-lng-export="<i class='fi fi-squared-dots fs--18 line-height-1'></i>" 
+                    dara-export-pdf-disable-mobile="true" 
+                    data-export='["csv", "pdf", "xls"]' 
+                    data-options='["copy", "print"]' 
+                >
 
-                            <tbody id="item_list">
+                    <thead>
+                        <tr class="text-muted fs--13">
+                            <th class="w--30 text-center">#</th>
+                            <th>ชื่อกลุ่ม</th>
+                            <th class="w--200 text-center">รายการเกมในกลุ่ม</th>
+                            <th class="w--200 text-center">สถานะ</th>
+                            <th class="w--200">&nbsp;</th>
+                        </tr>
+                    </thead>
 
-                                @foreach($groups as $key => $group)
-                                <tr id="message_id_{{ $key }}" class="text-dark">
+                    <tbody>
+                    @foreach($groups as $key => $group)
+                        <tr class="text-dark">
 
-                                    <td class="hidden-lg-down">
-                                        <label class="form-checkbox form-checkbox-secondary float-start">
-                                            <input type="checkbox" name="item_id[]" value="{{ $key }}">
-                                            <i></i>
-                                        </label>
-                                    </td>
+                            <td class="text-center">
+                                <small>{{ $key + 1 }}.</small>
+                            </td>
 
-                                    <td style="line-height: 17px;">
-                                        <p class="mb-0 d-flex">
-                                            <strong class="text-dark">{{ $group->name }}</strong> 
-                                        </p>
+                            <td style="line-height: 17px;">
+                                <p class="mb-0 d-flex">
+                                    <strong class="text-dark">{{ $group->name }}</strong> 
+                                </p>
+                            </td>
 
-                                        <!-- MOBILE ONLY -->
-                                        <div class="fs--13 d-block d-xl-none">
-                                            @if($group->is_active == 'Y')
-                                                <span class="badge badge-success font-weight-normal mt-1">เปิดใช้งาน</span>
-                                            @else
-                                                <span class="badge badge-danger font-weight-normal mt-1">ปิดใช้งาน</span>
-                                            @endif
-                                        </div>
-                                        <!-- /MOBILE ONLY -->
-                                    </td>
+                            <td class="text-center">
+                                <small>
+                                    @if($group->games_count > 0)
+                                        <a href="/games/groups/{{ $group->name }}/{{ $group->id }}/game-list">ดูรายการเกม <span class="badge badge-info font-weight-normal ml-1">{{ $group->games_count }}</span></a>
+                                    @else
+                                        ไม่มีเกมอยู่ในกลุ่ม
+                                    @endif
+                                </small>
+                            </td>
 
-                                    <td class="hidden-lg-down text-center">
-                                        <small>
-                                            @if($group->games_count > 0)
-                                                <a href="/games/groups/{{ $group->name }}/{{ $group->id }}/game-list">ดูรายการเกม <span class="badge badge-info font-weight-normal ml-1">{{ $group->games_count }}</span></a>
-                                            @else
-                                                ไม่มีเกมอยู่ในกลุ่ม
-                                            @endif
-                                        </small>
-                                    </td>
+                            <td class="text-center">
+                                @if($group->is_active == 'Y')
+                                    <span class="badge badge-success font-weight-normal mt-1">เปิดใช้งาน</span>
+                                @else
+                                    <span class="badge badge-danger font-weight-normal mt-1">ปิดใช้งาน</span>
+                                @endif
+                            </td>
 
-                                    <td class="hidden-lg-down text-center">
-                                        @if($group->is_active == 'Y')
-                                            <span class="badge badge-success font-weight-normal mt-1">เปิดใช้งาน</span>
-                                        @else
-                                            <span class="badge badge-danger font-weight-normal mt-1">ปิดใช้งาน</span>
-                                        @endif
-                                    </td>
-
-                                    <td class="text-center">
-                                        <a class="text-truncate mr-2" href="#!" title="แก้ไข" data-toggle="modal" data-target="#groupGameEditModal" onClick="setGameGroupDataEdit({{ $group->id }}, '{{ $group->name }}')">
-                                            <i class="fi fi-pencil"></i>
-                                        </a>
-
-                                        @if($group->games_count == 0)
-                                            <a class="text-truncate mr-2" href="/games/groups/active/{{ $group->id }}/{{ $group->name }}">
-                                                @if($group->is_active == 'Y')
-                                                    <span class="text-success" title="ปิดการใช้งาน"><i class="fi fi-eye"></i></span>
-                                                @else
-                                                    <span class="text-danger" title="เปิดการใช้งาน"><i class="fi fi-eye-disabled"></i></span>
-                                                @endif
-                                            </a>
-                                        @else
-                                            <a href="#!" class="text-truncate mr-2" data-toggle="modal" data-target="#groupActiveModal" onClick="setGameGroupDataActive({{ $group->id }}, '{{ $group->name }}', {{ $group->games_count }})">
-                                                @if($group->is_active == 'Y')
-                                                    <span class="text-success" title="ปิดการใช้งาน"><i class="fi fi-eye"></i></span>
-                                                @else
-                                                    <span class="text-danger" title="เปิดการใช้งาน"><i class="fi fi-eye-disabled"></i></span>
-                                                @endif
-                                            </a>
-                                        @endif
-
-                                        @if($group->games_count == 0)
-                                            <a  href="#!" 
-                                                class="text-truncate js-ajax-confirm" 
-                                                data-href="/games/groups/delete/{{ $group->id }}/{{ $group->name }}"
-                                                data-ajax-confirm-body="<center>ยืนยันการลบกลุ่มเกม {{ $group->name }} ?</center>" 
-
-                                                data-ajax-confirm-mode="ajax" 
-                                                data-ajax-confirm-method="GET" 
-
-                                                data-ajax-confirm-btn-yes-class="btn-sm btn-danger" 
-                                                data-ajax-confirm-btn-yes-text="ลบข้อมูล" 
-                                                data-ajax-confirm-btn-yes-icon="fi fi-check" 
-
-                                                data-ajax-confirm-btn-no-class="btn-sm btn-light" 
-                                                data-ajax-confirm-btn-no-text="ยกเลิก" 
-                                                data-ajax-confirm-btn-no-icon="fi fi-close"
-
-                                                data-ajax-confirm-success-target="#message_id_{{ $key }}" 
-                                                data-ajax-confirm-success-target-action="remove">
-                                                <i class="fi fi-thrash text-danger"></i>
-                                            </a>
-                                        @else
-                                            <a  href="#!" 
-                                                class="text-truncate js-ajax-confirm" 
-                                                data-href="/games/groups/delete/{{ $group->id }}/{{ $group->name }}"
-                                                data-ajax-confirm-body="<center>ยืนยันการลบกลุ่มเกม <strong>{{ $group->name }}</strong> ?<br/>
-                                                                        เกมที่มีในกลุ่มนี้จำนวน <span class='text-danger'>{{ $group->games_count }}</span> เกม จะถูกลบไปด้วย<br/>
-                                                                        กรุณายืนยัน</center>" 
-
-                                                data-ajax-confirm-mode="ajax" 
-                                                data-ajax-confirm-method="GET" 
-
-                                                data-ajax-confirm-btn-yes-class="btn-sm btn-danger" 
-                                                data-ajax-confirm-btn-yes-text="ยืนยันการลบ" 
-                                                data-ajax-confirm-btn-yes-icon="fi fi-check" 
-
-                                                data-ajax-confirm-btn-no-class="btn-sm btn-light" 
-                                                data-ajax-confirm-btn-no-text="ยกเลิก" 
-                                                data-ajax-confirm-btn-no-icon="fi fi-close"
-
-                                                data-ajax-confirm-success-target="#message_id_{{ $key }}" 
-                                                data-ajax-confirm-success-target-action="remove">
-                                                <i class="fi fi-thrash text-danger"></i>
-                                            </a>
-                                        @endif
-                                    </td>
-
-                                </tr>
-                                @endforeach
-
-                            </tbody>
-
-                        </table>
-
-                    </div>
-
-
-
-                    <!-- options and pagination -->
-                    <div class="row text-center-xs">
-
-                        <div class="hidden-lg-down col-12 col-xl-6">
-
-                            <!-- SELECTED ITEMS -->
-                            <!-- <div class="dropup">
-
-                                <a href="#" class="btn btn-sm btn-pill btn-light" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true">
-                                    <span class="group-icon">
-                                        <i class="fi fi-dots-vertical-full"></i>
-                                        <i class="fi fi-close"></i>
-                                    </span>
-                                    <span>Selected Items</span>
+                            <td class="text-center">
+                                <a class="text-truncate mr-2" href="#!" title="แก้ไข" data-toggle="modal" data-target="#groupGameEditModal" onClick="setGameGroupDataEdit({{ $group->id }}, '{{ $group->name }}')">
+                                    <i class="fi fi-pencil"></i>
                                 </a>
 
-                                <div class="dropdown-menu dropdown-menu-clean dropdown-click-ignore max-w-250">
-
-                                    <a	 href="#" 
-                                        class="dropdown-item text-truncate js-form-advanced-bulk" 
-                                        data-js-form-advanced-bulk-hidden-action-id="#action" 
-                                        data-js-form-advanced-bulk-hidden-action-value="myactionhere3" 
-                                        data-js-form-advanced-bulk-container-items="#item_list" 
-                                        data-js-form-advanced-bulk-required-selected="true" 
-                                        data-js-form-advanced-bulk-required-txt-error="No Items Selected!" 
-                                        data-js-form-advanced-bulk-required-txt-position="top-center" 
-                                        data-js-form-advanced-bulk-submit-without-confirmation="true" 
-                                        data-js-form-advanced-form-id="#form_id">
-                                        <i class="fi fi-box"></i>
-                                        Archive
+                                @if($group->games_count == 0)
+                                    <a class="text-truncate mr-2" href="/games/groups/active/{{ $group->id }}/{{ $group->name }}">
+                                        @if($group->is_active == 'Y')
+                                            <span class="text-success" title="ปิดการใช้งาน"><i class="fi fi-eye"></i></span>
+                                        @else
+                                            <span class="text-danger" title="เปิดการใช้งาน"><i class="fi fi-eye-disabled"></i></span>
+                                        @endif
                                     </a>
+                                @else
+                                    <a href="#!" class="text-truncate mr-2" data-toggle="modal" data-target="#groupActiveModal" onClick="setGameGroupDataActive({{ $group->id }}, '{{ $group->name }}', {{ $group->games_count }})">
+                                        @if($group->is_active == 'Y')
+                                            <span class="text-success" title="ปิดการใช้งาน"><i class="fi fi-eye"></i></span>
+                                        @else
+                                            <span class="text-danger" title="เปิดการใช้งาน"><i class="fi fi-eye-disabled"></i></span>
+                                        @endif
+                                    </a>
+                                @endif
 
-                                    <a	 href="#" 
-                                        class="dropdown-item text-truncate js-form-advanced-bulk" 
-                                        data-js-form-advanced-bulk-hidden-action-id="#action" 
-                                        data-js-form-advanced-bulk-hidden-action-value="delete" 
-                                        data-js-form-advanced-bulk-container-items="#item_list" 
-                                        data-js-form-advanced-bulk-required-selected="true" 
-                                        data-js-form-advanced-bulk-required-txt-error="No Items Selected!" 
-                                        data-js-form-advanced-bulk-required-txt-position="top-center" 
-                                        data-js-form-advanced-bulk-required-custom-modal="" 
-                                        data-js-form-advanced-bulk-required-custom-modal-content-ajax="" 
-                                        data-js-form-advanced-bulk-required-modal-type="danger" 
-                                        data-js-form-advanced-bulk-required-modal-size="modal-md" 
-                                        data-js-form-advanced-bulk-required-modal-txt-title="Please Confirm" 
-                                        data-js-form-advanced-bulk-required-modal-txt-subtitle="Selected Items: no_selected" 
-                                        data-js-form-advanced-bulk-required-modal-txt-body-txt="Are you sure? Delete no_selected selected items?" 
-                                        data-js-form-advanced-bulk-required-modal-txt-body-info="Please note: this is a permanent action!" 
-                                        data-js-form-advanced-bulk-required-modal-btn-text-yes="Delete" 
-                                        data-js-form-advanced-bulk-required-modal-btn-text-no="Cancel" 
-                                        data-js-form-advanced-bulk-submit-without-confirmation="false" 
-                                        data-js-form-advanced-form-id="#form_id">
+                                @if($group->games_count == 0)
+                                    <a  href="#!" 
+                                        class="text-truncate js-ajax-confirm" 
+                                        data-href="/games/groups/delete/{{ $group->id }}/{{ $group->name }}"
+                                        data-ajax-confirm-body="<center>ยืนยันการลบกลุ่มเกม {{ $group->name }} ?</center>" 
+
+                                        data-ajax-confirm-mode="ajax" 
+                                        data-ajax-confirm-method="GET" 
+
+                                        data-ajax-confirm-btn-yes-class="btn-sm btn-danger" 
+                                        data-ajax-confirm-btn-yes-text="ลบข้อมูล" 
+                                        data-ajax-confirm-btn-yes-icon="fi fi-check" 
+
+                                        data-ajax-confirm-btn-no-class="btn-sm btn-light" 
+                                        data-ajax-confirm-btn-no-text="ยกเลิก" 
+                                        data-ajax-confirm-btn-no-icon="fi fi-close"
+
+                                        data-ajax-confirm-success-target="#message_id_{{ $key }}" 
+                                        data-ajax-confirm-success-target-action="remove">
                                         <i class="fi fi-thrash text-danger"></i>
-                                        ลบที่เลือก
                                     </a>
+                                @else
+                                    <a  href="#!" 
+                                        class="text-truncate js-ajax-confirm" 
+                                        data-href="/games/groups/delete/{{ $group->id }}/{{ $group->name }}"
+                                        data-ajax-confirm-body="<center>ยืนยันการลบกลุ่มเกม <strong>{{ $group->name }}</strong> ?<br/>
+                                                                เกมที่มีในกลุ่มนี้จำนวน <span class='text-danger'>{{ $group->games_count }}</span> เกม จะถูกลบไปด้วย<br/>
+                                                                กรุณายืนยัน</center>" 
 
-                                </div>
+                                        data-ajax-confirm-mode="ajax" 
+                                        data-ajax-confirm-method="GET" 
 
-                            </div> -->
-                            <!-- /SELECTED ITEMS -->
+                                        data-ajax-confirm-btn-yes-class="btn-sm btn-danger" 
+                                        data-ajax-confirm-btn-yes-text="ยืนยันการลบ" 
+                                        data-ajax-confirm-btn-yes-icon="fi fi-check" 
 
-                        </div>
+                                        data-ajax-confirm-btn-no-class="btn-sm btn-light" 
+                                        data-ajax-confirm-btn-no-text="ยกเลิก" 
+                                        data-ajax-confirm-btn-no-icon="fi fi-close"
 
+                                        data-ajax-confirm-success-target="#message_id_{{ $key }}" 
+                                        data-ajax-confirm-success-target-action="remove">
+                                        <i class="fi fi-thrash text-danger"></i>
+                                    </a>
+                                @endif
+                            </td>
 
-                        <div class="col-12 col-xl-6">
+                        </tr>
+                    @endforeach
+                    </tbody>
 
-                            <!-- pagination -->
-                            <nav aria-label="pagination">
-                                <ul class="pagination pagination-pill justify-content-end justify-content-center justify-content-md-end">
-
-                                    <li class="{{ $groups->onFirstPage() ? 'page-item btn-pill disabled' : 'page-item btn-pill' }}">
-                                        <a class="page-link" href="{{ $groups->previousPageUrl() }}" tabindex="-1" aria-disabled="true">ก่อนหน้า</a>
-                                    </li>
-                                    
-                                    <li class="page-item active" aria-current="page">
-                                        {{ $groups->links() }}
-                                    </li>
-                                    
-                                    <li class="{{ $groups->currentPage() == $groups->lastPage() ? 'page-item disabled' : 'page-item' }}">
-                                        <a class="page-link" href="{{ $groups->nextPageUrl() }}">ถัดไป</a>
-                                    </li>
-
-                                </ul>
-
-                                <div class="justify-content-end justify-content-center justify-content-md-end text-right">
-                                    <small>หน้า : {{ $groups->currentPage() }} / {{ $groups->lastPage() }}</small>
-                                </div>
-                            </nav>
-                            <!-- pagination -->
-
-                        </div>
-
-                    </div>
-                    <!-- /options and pagination -->
-
-                </form>
+                    <tfoot>
+                        <tr class="text-muted fs--13">
+                            <th class="w--30 text-center">#</th>
+                            <th>ชื่อกลุ่ม</th>
+                            <th class="w--200 text-center">รายการเกมในกลุ่ม</th>
+                            <th class="w--200 text-center">สถานะ</th>
+                            <th class="w--200">&nbsp;</th>
+                        </tr>
+                    </tfoot>
+                </table>
 
             </div>
             <!-- /portlet : body -->
@@ -293,7 +207,11 @@
 
     </div>
     <!-- /inbox list -->
-
+<style>
+    .dt-buttons.btn-group.flex-wrap {
+        display: none;
+    }
+</style>
 </div>
 @endsection
 

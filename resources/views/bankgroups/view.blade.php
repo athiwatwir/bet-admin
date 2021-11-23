@@ -69,6 +69,13 @@
                                     <i class="fi fi-pencil"></i>
                                 </a>
                                 @if($bgroup->isdefault == 'N')
+                                <a class="text-truncate mr-2" href="/settings/bank-groups/active/{{ $bgroup->id }}">
+                                    @if($bgroup->isactive == 'Y')
+                                        <span class="text-success" title="ปิดการใช้งาน"><i class="fi fi-eye"></i></span>
+                                    @else
+                                        <span class="text-danger" title="เปิดการใช้งาน"><i class="fi fi-eye-disabled"></i></span>
+                                    @endif
+                                </a>
                                 <a  href="{{ route('bankgroup-delete', ['id' => $bgroup->id]) }}" class="text-truncate js-ajax-confirm"
                                     data-ajax-confirm-body="<center>ยืนยันการลบกลุ่มธนาคาร {{ $bgroup->name }} ? <br/>
                                         ธนาคารที่อยู่ในกลุ่มนี้ทั้งหมดจะกลายเป็นสถานะว่าง <br/>

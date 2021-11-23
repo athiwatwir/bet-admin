@@ -45,7 +45,7 @@ class PaymentTransactionController extends Controller
                             'ubank.name as ubank_name', 'cbank.name as cbank_name',
                             )
                     ->orderBy('payment_transactions.created_at', 'desc')
-                    ->paginate(20);
+                    ->get();
 
         return view('transaction.payments', ['transaction'=> $trans, 'type' =>'']);
     }
@@ -101,7 +101,7 @@ class PaymentTransactionController extends Controller
                             'ubank.name as ubank_name', 'cbank.name as cbank_name',
                             )
                     ->orderBy('payment_transactions.created_at', 'desc')
-                    ->paginate(20);
+                    ->get();
 
         return $trans;
     }
@@ -197,7 +197,7 @@ class PaymentTransactionController extends Controller
                         'ubank.name as ubank_name', 'cbank.name as cbank_name',
                         )
                 ->orderBy('payment_transactions.created_at', 'desc')
-                ->paginate(20);
+                ->get();
     }
 
 

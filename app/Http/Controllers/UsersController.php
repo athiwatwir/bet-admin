@@ -25,10 +25,13 @@ class UsersController extends Controller
 
     public function index()
     {
-        $users = User::where('is_admin', 'N')
-                    ->where('status', 'CO')
+        $users = DB::table('users')
+                    ->leftJoin('user_levels', 'users.user_level_id', '=', 'user_levels.id')
+                    ->where('users.is_admin', 'N')
+                    ->where('users.status', 'CO')
+                    ->select('users.*', 'user_levels.name as level_name')
                     ->orderBy('users.created_at', 'desc')
-                    ->paginate(10);
+                    ->get();
 
         $deleted = DB::table('users')
                     ->where('is_admin', 'N')

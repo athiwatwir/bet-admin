@@ -23,7 +23,7 @@ class AdminsController extends Controller
     {
         $admins = Staff::where('status', 'CO')
                     ->orderBy('created_at', 'desc')
-                    ->paginate(10);
+                    ->get();
 
         $deleted = DB::table('staffs')
                     ->where('status', 'DL')

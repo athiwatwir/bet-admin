@@ -19,7 +19,7 @@ class BankGroupController extends Controller
     public function index()
     {
         $b_group = BankGroup::where('isdefault', 'Y')->withCount('banks')->first();
-        $b_groups = BankGroup::where('isdefault', 'N')->withCount('banks')->orderBy('created_at', 'DESC')->paginate(50);
+        $b_groups = BankGroup::where('isdefault', 'N')->withCount('banks')->orderBy('created_at', 'DESC')->get();
 
         return view('bankgroups.index', ['bank_groups' => $b_groups, 'group_default' => $b_group]);
     }
@@ -64,11 +64,20 @@ class BankGroupController extends Controller
             ]);
 
             if($bgroup) return redirect()->back()->with('success', 'แก้ไขข้อมูลกลุ่มธนาคาร "'.$request->name.'" เรียบร้อยแล้ว');
-
             return redirect()->back()->with('error', 'เกิดข้อผิดพลาดในการแก้ไขข้อมูล กรุณาลองใหม่...');
         }
 
         return redirect()->back()->with('error', '"'. $request->name .'" มีชื่อกลุ่มนี้อยู่ในระบบแล้ว กรุณาแก้ไข...');
+    }
+
+    public function active($id)
+    {
+        $bgroup = BankGroup::find($id);
+        $status = $bgroup->isactive == 'Y' ? 'N' : 'Y';
+        $bgroup->update(['isactive' => $status]);
+
+        if($bgroup) return redirect()->back()->with('success', 'แก้ไขข้อมูลกลุ่มธนาคาร "'.$bgroup->name.'" เรียบร้อยแล้ว');
+        return redirect()->back()->with('error', 'เกิดข้อผิดพลาดในการแก้ไขข้อมูล กรุณาลองใหม่...');
     }
 
     private function unDefault()

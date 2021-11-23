@@ -85,6 +85,7 @@ Route::middleware(['auth:webadmin'])->group(function () {
             Route::post('/', [BankGroupController::class, 'create']);
             Route::post('/edit', [BankGroupController::class, 'edit']);
             Route::get('/delete/{id}', [BankGroupController::class, 'delete'])->name('bankgroup-delete');
+            Route::get('/active/{id}', [BankGroupController::class, 'active']);
 
             Route::get('/view/{id}', [BankGroupController::class, 'view'])->name('bankgroup-view');
             Route::post('/add', [BankGroupController::class, 'add']);

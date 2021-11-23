@@ -35,173 +35,143 @@
 
 
             <!-- portlet : body -->
-            <div class="portlet-body pt-0">
+            <div class="portlet-body pt-2 px-5">
 
-                <div class="table-responsive">
+                <table class="table-datatable table table-bordered table-hover table-striped px-3"
+                    data-lng-empty="ไม่มีข้อมูล..." 
+                    data-lng-page-info="แสดงผลกลุ่มลูกค้าที่ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ กลุ่ม" 
+                    data-lng-filtered="(filtered from _MAX_ total entries)" 
+                    data-lng-loading="กำลังโหลด..." 
+                    data-lng-processing="กำลังดำเนินการ..." 
+                    data-lng-search="ค้นหากลุ่มลูกค้า..." 
+                    data-lng-norecords="ไม่มีผู้กลุ่มลูกค้าที่ค้นหา..." 
+                    data-lng-sort-ascending=": activate to sort column ascending" 
+                    data-lng-sort-descending=": activate to sort column descending" 
 
-                    <table class="table table-align-middle border-bottom mb-6">
+                    data-lng-column-visibility="ปิดการแสดงผลคอลัมน์" 
+                    data-lng-csv="CSV" 
+                    data-lng-pdf="PDF" 
+                    data-lng-xls="XLS" 
+                    data-lng-copy="Copy" 
+                    data-lng-print="Print" 
+                    data-lng-all="ทั้งหมด" 
 
-                        <thead>
-                            <tr class="text-muted fs--13 bg-light">
-                                <th class="w--30 hidden-lg-down text-center">
-                                    #
-                                </th>
-                                <th>
-                                    <span class="px-2 p-0-xs">
-                                        กลุ่มลูกค้า
-                                    </span>
-                                </th>
-                                <th class="hidden-lg-down text-center">ยอดฝากสูงสุด</th>
-                                <th class="hidden-lg-down text-center">ยอดถอนสูงสุด</th>
-                                <th class="hidden-lg-down text-center">ยอดโอนสูงสุด</th>
-                                <th class="hidden-lg-down text-center">จำนวนสมาชิกกลุ่ม</th>
-                                <th class="hidden-lg-down text-center">สถานะ</th>
-                                <th class="w--150 hidden-lg-down text-center"></th>
-                            </tr>
-                        </thead>
+                    data-main-search="true" 
+                    data-column-search="false" 
+                    data-row-reorder="false" 
+                    data-col-reorder="true" 
+                    data-responsive="true" 
+                    data-header-fixed="true" 
+                    data-select-onclick="false" 
+                    data-enable-paging="true" 
+                    data-enable-col-sorting="false" 
+                    data-autofill="false" 
+                    data-group="false" 
+                    data-items-per-page="50" 
 
-                        <tbody id="item_list">
+                    data-lng-export="<i class='fi fi-squared-dots fs--18 line-height-1'></i>" 
+                    dara-export-pdf-disable-mobile="true" 
+                    data-export='["csv", "pdf", "xls"]' 
+                    data-options='["copy", "print"]' 
+                >
+                    <thead>
+                        <tr class="text-muted fs--13">
+                            <th class="w--30 text-center">#</th>
+                            <th>กลุ่มลูกค้า</th>
+                            <th class="text-center">ยอดฝากสูงสุด</th>
+                            <th class="text-center">ยอดถอนสูงสุด</th>
+                            <th class="text-center">ยอดโอนสูงสุด</th>
+                            <th class="text-center">จำนวนสมาชิกกลุ่ม</th>
+                            <th class="text-center">สถานะ</th>
+                            <th class="w--150 text-center"></th>
+                        </tr>
+                    </thead>
 
-                            @foreach ($levels as $key => $level)
+                    <tbody>
+                    @foreach ($levels as $key => $level)
+                        <tr class="text-dark">
 
-                                <!-- user -->
-                                <tr id="level_id_{{ $key }}" class="text-dark">
+                            <td class="text-center">
+                                {{ $key + 1 }}.
+                            </td>
 
-                                    <td class="hidden-lg-down text-center">
-                                        {{ $key + 1 }}.
-                                    </td>
+                            <td style="line-height: 17px;">
+                                <span class="@if($level->isdefault == 'Y') text-danger @endif">
+                                    {{ $level->name }} @if($level->isdefault == 'Y') <small class="text-dark fs--11">(ค่าเริ่มต้น)</small> @endif
+                                </span>
+                            </td>
 
-                                    <td style="line-height: 17px;">
-                                        <span class="@if($level->isdefault == 'Y') text-danger @endif">
-                                            {{ $level->name }} @if($level->isdefault == 'Y') <small class="text-dark fs--11">(ค่าเริ่มต้น)</small> @endif
-                                        </span>
+                            <td class="text-center">
+                                {{ number_format($level->limit_deposit) }}
+                            </td>
 
-                                        <!-- MOBILE ONLY -->
-                                        <div class="fs--13 d-block d-xl-none">
-                                            <span class="d-block text-muted">ฝาก : {{ number_format($level->limit_deposit) }}</span>
-                                            <span class="d-block text-muted">ถอน : {{ number_format($level->limit_withdraw) }}</span>
-                                            <span class="d-block text-muted">ย้าย : {{ number_format($level->limit_transfer) }}</span>
-                                            <span class="d-block text-muted">
-                                                @if($level->isactive == 'Y')
-                                                    <span class="badge badge-success font-weight-normal mt-1">เปิดใช้งาน</span>
-                                                @else
-                                                    <span class="badge badge-danger font-weight-normal mt-1">ปิดใช้งาน</span>
-                                                @endif
-                                            </span>
-                                        </div>
-                                        <!-- /MOBILE ONLY -->
-                                    </td>
+                            <td class="text-center">
+                                {{ number_format($level->limit_withdraw) }}
+                            </td>
 
-                                    <td class="hidden-lg-down text-center">
-                                        {{ number_format($level->limit_deposit) }}
-                                    </td>
+                            <td class="text-center">
+                                {{ number_format($level->limit_transfer) }}
+                            </td>
 
-                                    <td class="hidden-lg-down text-center">
-                                        {{ number_format($level->limit_withdraw) }}
-                                    </td>
+                            <td class="text-center">
+                                {{ $level->users_count }}
+                            </td>
 
-                                    <td class="hidden-lg-down text-center">
-                                        {{ number_format($level->limit_transfer) }}
-                                    </td>
+                            <td class="text-center">
+                                @if($level->isactive == 'Y')
+                                    <span class="badge badge-success font-weight-normal mt-1">เปิดใช้งาน</span>
+                                @else
+                                    <span class="badge badge-danger font-weight-normal mt-1">ปิดใช้งาน</span>
+                                @endif
+                            </td>
 
-                                    <td class="hidden-lg-down text-center">
-                                        {{ $level->users_count }}
-                                    </td>
-
-                                    <td class="hidden-lg-down text-center">
+                            <td class="text-center">
+                                <a class="text-truncate mr-2" href="#!" title="แก้ไข" data-toggle="modal" data-target="#editUserLevel" onClick="setDataUserLevel('{{$level->id}}', '{{$level->name}}', {{$level->limit_deposit}}, {{$level->limit_withdraw}}, {{$level->limit_transfer}}, '{{$level->isdefault}}')">
+                                    <i class="fi fi-pencil"></i>
+                                </a>
+                                @if($level->isdefault == 'N')
+                                    <a class="text-truncate mr-2" href="/user-levels/active/{{ $level->id }}/{{ $level->name }}">
                                         @if($level->isactive == 'Y')
-                                            <span class="badge badge-success font-weight-normal mt-1">เปิดใช้งาน</span>
+                                            <span class="text-success" title="ปิดการใช้งาน"><i class="fi fi-eye"></i></span>
                                         @else
-                                            <span class="badge badge-danger font-weight-normal mt-1">ปิดใช้งาน</span>
+                                            <span class="text-danger" title="เปิดการใช้งาน"><i class="fi fi-eye-disabled"></i></span>
                                         @endif
-                                    </td>
-
-                                    <td class="text-center">
-                                        <a class="text-truncate mr-2" href="#!" title="แก้ไข" data-toggle="modal" data-target="#editUserLevel" onClick="setDataUserLevel('{{$level->id}}', '{{$level->name}}', {{$level->limit_deposit}}, {{$level->limit_withdraw}}, {{$level->limit_transfer}}, '{{$level->isdefault}}')">
-                                            <i class="fi fi-pencil"></i>
-                                        </a>
-                                        @if($level->isdefault == 'N')
-                                            <a class="text-truncate mr-2" href="/user-levels/active/{{ $level->id }}/{{ $level->name }}">
-                                                @if($level->isactive == 'Y')
-                                                    <span class="text-success" title="ปิดการใช้งาน"><i class="fi fi-eye"></i></span>
-                                                @else
-                                                    <span class="text-danger" title="เปิดการใช้งาน"><i class="fi fi-eye-disabled"></i></span>
-                                                @endif
-                                            </a>
-                                        
-                                            <a  href="#!" 
-                                                class="text-truncate js-ajax-confirm" 
-                                                data-href="/user-levels/delete/{{ $level->id }}"
-                                                data-ajax-confirm-body="<center>ยืนยันการลบกลุ่มลูกค้า {{ $level->name }} ?<br/>
-                                                                สมาชิกที่อยู่ในกลุ่มนี้จะถูกย้ายไปยัง กลุ่มค่าเริ่มต้น ทั้งหมด<br/>
-                                                                ยืนยันการลบ ?" 
-
-                                                data-ajax-confirm-btn-yes-class="btn-sm btn-danger" 
-                                                data-ajax-confirm-btn-yes-text="ลบข้อมูล" 
-                                                data-ajax-confirm-btn-yes-icon="fi fi-check" 
-
-                                                data-ajax-confirm-btn-no-class="btn-sm btn-light" 
-                                                data-ajax-confirm-btn-no-text="ยกเลิก" 
-                                                data-ajax-confirm-btn-no-icon="fi fi-close">
-                                                <i class="fi fi-thrash text-danger"></i>
-                                            </a>
-                                        @endif
-                                    </td>
-
-                                </tr>
-                                <!-- /user -->
-                            @endforeach
-
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-
-
-                <!-- options and pagination -->
-                <div class="row text-center-xs">
-
-                    <div class="hidden-lg-down col-12 col-xl-6">
-
-                        <!-- SELECTED ITEMS -->
-                        
-                        <!-- /SELECTED ITEMS -->
-
-                    </div>
-
-
-                    <div class="col-12 col-xl-6">
-
-                        <!-- pagination -->
-                        <nav aria-label="pagination">
-                            <ul class="pagination pagination-pill justify-content-end justify-content-center justify-content-md-end">
-
-                                <li class="{{ $levels->onFirstPage() ? 'page-item btn-pill disabled' : 'page-item btn-pill' }}">
-                                    <a class="page-link" href="{{ $levels->previousPageUrl() }}" tabindex="-1" aria-disabled="true">ก่อนหน้า</a>
-                                </li>
+                                    </a>
                                 
-                                <li class="page-item active" aria-current="page">
-                                    {{ $levels->links() }}
-                                </li>
-                                
-                                <li class="{{ $levels->currentPage() == $levels->lastPage() ? 'page-item disabled' : 'page-item' }}">
-                                    <a class="page-link" href="{{ $levels->nextPageUrl() }}">ถัดไป</a>
-                                </li>
+                                    <a  href="#!" 
+                                        class="text-truncate js-ajax-confirm" 
+                                        data-href="/user-levels/delete/{{ $level->id }}"
+                                        data-ajax-confirm-body="<center>ยืนยันการลบกลุ่มลูกค้า {{ $level->name }} ?<br/>
+                                                        สมาชิกที่อยู่ในกลุ่มนี้จะถูกย้ายไปยัง กลุ่มค่าเริ่มต้น ทั้งหมด<br/>
+                                                        ยืนยันการลบ ?" 
 
-                            </ul>
+                                        data-ajax-confirm-btn-yes-class="btn-sm btn-danger" 
+                                        data-ajax-confirm-btn-yes-text="ลบข้อมูล" 
+                                        data-ajax-confirm-btn-yes-icon="fi fi-check" 
 
-                            <div class="justify-content-end justify-content-center justify-content-md-end text-right">
-                                <small>หน้า : {{ $levels->currentPage() }} / {{ $levels->lastPage() }}</small>
-                            </div>
-                        </nav>
-                        <!-- pagination -->
-
-                    </div>
-
-                </div>
-                <!-- /options and pagination -->
+                                        data-ajax-confirm-btn-no-class="btn-sm btn-light" 
+                                        data-ajax-confirm-btn-no-text="ยกเลิก" 
+                                        data-ajax-confirm-btn-no-icon="fi fi-close">
+                                        <i class="fi fi-thrash text-danger"></i>
+                                    </a>
+                                @endif
+                            </td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                    <tfoot>
+                        <tr class="text-muted fs--13">
+                            <th class="w--30 text-center">#</th>
+                            <th>กลุ่มลูกค้า</th>
+                            <th class="text-center">ยอดฝากสูงสุด</th>
+                            <th class="text-center">ยอดถอนสูงสุด</th>
+                            <th class="text-center">ยอดโอนสูงสุด</th>
+                            <th class="text-center">จำนวนสมาชิกกลุ่ม</th>
+                            <th class="text-center">สถานะ</th>
+                            <th class="w--150 text-center"></th>
+                        </tr>
+                    </tfoot>
+                </table>
 
             </div>
             <!-- /portlet : body -->
@@ -214,6 +184,11 @@
     <!-- /inbox list -->
 
 </div>
+<style>
+    .dt-buttons.btn-group.flex-wrap {
+        display: none;
+    }
+</style>
 @endsection
 
 @section('modal')

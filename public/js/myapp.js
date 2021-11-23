@@ -161,63 +161,6 @@ function cancelEditAdminProfile() {
 }
 // END Admin Profile
 
-// Admin Password
-function editPasswordAdmin() {
-    document.querySelector('#admin_old_password').disabled = false
-    document.querySelector('#admin_new_password').disabled = false
-    document.querySelector('#admin_confirm_password').disabled = false
-    document.getElementById("is-edit-admin-password-btn").style.display = "block";
-}
-function cancleEditPasswordAdmin() {
-    document.querySelector('#admin_old_password').disabled = true
-    document.querySelector('#admin_new_password').disabled = true
-    document.querySelector('#admin_confirm_password').disabled = true
-    document.getElementById("is-edit-admin-password-btn").style.display = "none";
-}
-
-let new_password = document.querySelector('#admin_new_password')
-let confirm_password = document.querySelector('#admin_confirm_password')
-confirm_password.addEventListener('keyup', () => {
-    if(new_password.value.length >= 8) {
-        if(new_password.value !== confirm_password.value) {
-            document.querySelector('#password_notice_error').innerHTML = '** รหัสผ่านไม่ตรงกัน'
-            document.querySelector('#change-password-btn').disabled = true
-        }else{
-            document.querySelector('#password_notice_error').innerHTML = ''
-            document.querySelector('#change-password-btn').disabled = false
-        }
-    }else{
-        document.querySelector('#password_notice_error').innerHTML = '** รหัสผ่านต้องมากกว่า 8 ตัว'
-        document.querySelector('#change-password-btn').disabled = true
-    }
-})
-new_password.addEventListener('keyup', () => {
-    if(new_password.value.length >= 8) {
-        if(new_password.value !== confirm_password.value) {
-            document.querySelector('#password_notice_error').innerHTML = '** รหัสผ่านไม่ตรงกัน'
-            document.querySelector('#change-password-btn').disabled = true
-        }else{
-            document.querySelector('#password_notice_error').innerHTML = ''
-            document.querySelector('#change-password-btn').disabled = false
-        }
-    }else{
-        document.querySelector('#password_notice_error').innerHTML = '** รหัสผ่านต้องมากกว่า 8 ตัว'
-        document.querySelector('#change-password-btn').disabled = true
-    }
-})
-
-function showPwd(id, el) { // show password
-    let x = document.getElementById(id);
-    if (x.type === "password") {
-        x.type = "text";
-        el.className = 'fi fi-eye-disabled field-icon showpwd';
-    } else {
-        x.type = "password";
-        el.className = 'fi fi-eye field-icon showpwd';
-    }
-} 
-
-// END Admin Password
 
 function setImagePaymentTransactionSlip(url, bank_name, bank_name_en, account_name, account_number, date, time) {
     let newDate = date.split("-")
@@ -261,17 +204,3 @@ function setBankGroupDataEdit(id, name, isactive, isdefault) {
 function getDataToTransfer(id) {
     document.querySelector('#transfer_id').value = id
 }
-
-document.querySelector('#_set-adjust-user-btn').addEventListener('click', () => {
-    document.querySelector('#_set-adjust-user-btn').style.display = 'none'
-    document.querySelector('#_table-transaction-adjust').style.display = 'none'
-    document.querySelector('#_set-adjust-user-btn-cancle').style.display = 'initial'
-    document.querySelector('#_user-transaction-adjust').style.display = 'initial'
-})
-
-document.querySelector('#_set-adjust-user-btn-cancle').addEventListener('click', () => {
-    document.querySelector('#_set-adjust-user-btn').style.display = 'initial'
-    document.querySelector('#_table-transaction-adjust').style.display = 'inline-table'
-    document.querySelector('#_set-adjust-user-btn-cancle').style.display = 'none'
-    document.querySelector('#_user-transaction-adjust').style.display = 'none'
-})

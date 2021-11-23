@@ -23,7 +23,7 @@ class CBankAccountController extends Controller
                     ->join('banks', 'c_bank_accounts.bank_id', '=', 'banks.id')
                     ->where('c_bank_accounts.status', 'CO')
                     ->select('c_bank_accounts.*', 'banks.id as bank_id','banks.name as bank_name', 'banks.name_en as bank_name_en')
-                    ->paginate(10);
+                    ->get();
 
         $banks = DB::table('banks')->where('status', 'CO')->get();
         $bank_groups = (new BankGroupController)->getAllBankGroups();

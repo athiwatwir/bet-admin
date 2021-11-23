@@ -17,7 +17,7 @@ class UserLevelController extends Controller
 
     public function index()
     {
-        $level = UserLevel::orderBy('name', 'ASC')->withCount('users')->paginate(10);
+        $level = UserLevel::orderBy('name', 'ASC')->withCount('users')->get();
         return view('userlevel.index', ['levels' => $level]);
     }
 
