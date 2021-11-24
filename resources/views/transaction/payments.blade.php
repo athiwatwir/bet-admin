@@ -90,7 +90,6 @@
                                             <th class="text-center">วัน-เวลา</th>
                                             <th class="text-center">ไปยังบัญชี</th>
                                             <th class="text-center">จำนวนเงิน</th>
-                                            <th class="text-center">สลิป</th>
                                             <th class="text-center">สถานะ</th>
                                             <th>&nbsp;</th>
                                         </tr>
@@ -197,22 +196,19 @@
                                                         <span class="text-dark">{{ number_format($trans->amount) }}</span>
                                                     @endif
                                                 @else
+                                                    @if(isset($trans->slip))
+                                                    <a href="#!" title="ดูสลิปโอนเงิน" class="mr-2"
+                                                            data-toggle="modal" data-target="#paymentSlipModal" 
+                                                            onClick="setImagePaymentTransactionSlip(
+                                                                '{{ $trans->slip }}', '{{ $trans->from_bank_nane }}', '{{ $trans->from_bank_name_en }}', 
+                                                                        '{{ $trans->from_account_name }}', '{{ $trans->from_account_number }}', 
+                                                                        '{{ $trans->payment_date }}', '{{ $trans->payment_time }}')">
+                                                            <i class="fi fi-image"></i>
+                                                        </a>
+                                                    @endif
                                                     {{ number_format($trans->amount) }}
                                                 @endif
                                                 </strong>
-                                            </td>
-
-                                            <td class="text-center">
-                                                @if(isset($trans->slip))
-                                                    <a href="#!" title="ดูสลิปโอนเงิน" 
-                                                        data-toggle="modal" data-target="#paymentSlipModal" 
-                                                        onClick="setImagePaymentTransactionSlip(
-                                                            '{{ $trans->slip }}', '{{ $trans->from_bank_nane }}', '{{ $trans->from_bank_name_en }}', 
-                                                                    '{{ $trans->from_account_name }}', '{{ $trans->from_account_number }}', 
-                                                                    '{{ $trans->payment_date }}', '{{ $trans->payment_time }}')">
-                                                        <i class="fi fi-image"></i>
-                                                    </a>
-                                                @endif
                                             </td>
 
                                             <td class="text-center">
@@ -281,7 +277,6 @@
                                             <th class="text-center">วัน-เวลา</th>
                                             <th class="text-center">ไปยังบัญชี</th>
                                             <th class="text-center">จำนวนเงิน</th>
-                                            <th class="text-center">สลิป</th>
                                             <th class="text-center">สถานะ</th>
                                             <th>&nbsp;</th>
                                         </tr>

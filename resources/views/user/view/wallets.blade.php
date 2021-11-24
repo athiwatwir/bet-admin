@@ -19,15 +19,14 @@
                                         </span>
                                     </th>
                                     <th class="w--200 hidden-lg-down text-center">จำนวนเงิน</th>
-                                    <th class="w--100">&nbsp;</th>
+                                    <th class="w--150 text-center">เพิ่มเงิน / ลดเงิน</th>
                                 </tr>
                             </thead>
 
                             <tbody id="item_list">
                                 <tr class="bg-light">
-                                    <td class="hidden-lg-down text-center">
-                                        0
-                                    </td>
+                                    <td class="hidden-lg-down text-center"></td>
+                                    
                                     <td class="hidden-lg-down">
                                         <strong>กระเป๋าเงินหลัก</strong>
                                     </td>
@@ -36,7 +35,7 @@
                                     </td>
                                     <td class="hidden-lg-down text-center">
                                         <div class="flex text-right">
-                                            <a class="mr-3" href="#!" title="เพิ่มเงินในกระเป๋าหลัก" 
+                                            <a class="ml-2 mr-3 float-start" href="#!" title="เพิ่มเงินในกระเป๋าหลัก" 
                                                 data-toggle="modal" data-target="#increaseWalletModal" onClick="setDataIncreaseWalletAmount('{{ $default_wallet->id }}', {{ $default_wallet->amount }}, 'หลัก', '{{ $username }}')"
                                             >
                                                 <i class="fi fi-plus mr-0 text-primary"></i>

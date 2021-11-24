@@ -23,13 +23,13 @@
     data-options='["copy", "print"]' 
 >
     <thead>
-        <tr>
+        <tr class="text-muted fs--13">
             <th>ชื่อผู้ใช้</th>
             <th>ชื่อ</th>
-            <th>โทรศัพท์</th>
-            <th>ไลน์</th>
-            <th>เงินในกระเป๋า</th>
-            <th></th>
+            <th class="text-center">โทรศัพท์</th>
+            <th class="text-center">ไลน์</th>
+            <th class="text-center">เงินในกระเป๋า</th>
+            <th>เพิ่มเงิน / ลดเงิน</th>
         </tr>
     </thead>
     <tbody>
@@ -41,37 +41,40 @@
             <td>
                 <small>{{ $user->name }}</small>
             </td>
-            <td>
+            <td class="text-center">
                 <small>{{ $user->phone }}</small>
             </td>
-            <td>
+            <td class="text-center">
                 <small>{{ $user->line }}</small>
             </td>
-            <td>
+            <td class="text-center">
                 <small>{{ number_format($user->wallet_amount) }}</small>
             </td>
-            <td>
-                <a class="mr-3" href="#!" title="เพิ่มเงินในกระเป๋าหลัก" 
+            <td class="text-center">
+                <a class="ml-2 mr-3 float-start" href="#!" title="เพิ่มเงินในกระเป๋าหลัก" 
                     data-toggle="modal" data-target="#increaseWalletModal" onClick="setDataIncreaseWalletAmount('{{ $user->wallet_id }}', {{ $user->wallet_amount }}, 'หลัก', '{{ $user->username }}')"
                 >
                     <i class="fi fi-plus mr-0 text-primary"></i>
                 </a>
+                
                 <a href="#!" title="ลดเงินในกระเป๋าหลัก" 
                     data-toggle="modal" data-target="#decreaseWalletModal" onClick="setDataDecreaseWalletAmount('{{ $user->wallet_id }}', {{ $user->wallet_amount }}, 'หลัก', '{{ $user->username }}')"
                 >
                     <i class="fi fi-minus mr-0 text-danger"></i>
                 </a>
+                
             </td>
         </tr>
         @endforeach
     </tbody>
     <tfoot>
-        <tr>
+        <tr class="text-muted fs--13">
             <th>ชื่อผู้ใช้</th>
             <th>ชื่อ</th>
-            <th>โทรศัพท์</th>
-            <th>ไลน์</th>
-            <th></th>
+            <th class="text-center">โทรศัพท์</th>
+            <th class="text-center">ไลน์</th>
+            <th class="text-center">เงินในกระเป๋า</th>
+            <th>เพิ่มเงิน / ลดเงิน</th>
         </tr>
     </tfoot>
 </table>

@@ -42,13 +42,17 @@ function setBankDataEdit(id, name, name_en) {
     document.getElementById('edit_bank_id').value = id
 }
 
+function formatNumber(num) {
+    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+}
+
 // Profile Wallet Edit
 function setDataIncreaseWalletAmount(id, amount, game, username) {
     document.getElementById('wallet_id').value = id
     document.getElementById('is_wallet').value = amount
     document.getElementById('wallet_game').innerHTML = game
     document.getElementById('username').innerHTML = username
-    document.getElementById('wallet_amount_notice').innerHTML = 'จำนวนเงินเดิม : ' + amount
+    document.getElementById('wallet_amount_notice').innerHTML = 'จำนวนเงินเดิม : ' + formatNumber(amount)
 }
 
 function setDataDecreaseWalletAmount(id, amount, game, username) {
@@ -56,14 +60,14 @@ function setDataDecreaseWalletAmount(id, amount, game, username) {
     document.getElementById('min_wallet').value = amount
     document.getElementById('wallet_game_decrease').innerHTML = game
     document.getElementById('username_decrease').innerHTML = username
-    document.getElementById('wallet_amount_notice_min').innerHTML = 'จำนวนเงินเดิม : ' + amount
+    document.getElementById('wallet_amount_notice_min').innerHTML = 'จำนวนเงินเดิม : ' + formatNumber(amount)
 }
 
 function chackWalletIncreaseAmountValue() {
     let min = document.getElementById('is_wallet').value
     let value = document.getElementById('wallet_amount').value
     let increase = parseInt(min) + parseInt(value)
-    document.getElementById('wallet_amount_notice').innerHTML = "จำนวนเงินคงเหลือ (" + min + " + " + value + ") = " + increase
+    document.getElementById('wallet_amount_notice').innerHTML = "จำนวนเงินคงเหลือ (" + formatNumber(min) + " + " + formatNumber(value) + ") = " + formatNumber(increase)
 }
 
 function chackWalletDecreaseAmountValue() {
@@ -72,9 +76,9 @@ function chackWalletDecreaseAmountValue() {
     let decrease = min - value
     if(decrease < 0) {
         document.getElementById('wallet_amount_decrease').value = min
-        document.getElementById('wallet_amount_notice_min').innerHTML = "ลดจำนวนเงินได้สูงสุดคือ " + min
+        document.getElementById('wallet_amount_notice_min').innerHTML = "ลดจำนวนเงินได้สูงสุดคือ " + formatNumber(min)
     }else{
-        document.getElementById('wallet_amount_notice_min').innerHTML = "จำนวนเงินคงเหลือ (" + min + " - " + value + ") = " + decrease
+        document.getElementById('wallet_amount_notice_min').innerHTML = "จำนวนเงินคงเหลือ (" + formatNumber(min) + " - " + formatNumber(value) + ") = " + formatNumber(decrease)
     }
 }
 
