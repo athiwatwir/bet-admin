@@ -120,7 +120,7 @@ class PaymentTransactionController extends Controller
     {
         $trans = DB::table('payment_transactions')->find($request->id);
 
-        if($trans->code == 'DEPOSIT') {
+        if($trans->code == 'DEPOSIT' && $trans->status == NULL) {
 
             $wallet = DB::table('wallets')
                             ->where('user_id', $trans->user_id)
@@ -141,19 +141,26 @@ class PaymentTransactionController extends Controller
                                     'status' => 'CO'
                                 ]);
 
-        }else if($trans->code == 'WITHDRAW') {
+            $this->paymentTransactionLogUpdate($request->id);
+
+        }else if($trans->code == 'WITHDRAW' && $trans->status == NULL) {
             DB::table('payment_transactions')
                     ->where('id', $request->id)
                     ->update([
                         'status' => 'CO', 
                         'updated_at' => date('Y-m-d H:i:s')
                     ]);
+
+            $this->paymentTransactionLogUpdate($request->id);
         }
 
-        PaymentTransactionLog::where('payment_transaction_id', $request->id)
-                                    ->update(['status' => 'CO', 'staff_id' => Auth::user()->id]);
-
         return redirect()->back();
+    }
+
+    private function paymentTransactionLogUpdate($id)
+    {
+        PaymentTransactionLog::where('payment_transaction_id', $id)
+                    ->update(['status' => 'CO', 'staff_id' => Auth::user()->id]);
     }
 
     public function voidPaymentTransaction(Request $request)

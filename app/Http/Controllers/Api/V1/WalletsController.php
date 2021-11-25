@@ -81,7 +81,7 @@ class WalletsController extends Controller
         $bank_groups = [];
         foreach($group->banks as $key => $bank) {
             $bank_name = DB::table('banks')->find($bank->bank_id);
-            $bank_groups[$key]['id'] = $bank->bank_id;
+            $bank_groups[$key]['id'] = $bank->id;
             $bank_groups[$key]['account_name'] = $bank->account_name;
             $bank_groups[$key]['account_number'] = $bank->account_number;
             $bank_groups[$key]['bank_name'] = $bank_name->name;

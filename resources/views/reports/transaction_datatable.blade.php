@@ -80,6 +80,11 @@
                 @endif
             </td>
             <td class="text-center">
+                @if($trans->code_status == 'Plus')
+                + 
+                @elseif($trans->code_status == 'Minus')
+                - 
+                @endif
                 {{ number_format($trans->amount) }}
             </td>
             <td class="text-center">

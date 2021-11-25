@@ -9,7 +9,7 @@
 				<form method="GET" action="{{ url('/reports/search') }}">
 					<div class="row">
 						<div class="col-12 col-md-4 form-group">
-
+							<strong>เลือกรายงาน</strong>
 							<select class="form-control" name="type">
 								@foreach($reportTypes as $key => $type)
                                     <option value="{{ $key }}">{{ $type }}</option>
@@ -17,8 +17,8 @@
 							</select>
 						</div>
 						<div class="col-12 col-md-3 form-group">
+							<strong>จากวันที่</strong>
 							<div class="input-group-over position-realtive z-index-1 bg-white">
-
 								<input type="text" name="startdate" class="form-control bg-transparent datepicker" 
 										data-today-highlight="true" 
 										data-layout-rounded="true" 
@@ -46,8 +46,8 @@
 						</div>
 
 						<div class="col-12 col-md-3 form-group">
+							<strong>ถึงวันที่</strong>
 							<div class="input-group-over position-realtive z-index-1 bg-white">
-
 								<input type="text" name="enddate" class="form-control bg-transparent datepicker" 
 										data-today-highlight="true" 
 										data-layout-rounded="true" 
@@ -73,6 +73,7 @@
 							</div>
 						</div>
 						<div class="col-12 col-md-2 form-group">
+							<label></label>
 							<button class="btn btn-primary btn-block" type="submit">GO!</button>
 						</div>
 					</div>
