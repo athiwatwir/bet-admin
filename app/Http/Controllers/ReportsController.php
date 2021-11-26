@@ -6,7 +6,11 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
+
+use App\Models\Pgsoftgame;
+use App\Models\PlayingTransaction;
 
 class ReportsController extends Controller
 {
@@ -72,4 +76,140 @@ class ReportsController extends Controller
         // Log::debug($trans);
         return $trans;
     }
+
+// PG Soft Game Report ------------------------------------------------------------------------------
+    public function pgsoft()
+    {
+        $res = $this->getPlayingTransaction();
+
+        if(sizeof($res) > 0) {
+            $results = $this->groupByName($res);
+            return view('reports.index_pgsoft', ['results' => $results]);
+        }else{
+            return view('reports.index_pgsoft', ['results' =>[]]);
+        }
+    }
+
+    public function pgsoftByPlayer($player)
+    {
+        $response = $this->getPlayingTransaction();
+        $players = [];
+        $player_id = '';
+        $hands = 0;
+        $betAmount = 0;
+        $winLossAmount = 0;
+        foreach($response as $key => $res) {
+            if($res->username == $player) {
+                $players[$key]['gameName'] = $res->game_name;
+                $players[$key]['hands'] = $res->hands;
+                $players[$key]['betAmount'] = $res->bet_amount;
+                $players[$key]['winLossAmount'] = $res->win_loss_amount;
+                $player_id = $res->user_id;
+                $hands += (int)$res->hands;
+                $betAmount += (float)$res->bet_amount;
+                $winLossAmount += (float)$res->win_loss_amount;
+            }
+        }
+
+        $results = $this->groupByGame($players);
+        return view('reports.pgsoft.player', ['results' => $results, 'player' => $player, 'player_id' => $player_id, 'hands' => $hands, 'betAmount' => $betAmount, 'winLossAmount' => $winLossAmount]);
+    }
+
+    public function searchPgSoft(Request $request)
+    {
+        $start_date = Carbon::parse($request->startdate)->toDateTimeString();
+        $end_date = Carbon::parse($request->enddate)->toDateTimeString();
+
+        $playing_transactions = DB::table('playing_transactions')
+                        ->leftJoin('users', 'playing_transactions.user_id', '=', 'users.id')
+                        ->whereBetween('playing_transactions.row_version', [$start_date, $end_date])
+                        ->select('playing_transactions.*', 'users.username')
+                        ->get();
+
+        if(sizeof($playing_transactions) > 0) {
+            $results = $this->groupByName($playing_transactions);
+            return view('reports.index_pgsoft', ['results' => $results]);
+        }else{
+            return view('reports.index_pgsoft', ['results' => []]);
+        }
+    }
+
+    private function getPlayingTransaction()
+    {
+        $playing_transaction = DB::table('playing_transactions')
+                                    ->leftJoin('users', 'playing_transactions.user_id', '=', 'users.id')
+                                    ->where('type', 'pg')
+                                    ->select('playing_transactions.*', 'users.username')
+                                    ->get();
+        return $playing_transaction;
+    }
+
+    private function groupByName($data)
+    {
+        $group = [];
+        foreach($data as $value) {
+            $group['player'][$value->username][] = $value;
+        }
+
+        return $this->setNewGroupByName($group);
+    }
+
+    private function setNewGroupByName($data)
+    {
+        $groupArr = [];
+        foreach($data['player'] as $key => $player) {
+            $playerName = '';
+            $hands = 0;
+            $betAmount = 0;
+            $winLossAmount = 0;
+            foreach($player as $value) {
+                $playerName = $value->username;
+                $hands += (int)$value->hands;
+                $betAmount += (float)$value->bet_amount;
+                $winLossAmount += (float)$value->win_loss_amount;
+                // if($value['playerName'] == 'nauthiz99') Log::debug($winLossAmount);
+            }
+            $groupArr[$key]['playerName'] = $playerName;
+            $groupArr[$key]['hands'] = $hands;
+            $groupArr[$key]['betAmount'] = $betAmount;
+            $groupArr[$key]['winLossAmount'] = $winLossAmount;
+        }
+
+        return $groupArr;
+    }
+
+    private function groupByGame($data)
+    {
+        $group = [];
+        foreach($data as $value) {
+            $group['games'][$value['gameName']][] = $value;
+        }
+
+        return $this->setNewGroupByGame($group);
+    }
+
+    private function setNewGroupByGame($data)
+    {
+        $groupArr = [];
+        foreach($data['games'] as $key => $game) {
+            $gameName = '';
+            $hands = 0;
+            $betAmount = 0;
+            $winLossAmount = 0;
+            foreach($game as $value) {
+                $gameName = $value['gameName'];
+                $hands += (int)$value['hands'];
+                $betAmount += (float)$value['betAmount'];
+                $winLossAmount += (float)$value['winLossAmount'];
+                // if($value['playerName'] == 'nauthiz99') Log::debug($winLossAmount);
+            }
+            $groupArr[$key]['gameName'] = $gameName;
+            $groupArr[$key]['hands'] = $hands;
+            $groupArr[$key]['betAmount'] = $betAmount;
+            $groupArr[$key]['winLossAmount'] = $winLossAmount;
+        }
+
+        return $groupArr;
+    }
+// END PG Soft Game Report ------------------------------------------------------------------------------
 }

@@ -99,6 +99,10 @@ Route::middleware(['auth:webadmin'])->group(function () {
     Route::prefix('/reports')->group(function () {
         Route::get('/', [ReportsController::class, 'index'])->name('reports');
         Route::get('/search', [ReportsController::class, 'search']);
+
+        Route::get('/pgsoft', [ReportsController::class, 'pgsoft']);
+        Route::get('/pgsoft/view/{player}', [ReportsController::class, 'pgsoftByPlayer'])->name('player-report');
+        Route::get('/pgsoft/search', [ReportsController::class, 'searchPgSoft']);
     });
 
     Route::get('/banks', [BanksController::class, 'index'])->name('banks');
