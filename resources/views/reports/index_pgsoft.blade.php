@@ -71,7 +71,7 @@
 						</div>
 						<div class="col-12 col-md-2 form-group">
 							<label></label>
-							<button class="btn btn-primary btn-block" type="submit">GO!</button>
+							<button class="btn btn-primary btn-block" type="submit"><i class="fas fa-search mr-1"></i> ค้นหา</button>
 						</div>
 					</div>
 				</form>
