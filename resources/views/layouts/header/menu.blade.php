@@ -165,11 +165,23 @@
         </ul>
     </li>
 
-    <li class="nav-item">
-        <a href="{{ route('reports') }}" class="nav-link nav-link-caret-hide" id="">
+    <li class="nav-item dropdown">
+        <a href="#!" class="nav-link dropdown-toggle js-stoppropag" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="mainNavHome">
             <i class="fas fa-chart-pie float-start m-0 mt-1"></i>
             <span>รายงาน</span>
         </a>
+        <ul class="dropdown-menu dropdown-menu-clean dropdown-menu-hover" aria-labelledby="mainNavHome">
+            <li class="dropdown-item">
+                <a class="dropdown-link" href="{{ route('reports') }}" >
+                    รายงานทั้งหมด
+                </a>
+            </li>
+            <li class="dropdown-item">
+                <a class="dropdown-link" href="{{ url('/reports/pgsoft') }}" >
+                    รายงานเกม PG Slot
+                </a>
+            </li>
+        </ul>
     </li>
 
     <li class="nav-item dropdown">

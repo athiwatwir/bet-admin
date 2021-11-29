@@ -85,6 +85,7 @@ Route::prefix('v2')->group(function () {
     Route::prefix('pgsoftgame')->group(function () {
         Route::get('user/{ops}', [PgSoftGameController::class, 'getUserData']);
         Route::get('wallet/{user}', [PgSoftGameController::class, 'getUserWallet']);
-        Route::get('player-daily-summary', [PgSoftGameController::class, 'saveToDB']);
+        // Route::get('player-daily-summary', [PgSoftGameController::class, 'saveToDB']);
+        Route::get('update-player-daily-summary', [PgSoftGameController::class, 'saveToDB']);
     });
 });

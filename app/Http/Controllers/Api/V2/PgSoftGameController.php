@@ -63,42 +63,11 @@ class PgSoftGameController extends Controller
     }
 
 
-    // SAVE REPORT TO DB
-    public function pgsoft()
-    {
-        $res = $this->GetPlayerDailySummary();
-        $results = $this->groupByName($res);
-
-        return view('reports.index_pgsoft', ['results' => $results]);
-    }
-
-    public function pgsoftByPlayer($player)
-    {
-        $pgsoft = $this->getPgsoft();
-        $response = $this->GetPlayerDailySummary();
-        $games = $this->getPgGame();
-        $players = [];
-        $hands = 0;
-        $betAmount = 0;
-        $winLossAmount = 0;
-        foreach($response as $key => $res) {
-            if($res['playerName'] == $player) {
-                $players[$key]['gameName'] = $this->searchGameName($games, $res['gameId']);
-                $players[$key]['hands'] = $res['hands'];
-                $players[$key]['betAmount'] = $res['betAmount'];
-                $players[$key]['winLossAmount'] = $res['winLossAmount'];
-                $hands += (int)$res['hands'];
-                $betAmount += (float)$res['betAmount'];
-                $winLossAmount += (float)$res['winLossAmount'];
-            }
-        }
-
-        $results = $this->groupByGame($players);
-        return view('reports.pgsoft.player', ['results' => $results, 'player' => $player, 'hands' => $hands, 'betAmount' => $betAmount, 'winLossAmount' => $winLossAmount]);
-    }
+    // SAVE REPORT TO DB ///////////////////////////////////////////////////////////////////////////////////////////////////
 
     public function saveToDB() {
-        $results = $this->GetPlayerDailySummary();
+        // $results = $this->GetPlayerDailySummary();
+        $results = $this->GetPlayerDailySummaryForSpecificTimeRange();
         $games = $this->getPgGame();
         $users = User::get();
         
@@ -115,6 +84,38 @@ class PgSoftGameController extends Controller
         }
 
         return response()->json(['data' => 'done!', 'error' => null], 200);
+    }
+
+    private function GetPlayerDailySummaryForSpecificTimeRange()
+    {
+        $date_now = date('m/d/Y');
+        $millisec = date_create($date_now)->format('U').'000';
+        $pgsoft = $this->getPgsoft();
+        $response = Http::asForm()->post($pgsoft->datagrab_api_domain.'Bet/v4/GetPlayerDailySummaryForSpecificTimeRange', [
+            'operator_token' => $pgsoft->operator_token,
+            'secret_key' => $pgsoft->secret_key,
+            'count' => 5000,
+            'bet_type' => 1,
+            'row_version' => $millisec,
+            'from_time' => $millisec,
+            'to_time' => $millisec
+        ]);
+
+        return $response['data'];
+        // return response()->json(['data' => $response['data']], 200);
+    }
+
+    private function GetPgGame()
+    {
+        $gameName = '';
+        $pgsoft = $this->getPgsoft();
+        $response = Http::asForm()->post($pgsoft->pgsoft_api_domain.'Game/v2/Get', [
+            'operator_token' => $pgsoft->operator_token,
+            'secret_key' => $pgsoft->secret_key,
+            'currency' => 'THB'
+        ]);
+
+        return $response['data'];
     }
 
     private function searchUserName($users, $username)
@@ -151,101 +152,6 @@ class PgSoftGameController extends Controller
         return $response['data'];
     }
 
-    private function GetPlayerDailySummaryForSpecificTimeRange()
-    {
-        $date_now = date('m/d/Y');
-        $millisec = date_create($date_now)->format('U').'000';
-        $pgsoft = $this->getPgsoft();
-        $response = Http::asForm()->post($pgsoft->datagrab_api_domain.'Bet/v4/GetPlayerDailySummaryForSpecificTimeRange', [
-            'operator_token' => $pgsoft->operator_token,
-            'secret_key' => $pgsoft->secret_key,
-            'count' => 5000,
-            'bet_type' => 1,
-            'row_version' => $millisec,
-            'from_time' => $millisec,
-            'to_time' => $millisec
-        ]);
 
-        return $response['data'];
-    }
-
-    private function GetPgGame()
-    {
-        $gameName = '';
-        $pgsoft = $this->getPgsoft();
-        $response = Http::asForm()->post($pgsoft->pgsoft_api_domain.'Game/v2/Get', [
-            'operator_token' => $pgsoft->operator_token,
-            'secret_key' => $pgsoft->secret_key,
-            'currency' => 'THB'
-        ]);
-
-        return $response['data'];
-    }
-
-    private function groupByName($data)
-    {
-        $group = [];
-        foreach($data as $value) {
-            $group['player'][$value['playerName']][] = $value;
-        }
-
-        return $this->setNewGroupByName($group);
-    }
-
-    private function setNewGroupByName($data)
-    {
-        $groupArr = [];
-        foreach($data['player'] as $key => $player) {
-            $playerName = '';
-            $hands = 0;
-            $betAmount = 0;
-            $winLossAmount = 0;
-            foreach($player as $value) {
-                $playerName = $value['playerName'];
-                $hands += (int)$value['hands'];
-                $betAmount += (float)$value['betAmount'];
-                $winLossAmount += (float)$value['winLossAmount'];
-            }
-            $groupArr[$key]['playerName'] = $playerName;
-            $groupArr[$key]['hands'] = $hands;
-            $groupArr[$key]['betAmount'] = $betAmount;
-            $groupArr[$key]['winLossAmount'] = $winLossAmount;
-        }
-
-        return $groupArr;
-    }
-
-    private function groupByGame($data)
-    {
-        $group = [];
-        foreach($data as $value) {
-            $group['games'][$value['gameName']][] = $value;
-        }
-
-        return $this->setNewGroupByGame($group);
-    }
-
-    private function setNewGroupByGame($data)
-    {
-        $groupArr = [];
-        foreach($data['games'] as $key => $game) {
-            $gameName = '';
-            $hands = 0;
-            $betAmount = 0;
-            $winLossAmount = 0;
-            foreach($game as $value) {
-                $gameName = $value['gameName'];
-                $hands += (int)$value['hands'];
-                $betAmount += (float)$value['betAmount'];
-                $winLossAmount += (float)$value['winLossAmount'];
-                // if($value['playerName'] == 'nauthiz99') Log::debug($winLossAmount);
-            }
-            $groupArr[$key]['gameName'] = $gameName;
-            $groupArr[$key]['hands'] = $hands;
-            $groupArr[$key]['betAmount'] = $betAmount;
-            $groupArr[$key]['winLossAmount'] = $winLossAmount;
-        }
-
-        return $groupArr;
-    }
+    // END SAVE REPORT TO DB ///////////////////////////////////////////////////////////////////////////////////////////////////
 }

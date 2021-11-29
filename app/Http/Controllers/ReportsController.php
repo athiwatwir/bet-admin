@@ -117,20 +117,24 @@ class ReportsController extends Controller
 
     public function searchPgSoft(Request $request)
     {
+        $username = $request->input('username');
         $start_date = Carbon::parse($request->startdate)->toDateTimeString();
         $end_date = Carbon::parse($request->enddate)->toDateTimeString();
 
         $playing_transactions = DB::table('playing_transactions')
                         ->leftJoin('users', 'playing_transactions.user_id', '=', 'users.id')
+                        ->when($username, function ($query, $username) {
+                            return $query->where('users.username', $username);
+                        })
                         ->whereBetween('playing_transactions.row_version', [$start_date, $end_date])
                         ->select('playing_transactions.*', 'users.username')
                         ->get();
 
         if(sizeof($playing_transactions) > 0) {
             $results = $this->groupByName($playing_transactions);
-            return view('reports.index_pgsoft', ['results' => $results]);
+            return view('reports.index_pgsoft', ['results' => $results, 'start' => $request->startdate, 'end' => $request->enddate, 'user' => $username]);
         }else{
-            return view('reports.index_pgsoft', ['results' => []]);
+            return view('reports.index_pgsoft', ['results' => [], 'start' => $request->startdate, 'end' => $request->enddate, 'user' => $username]);
         }
     }
 
