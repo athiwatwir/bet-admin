@@ -81,7 +81,6 @@ class ReportsController extends Controller
     public function pgsoft()
     {
         $res = $this->getPlayingTransaction();
-
         if(sizeof($res) > 0) {
             $results = $this->groupByName($res);
             return view('reports.index_pgsoft', ['results' => $results]);
