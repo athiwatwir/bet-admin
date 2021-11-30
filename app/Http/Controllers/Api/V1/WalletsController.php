@@ -66,6 +66,9 @@ class WalletsController extends Controller
                             'user_bankings.id', 'user_bankings.bank_account_number', 'user_bankings.bank_account_name',
                             'banks.name as bank_name'])
                         ->first();
+
+        // Check All DB Got Value
+        // Log::debug($wallets);
         
         if(isset($wallet)){
             return response()->json(['wallet' => $wallet, 'wallets' => $wallets, 'banks' => $bank_list, 'user_bank' => $user_bank, 'status' => 200], 200);
@@ -502,5 +505,70 @@ class WalletsController extends Controller
     private function getGameId($game)
     {
         return DB::table('games')->where('name', $game)->get();
+    }
+
+    public function getPlayerSummary()
+    {
+        $accessToken = auth()->user()->token();
+        $playing_transaction = DB::table('playing_transactions')
+                                ->where('user_id', $accessToken->user_id)
+                                ->where('type', 'pg')
+                                ->get();
+
+        $players = [];
+        $results = [];
+        $hands = 0;
+        $betAmount = 0;
+        $winLossAmount = 0;
+        if(sizeof($playing_transaction) > 0) {
+            foreach($playing_transaction as $key => $res) {
+                $players[$key]['gameName'] = $res->game_name;
+                $players[$key]['hands'] = $res->hands;
+                $players[$key]['betAmount'] = $res->bet_amount;
+                $players[$key]['winLossAmount'] = $res->win_loss_amount;
+                $hands += (int)$res->hands;
+                $betAmount += (float)$res->bet_amount;
+                $winLossAmount += (float)$res->win_loss_amount;
+            }
+
+            $results = $this->groupByGame($players);
+        }
+        // Log::debug($results);
+
+        return response()->json(['results' => $results, 'hands' => $hands, 'betAmount' => $betAmount, 'winLossAmount' => $winLossAmount]);
+    }
+
+    private function groupByGame($data)
+    {
+        $group = [];
+        foreach($data as $value) {
+            $group['games'][$value['gameName']][] = $value;
+        }
+
+        return $this->setNewGroupByGame($group);
+    }
+
+    private function setNewGroupByGame($data)
+    {
+        $groupArr = [];
+        foreach($data['games'] as $key => $game) {
+            $gameName = '';
+            $hands = 0;
+            $betAmount = 0;
+            $winLossAmount = 0;
+            foreach($game as $value) {
+                $gameName = $value['gameName'];
+                $hands += (int)$value['hands'];
+                $betAmount += (float)$value['betAmount'];
+                $winLossAmount += (float)$value['winLossAmount'];
+            }
+            $groupArr[$key]['gameName'] = $gameName;
+            $groupArr[$key]['hands'] = $hands;
+            $groupArr[$key]['betAmount'] = $betAmount;
+            $groupArr[$key]['winLossAmount'] = $winLossAmount;
+        }
+        // Log::debug($groupArr);
+        
+        return $groupArr;
     }
 }

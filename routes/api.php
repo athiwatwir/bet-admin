@@ -67,6 +67,8 @@ Route::prefix('v1')->group(function () {
             Route::get('play/{id}', [GamesController::class, 'playGame']);
             Route::get('login/{table}', [GamesController::class, 'gameLogin']);
             Route::get('wallet/{game}', [WalletsController::class, 'getUserWallet_v2']);
+
+            Route::get('/pgsoft/player-summary', [WalletsController::class, 'getPlayerSummary']);
         });
 
         Route::prefix('logs')->group(function () {

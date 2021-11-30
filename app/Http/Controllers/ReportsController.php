@@ -204,7 +204,6 @@ class ReportsController extends Controller
                 $hands += (int)$value['hands'];
                 $betAmount += (float)$value['betAmount'];
                 $winLossAmount += (float)$value['winLossAmount'];
-                // if($value['playerName'] == 'nauthiz99') Log::debug($winLossAmount);
             }
             $groupArr[$key]['gameName'] = $gameName;
             $groupArr[$key]['hands'] = $hands;
