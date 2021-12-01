@@ -83,6 +83,8 @@ class ReportsController extends Controller
         $res = $this->getPlayingTransaction();
         if(sizeof($res) > 0) {
             $results = $this->groupByName($res);
+            $by_bet = array_column($results, 'betAmount');
+            array_multisort($by_bet, SORT_DESC, $results);
             return view('reports.index_pgsoft', ['results' => $results]);
         }else{
             return view('reports.index_pgsoft', ['results' =>[]]);
@@ -134,6 +136,8 @@ class ReportsController extends Controller
 
         if(sizeof($playing_transactions) > 0) {
             $results = $this->groupByName($playing_transactions);
+            $by_bet = array_column($results, 'betAmount');
+            array_multisort($by_bet, SORT_DESC, $results);
             return view('reports.index_pgsoft', ['results' => $results, 'start' => $request->startdate, 'end' => $request->enddate, 'user' => $username]);
         }else{
             return view('reports.index_pgsoft', ['results' => [], 'start' => $request->startdate, 'end' => $request->enddate, 'user' => $username]);
@@ -241,7 +245,7 @@ class ReportsController extends Controller
         $results = $this->groupByGame($players);
         $by_hands = array_column($results, 'hands');
         array_multisort($by_hands, SORT_DESC, $results);
-        
+
         return ['results' => $results, 'hands' => $hands, 'betAmount' => $betAmount, 'winLossAmount' => $winLossAmount];
     }
 // END Call Function /////////////////////////////////////////////////////////////////////////////////////
