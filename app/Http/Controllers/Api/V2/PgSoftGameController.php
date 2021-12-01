@@ -72,15 +72,19 @@ class PgSoftGameController extends Controller
         $users = User::get();
         
         foreach($results as $result) {
-            PlayingTransaction::create([
-                'user_id' => $this->searchUserName($users, $result['playerName']),
-                'type' => 'pg',
-                'game_name' => $this->searchGameName($games, $result['gameId']),
-                'hands' => $result['hands'],
-                'bet_amount' => $result['betAmount'],
-                'win_loss_amount' => $result['winLossAmount'],
-                'row_version' => date('Y-m-d', $result['rowVersion'] / 1000)
-            ]);
+            PlayingTransaction::updateOrCreate(
+                [
+                    'user_id' => $this->searchUserName($users, $result['playerName']),
+                    'type' => 'pg',
+                    'game_name' => $this->searchGameName($games, $result['gameId']),
+                    'row_version' => date('Y-m-d', $result['rowVersion'] / 1000)
+                ],
+                [
+                    'hands' => $result['hands'],
+                    'bet_amount' => $result['betAmount'],
+                    'win_loss_amount' => $result['winLossAmount'],
+                ]
+            );
         }
 
         return response()->json(['data' => 'done!', 'error' => null], 200);
