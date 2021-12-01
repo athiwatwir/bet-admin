@@ -111,6 +111,9 @@ class ReportsController extends Controller
         }
 
         $results = $this->groupByGame($players);
+        $by_hands = array_column($results, 'hands');
+        array_multisort($by_hands, SORT_DESC, $results);
+
         return view('reports.pgsoft.player', ['results' => $results, 'player' => $player, 'player_id' => $player_id, 'hands' => $hands, 'betAmount' => $betAmount, 'winLossAmount' => $winLossAmount]);
     }
 
@@ -214,4 +217,32 @@ class ReportsController extends Controller
         return $groupArr;
     }
 // END PG Soft Game Report ------------------------------------------------------------------------------
+
+// Call Function //////////////////////////////////////////////////////////////////////////////////////////
+    public function getPgsoftByPlayerPlaying($player)
+    {
+        $response = $this->getPlayingTransaction();
+        $players = [];
+        $hands = 0;
+        $betAmount = 0;
+        $winLossAmount = 0;
+        foreach($response as $key => $res) {
+            if($res->username == $player) {
+                $players[$key]['gameName'] = $res->game_name;
+                $players[$key]['hands'] = $res->hands;
+                $players[$key]['betAmount'] = $res->bet_amount;
+                $players[$key]['winLossAmount'] = $res->win_loss_amount;
+                $hands += (int)$res->hands;
+                $betAmount += (float)$res->bet_amount;
+                $winLossAmount += (float)$res->win_loss_amount;
+            }
+        }
+
+        $results = $this->groupByGame($players);
+        $by_hands = array_column($results, 'hands');
+        array_multisort($by_hands, SORT_DESC, $results);
+        
+        return ['results' => $results, 'hands' => $hands, 'betAmount' => $betAmount, 'winLossAmount' => $winLossAmount];
+    }
+// END Call Function /////////////////////////////////////////////////////////////////////////////////////
 }

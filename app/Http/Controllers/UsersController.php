@@ -15,6 +15,7 @@ use App\Http\Controllers\PaymentTransactionController;
 use App\Http\Controllers\WalletsController;
 use App\Http\Controllers\UserLevelController;
 use App\Http\Controllers\BankGroupController;
+use App\Http\Controllers\ReportsController;
 
 class UsersController extends Controller
 {
@@ -72,12 +73,13 @@ class UsersController extends Controller
         $pgSoftGameWallet = $this->getPgsoftgameWallet($user->username);
         $levels = (new UserLevelController)->getAllUserLevel();
         $bankGroups = (new BankGroupController)->getAllBankGroups();
-        // Log::debug($level);
+        $pgsoftPlayingSummary = (new ReportsController)->getPgsoftByPlayerPlaying($user->username);
 
         return view('user.view', [
                     'profile' => $user, 'ubank' => $ubank, 'banks' => $banks, 'username' => $request->username,
                     'wallets' => $wallets, 'default_wallet' => $default_wallet, 'pg_wallet' => $pgSoftGameWallet,
-                    'transaction' => $transactions, 'levels' => $levels, 'bank_groups' => $bankGroups
+                    'transaction' => $transactions, 'levels' => $levels, 'bank_groups' => $bankGroups,
+                    'pgsoftPlayingSummary' => $pgsoftPlayingSummary
                     ]);
     }
 
