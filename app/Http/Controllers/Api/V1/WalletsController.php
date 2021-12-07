@@ -122,8 +122,10 @@ class WalletsController extends Controller
                         $this->transferIn($amount, $accessToken->user_id); //tranfer to pgsoftgame
                     }
 
+                    $transId = Str::uuid();
                     $trans = DB::table('payment_transactions')
                         ->insert([
+                            'id' => $transId,
                             'user_id' => $accessToken->user_id,
                             'from_wallet_id' => $default_wallet->id,
                             'to_wallet_id' => $wallet->id,
@@ -134,7 +136,6 @@ class WalletsController extends Controller
                             'created_at' => date('Y-m-d H:i:s'),
                             'updated_at' => date('Y-m-d H:i:s'),
                         ]);
-                    $transId = DB::getPdo()->lastInsertId();
 
                     if($trans) {
                         PaymentTransactionLog::create([
@@ -200,8 +201,11 @@ class WalletsController extends Controller
 
                     $wallet->update(['amount' => $is_amount]);
 
+                    $transId = Str::uuid();
+
                     $trans = DB::table('payment_transactions')
                         ->insert([
+                            'id' => $transId,
                             'user_id' => $accessToken->user_id,
                             'from_wallet_id' => $default_wallet->id,
                             'to_wallet_id' => $wallet->id,
@@ -258,9 +262,11 @@ class WalletsController extends Controller
                 if($tranOut['error'] == null) {
                     $wallet = Wallet::find($request->to);
                     $is_amount = $wallet->amount + $request->amount;
+                    $transId = Str::uuid();
 
                     $trans = DB::table('payment_transactions')
                             ->insert([
+                                'id' => $transId,
                                 'user_id' => $accessToken->user_id,
                                 'from_wallet_id' => $request->id,
                                 'to_wallet_id' => $request->to,
@@ -357,9 +363,11 @@ class WalletsController extends Controller
         $wallet = Wallet::find($request->id);
 
         $is_amount = $default_wallet->amount + $wallet->amount;
+        $transId = Str::uuid();
 
         $trans = DB::table('payment_transactions')
                     ->insert([
+                        'id' => $transId,
                         'user_id' => $accessToken->user_id,
                         'from_wallet_id' => $request->id,
                         'to_wallet_id' => $default_wallet->id,

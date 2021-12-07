@@ -201,24 +201,28 @@ class ReportsController extends Controller
     private function setNewGroupByGame($data)
     {
         $groupArr = [];
-        foreach($data['games'] as $key => $game) {
-            $gameName = '';
-            $hands = 0;
-            $betAmount = 0;
-            $winLossAmount = 0;
-            foreach($game as $value) {
-                $gameName = $value['gameName'];
-                $hands += (int)$value['hands'];
-                $betAmount += (float)$value['betAmount'];
-                $winLossAmount += (float)$value['winLossAmount'];
+        if(!empty($data)) {
+            foreach($data['games'] as $key => $game) {
+                $gameName = '';
+                $hands = 0;
+                $betAmount = 0;
+                $winLossAmount = 0;
+                foreach($game as $value) {
+                    $gameName = $value['gameName'];
+                    $hands += (int)$value['hands'];
+                    $betAmount += (float)$value['betAmount'];
+                    $winLossAmount += (float)$value['winLossAmount'];
+                }
+                $groupArr[$key]['gameName'] = $gameName;
+                $groupArr[$key]['hands'] = $hands;
+                $groupArr[$key]['betAmount'] = $betAmount;
+                $groupArr[$key]['winLossAmount'] = $winLossAmount;
             }
-            $groupArr[$key]['gameName'] = $gameName;
-            $groupArr[$key]['hands'] = $hands;
-            $groupArr[$key]['betAmount'] = $betAmount;
-            $groupArr[$key]['winLossAmount'] = $winLossAmount;
+
+            return $groupArr;
         }
 
-        return $groupArr;
+        return [];
     }
 // END PG Soft Game Report ------------------------------------------------------------------------------
 
