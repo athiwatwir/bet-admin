@@ -277,7 +277,6 @@ class WalletsController extends Controller
                                 'created_at' => date('Y-m-d H:i:s'),
                                 'updated_at' => date('Y-m-d H:i:s'),
                             ]);
-                    $transId = DB::getPdo()->lastInsertId();
 
                     if($trans) {
                         $wallet->update(['amount' => $is_amount]);
@@ -468,8 +467,10 @@ class WalletsController extends Controller
             if($default_wallet->amount >= $request->amount) {
                 $is_amount = $default_wallet->amount - $request->amount;
 
+                $transId = Str::uuid();
                 $trans = DB::table('payment_transactions')
                         ->insert([
+                            'id' => $transId,
                             'user_id' => $accessToken->user_id,
                             'user_banking_id' => $request->user_bank_id,
                             'action_date' => date('Y-m-d H:i:s'),
@@ -479,7 +480,6 @@ class WalletsController extends Controller
                             'updated_at' => date('Y-m-d H:i:s'),
                         ]);
 
-                $transId = DB::getPdo()->lastInsertId();
                 if($trans) {
                     Wallet::find($default_wallet->id)->update(['amount' => $is_amount]);
                     PaymentTransactionLog::create([

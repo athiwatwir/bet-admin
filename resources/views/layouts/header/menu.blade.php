@@ -22,6 +22,7 @@
 
                 <div class="col bg-white overflow-hidden">
                     <ul class="mx-0 px-0 my-2">
+                        @if(session('_p')['user'])
                         <li class="dropdown-item text-wrap">
                             <a href="{{ url('/users') }}" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
                                 <i class="fi fi-users float-start fs--25 mt--n2"></i>
@@ -31,7 +32,9 @@
                                 </span>
                             </a>
                         </li>
+                        @endif
 
+                        @if(session('_p')['admin'])
                         <li class="dropdown-item text-wrap">
                             <a href="{{ url('/admins') }}" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
                                 <i class="fi fi-star-empty-radius float-start fs--25 mt--n2"></i>
@@ -41,7 +44,9 @@
                                 </span>
                             </a>
                         </li>
+                        @endif
 
+                        @if(session('_p')['level'])
                         <li class="dropdown-item text-wrap">
                             <a href="{{ url('/user-levels') }}" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
                                 <i class="fi fi-users float-start fs--25 mt--n2"></i>
@@ -51,12 +56,26 @@
                                 </span>
                             </a>
                         </li>
+                        @endif
+
+                        @if(session('_p')['role'])
+                        <li class="dropdown-item text-wrap">
+                            <a href="{{ route('role') }}" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
+                                <i class="fi fi-users float-start fs--25 mt--n2"></i>
+                                <span class="h5-xs d-block fs--18">ตำแหน่งผู้ดูแลระบบ</span>
+                                <span class="fs--11 text-muted text-uppercase">
+                                    ตำแหน่งผู้ดูแลระบบ
+                                </span>
+                            </a>
+                        </li>
+                        @endif
+
                         <li class="dropdown-item text-wrap">
                             <a href="#!" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
                                 <i class="fas fa-history float-start fs--25 mt--n2"></i>
                                 <span class="h5-xs d-block fs--18">ประวัติการเข้าใข้งาน</span>
                                 <span class="fs--11 text-muted text-uppercase">
-                                    ข้อมูลการเข้าใช้งานของผู้ใช้ง
+                                    ข้อมูลการเข้าใช้งานของผู้ใช้
                                 </span>
                             </a>
                         </li>
@@ -66,39 +85,73 @@
         </div>
     </li>
 
-   
+    @if(session('_p')['payment_transaction'])
     <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="mainNavHome">
-            การเงิน
+        <a href="#" class="nav-link nav-link-caret-hide dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="mainNavFeatures">
+            <i class="fas fa-comments-dollar float-start m-0 mt-1"></i>
+            <span>การเงิน</span> 
         </a>
-        <ul class="dropdown-menu dropdown-menu-clean dropdown-menu-hover" aria-labelledby="mainNavHome">
-            <li class="dropdown-item">
-                <a class="dropdown-link" href="{{ url('/transaction/payment') }}" >
-                    รายการเคลื่อนไหวทั้งหมด 
-                </a>
-            </li>
-            <li class="dropdown-item">
-                <a class="dropdown-link" href="{{ url('/transaction/deposit') }}" >
-                    คำร้องการฝากเงิน 
-                </a>
-            </li>
-            <li class="dropdown-item">
-                <a class="dropdown-link" href="{{ url('/transaction/withdraw') }}" >
-                    การถอนเงิน 
-                </a>
-            </li>
-            <li class="dropdown-item">
-                <a class="dropdown-link" href="{{ url('/transaction/adjust') }}" >
-                    Adjust 
-                </a>
-            </li>
-        </ul>
+        <div class="dropdown-menu dropdown-menu-hover w--300 p-0 border border-light overflow-hidden" aria-labelledby="mainNavFeatures">
+            <div class="row no-gutters bg-gradient-secondary">
+
+                <!-- REMOVE BAR IF NOT NEEDED -->
+                <div class="col-2 d-none d-lg-block"><!-- empty -->
+                    <!-- text-rotate-90 , text-rotate-180 -->
+                    <p class="h6 font-weight-medium mb-0 text-white text-rotate-180 text-center position-absolute d-middle">
+                        จัดการรายการการเงินทั้งหมด
+                    </p>
+                </div>
+
+                <div class="col bg-white overflow-hidden">
+                    <ul class="mx-0 px-0 my-2">
+                        <li class="dropdown-item text-wrap">
+                            <a href="{{ url('/transaction/payment') }}" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
+                                <i class="far fa-money-bill-alt float-start fs--25 mt--n2"></i>
+                                <span class="h5-xs d-block fs--18">รายการเคลื่อนไหว</span>
+                                <span class="fs--11 text-muted text-uppercase">
+                                    รายการเคลื่อนไหวทั้งหมด
+                                </span>
+                            </a>
+                        </li>
+                        <li class="dropdown-item text-wrap">
+                            <a href="{{ url('/transaction/deposit') }}" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
+                                <i class="fas fa-hand-holding-medical float-start fs--25 mt--n2"></i>
+                                <span class="h5-xs d-block fs--18">คำร้องการฝากเงิน</span>
+                                <span class="fs--11 text-muted text-uppercase">
+                                    คำร้องการฝากเงิน 
+                                </span>
+                            </a>
+                        </li>
+                        <li class="dropdown-item text-wrap">
+                            <a href="{{ url('/transaction/withdraw') }}" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
+                                <i class="fas fa-hand-holding-usd float-start fs--25 mt--n2"></i>
+                                <span class="h5-xs d-block fs--18">การถอนเงิน</span>
+                                <span class="fs--11 text-muted text-uppercase">
+                                    การถอนเงิน 
+                                </span>
+                            </a>
+                        </li>
+                        <li class="dropdown-item text-wrap">
+                            <a href="{{ url('/transaction/adjust') }}" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
+                                <i class="fas fa-comment-dollar float-start fs--25 mt--n2"></i>
+                                <span class="h5-xs d-block fs--18">Adjust</span>
+                                <span class="fs--11 text-muted text-uppercase">
+                                    Adjust 
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </li>
+    @endif
 
     <!-- SETTING -->
     <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle js-stoppropag" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="mainNavHome">
-            ตั้งค่า
+        <a href="#" class="nav-link nav-link-caret-hide dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="mainNavFeatures">
+            <i class="fas fa-cog float-start m-0 mt-1"></i>
+            <span>ตั้งค่า</span> 
         </a>
         <ul class="dropdown-menu dropdown-menu-clean dropdown-menu-hover" aria-labelledby="mainNavHome">
             <li class="dropdown-item dropdown">

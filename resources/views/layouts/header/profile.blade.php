@@ -18,7 +18,7 @@
 
             <!-- user detail -->
             <span class="d-block font-weight-medium text-truncate fs--16">{{ Auth::user()->name }}</span>
-            <span class="d-block text-muted font-weight-medium text-truncate">{{ Auth::user()->email }}</span>
+            <span class="d-block text-muted font-weight-medium text-truncate">ตำแหน่ง : <span class="text-dark">{{ session('_p')['position'] }}</span></span>
             <small class="d-block text-muted"><b>Last Login:</b> 2019-09-03 01:48</small>
 
         </div>
@@ -57,9 +57,13 @@
             <small class="d-block text-muted">ข้อมูลส่วนตัว, รหัสผ่าน</small>
         </a>
 
-        <a class="dropdown-item" href="{{ route('logout') }}"
+        <!-- <a class="dropdown-item" href="{{ route('logout') }}"
             onclick="event.preventDefault();
                             document.getElementById('logout-form').submit();">
+            {{ __('ออกจากระบบ') }}
+        </a> -->
+
+        <a class="dropdown-item" href="{{ route('admin-logout') }}">
             {{ __('ออกจากระบบ') }}
         </a>
 

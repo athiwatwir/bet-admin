@@ -45,7 +45,7 @@
                                 กระเป๋าเงิน
                             </a>
                             <a class="nav-link" id="v-pills-paymenttransaction-tab" data-toggle="pill" href="#v-pills-paymenttransaction" role="tab" aria-controls="v-pills-paymenttransaction" aria-selected="false">
-                                รายการเครื่อนไหวทางการเงิน
+                                รายการเคลื่อนไหวทางการเงิน
                             </a>
                         </div>
                     </div>

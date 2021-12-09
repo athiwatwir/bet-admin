@@ -17,6 +17,7 @@ use App\Http\Controllers\FootballLeagueController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\UserLevelController;
 use App\Http\Controllers\BankGroupController;
+use App\Http\Controllers\StaffRolesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +41,8 @@ Auth::routes();
 Route::post('/login', [AdminController::class, 'adminLogin']);
 
 Route::middleware(['auth:webadmin'])->group(function () {
+    Route::get('/logout', [AdminController::class, 'adminLogout'])->name('admin-logout');
+
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/account-setting', [AccountSettingController::class, 'index'])->name('account-setting');
@@ -67,6 +70,14 @@ Route::middleware(['auth:webadmin'])->group(function () {
         Route::post('/edit/profile', [AdminsController::class, 'edit']);
         Route::post('/re-password', [AdminsController::class, 'rePassword']);
         Route::post('/change-password', [AdminsController::class, 'changePassword']);
+
+        Route::get('/role', [StaffRolesController::class, 'index'])->name('role');
+        Route::get('/role/create', [StaffRolesController::class, 'create'])->name('role-create');
+        Route::post('/role/create', [StaffRolesController::class, 'store'])->name('role-store');
+        Route::get('/role/edit/{id}', [StaffRolesController::class, 'edit'])->name('role-edit');
+        Route::post('/role/update', [StaffRolesController::class , 'update'])->name('role-update');
+        Route::get('/role/delete/{id}', [StaffRolesController::class, 'delete'])->name('role-delete');
+        Route::get('/role/active/{id}', [StaffRolesController::class, 'active'])->name('role-active');
     });
 
     Route::get('/members', [MembersController::class, 'index'])->name('members');
