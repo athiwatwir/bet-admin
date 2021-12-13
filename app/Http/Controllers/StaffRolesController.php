@@ -29,8 +29,7 @@ class StaffRolesController extends Controller
 
     public function store(Request $request)
     {
-        $check_name = $this->checkRoleName($request->name);
-        if($check_name) {
+        if(!$this->checkRoleName($request->name, NULL)) {
             $permission = $this->setPermisstion($request);
 
             $role = StaffRole::create([
@@ -46,11 +45,13 @@ class StaffRolesController extends Controller
         }
     }
 
-    private function checkRoleName($name)
+    private function checkRoleName($name, $id)
     {
-        $checked = StaffRole::where('name', $name)->first();
-        if($checked) return false;
-        return true;
+        if(!isset($id)) $checked = StaffRole::where('name', $name)->first();
+        else $checked = StaffRole::where('id', '!=', $id)->where('name', $name)->first();
+
+        if(isset($checked)) return true;
+        return false;
     }
 
     private function setPermisstion($request)
@@ -88,9 +89,7 @@ class StaffRolesController extends Controller
     public function update(Request $request)
     {
         $role = StaffRole::find($request->role_id);
-        $check_name = $this->checkRoleName($request->name);
-
-        if($check_name) {
+        if(!$this->checkRoleName($request->name, $request->role_id)) {
             $permission = $this->updatePermission($role->staff_role_permission_id, $role->isactive, $request);
 
             if($permission) {

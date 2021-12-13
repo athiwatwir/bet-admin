@@ -339,5 +339,14 @@
     </li>
     <!-- END Game -->
 
+    @if(session('_p')['adjust'])
+    <li class="nav-item dropdown">
+        <a href="{{ route('adjust-index') }}" class="nav-link">
+            <i class="fi fi-shield-ok float-start m-0"></i>
+            <span>ADJUST</span> 
+        </a>
+    </li>
+    @endif
+
 </ul>
 </div>

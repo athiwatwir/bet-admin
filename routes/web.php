@@ -18,6 +18,7 @@ use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\UserLevelController;
 use App\Http\Controllers\BankGroupController;
 use App\Http\Controllers\StaffRolesController;
+use App\Http\Controllers\AdjustController;
 
 /*
 |--------------------------------------------------------------------------
@@ -137,6 +138,12 @@ Route::middleware(['auth:webadmin'])->group(function () {
         Route::get('/transfer', [PaymentTransactionController::class, 'transfer'])->name('transaction-transfer');
         Route::get('/withdraw', [PaymentTransactionController::class, 'withdraw'])->name('transaction-withdraw');
         Route::get('/adjust', [PaymentTransactionController::class, 'adjust'])->name('transaction-adjust');
+    });
+
+    Route::prefix('/adjust')->group(function () {
+        Route::get('/', [AdjustController::class, 'index'])->name('adjust-index');
+        Route::get('/update/{id}', [AdjustController::class, 'update'])->name('adjust-confirm');
+        Route::get('/void/{id}', [AdjustController::class, 'void'])->name('adjust-void');
     });
 
     Route::prefix('/games')->group(function () {

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 
 use App\Models\User;
 use App\Models\Staff;
+use App\Models\StaffRole;
 
 class AdminsController extends Controller
 {
@@ -30,6 +31,8 @@ class AdminsController extends Controller
                     ->orderBy('created_at', 'desc')
                     ->paginate(10);
 
+        $role = $this->staffRole();
+
         $inactive = [];
         $active = [];
         $all = [];
@@ -38,7 +41,12 @@ class AdminsController extends Controller
             if($admin->is_active == 'Y') array_push($active, $admin);
         }
 
-        return view('admin.index', ['admins' => $admins, 'inactive' => $inactive, 'active' => $active, 'deleted' => $deleted]);
+        return view('admin.index', ['admins' => $admins, 'inactive' => $inactive, 'active' => $active, 'deleted' => $deleted, 'roles' => $role]);
+    }
+
+    private function staffRole()
+    {
+        return StaffRole::where('status', 'CO')->where('isactive', '!=', 'N')->orderBy('isactive', 'DESC')->get();
     }
 
     public function view(Request $request)
@@ -86,6 +94,7 @@ class AdminsController extends Controller
                 "name" => $request->name,
                 "phone" => $request->phone,
                 "line" => $request->line,
+                "staff_role_id" => $request->role,
                 "is_active" => "Y",
                 "status" => "CO",
             ]);

@@ -60,6 +60,12 @@ class PermissionMiddleware
                 }else{
                     return redirect()->back()->with('error','คุณไม่มีสิทธิ์เข้าถึงหน้านี้...');
                 }
+            case 'adjust' :
+                if(session('_p')['adjust']) {
+                    return $next($request);
+                }else{
+                    return redirect()->back()->with('error','คุณไม่มีสิทธิ์เข้าถึงหน้านี้...');
+                }
             default:
                 return redirect()->back()->with('error','คุณไม่มีสิทธิ์เข้าถึงหน้านี้...');
         }

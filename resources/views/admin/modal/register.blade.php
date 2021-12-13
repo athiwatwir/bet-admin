@@ -75,6 +75,19 @@
                         </div>
                     </div>
 
+                    <div class="form-group row">
+                        <label for="role" class="col-md-4 col-form-label text-md-right">{{ __('ตำแหน่ง') }} <span class="text-danger">*</span></label>
+
+                        <div class="col-md-6">
+                            <select id="role" name="role" class="form-control" required>
+                                <option value="" selected disabled>กำหนดตำแหน่ง</option>
+                                @foreach($roles as $role)
+                                    <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">ยกเลิก</button>

@@ -46,12 +46,13 @@ class WalletsController extends Controller
 
         $trans = (new PaymentTransactionController)->insertTransactionByAdmin($request->wallet_amount, $request->is_reason, 'เพิ่ม', $wallet->user_id, $request->wallet_id);
         if($trans) {
-            $wallet_increase = $wallet->amount + $request->wallet_amount;
-            $wallet_query = DB::table('wallets')->where('id', $request->wallet_id)->update(['amount' => $wallet_increase]);
+            // $wallet_increase = $wallet->amount + $request->wallet_amount;
+            // $wallet_query = DB::table('wallets')->where('id', $request->wallet_id)->update(['amount' => $wallet_increase]);
 
-            if($wallet_query) return redirect()->back()->with('success', 'แก้ไขจำนวนเงินเรียบร้อยแล้ว');
+            // if($wallet_query) return redirect()->back()->with('success', 'แก้ไขจำนวนเงินเรียบร้อยแล้ว');
 
-            return redirect()->back()->with('error', 'เกิดข้อผิดพลาดกรุณาลองใหม่');
+            // return redirect()->back()->with('error', 'เกิดข้อผิดพลาดกรุณาลองใหม่');
+            return redirect()->back()->with('success', 'กำลังส่งคำร้องขอไปยังผู้ดูแลระบบที่รับผิดชอบ');
         }
         return redirect()->back()->with('error', 'เกิดข้อผิดพลาด Transaction');
     }
@@ -68,12 +69,13 @@ class WalletsController extends Controller
         if($wallet->amount > $request->wallet_amount) {
             $trans = (new PaymentTransactionController)->insertTransactionByAdmin($request->wallet_amount, $request->is_reason, 'ลด', $wallet->user_id, $request->wallet_id);
             if($trans) {
-                $wallet_decrease = $wallet->amount - $request->wallet_amount;
-                $wallet_query = DB::table('wallets')->where('id', $request->wallet_id)->update(['amount' => $wallet_decrease]);
+                // $wallet_decrease = $wallet->amount - $request->wallet_amount;
+                // $wallet_query = DB::table('wallets')->where('id', $request->wallet_id)->update(['amount' => $wallet_decrease]);
     
-                if($wallet_query) return redirect()->back()->with('success', 'แก้ไขจำนวนเงินเรียบร้อยแล้ว');
+                // if($wallet_query) return redirect()->back()->with('success', 'แก้ไขจำนวนเงินเรียบร้อยแล้ว');
     
-                return redirect()->back()->with('error', 'เกิดข้อผิดพลาดกรุณาลองใหม่');
+                // return redirect()->back()->with('error', 'เกิดข้อผิดพลาดกรุณาลองใหม่');
+                return redirect()->back()->with('success', 'กำลังส่งคำร้องขอไปยังผู้ดูแลระบบที่รับผิดชอบ');
             }
             return redirect()->back()->with('error', 'เกิดข้อผิดพลาด Transaction');
         }

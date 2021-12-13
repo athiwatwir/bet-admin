@@ -40,7 +40,8 @@ class AdminController extends Controller
                     ->where('staffs.id', $id)
                     ->select(
                         'staff_roles.name', 'staff_role_permissions.user', 'staff_role_permissions.level',
-                        'staff_role_permissions.admin', 'staff_role_permissions.role', 'staff_role_permissions.payment_transaction')
+                        'staff_role_permissions.admin', 'staff_role_permissions.role', 'staff_role_permissions.payment_transaction',
+                        'staff_role_permissions.adjust')
                     ->first();
 
         return $admin;
@@ -54,7 +55,8 @@ class AdminController extends Controller
             'level' => $permission->level,
             'admin' => $permission->admin,
             'role' => $permission->role,
-            'payment_transaction' => $permission->payment_transaction
+            'payment_transaction' => $permission->payment_transaction,
+            'adjust' => $permission->adjust
         ]]);
     }
 
