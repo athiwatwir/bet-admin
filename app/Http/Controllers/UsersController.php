@@ -72,6 +72,7 @@ class UsersController extends Controller
         $banks = $this->getBanks();
         $pgSoftGameWallet = $this->getPgsoftgameWallet($user->username);
         $levels = (new UserLevelController)->getAllUserLevel();
+        $user_level = (new UserLevelController)->getUserLevelById($user->user_level_id);
         $bankGroups = (new BankGroupController)->getAllBankGroups();
         $pgsoftPlayingSummary = (new ReportsController)->getPgsoftByPlayerPlaying($user->username);
 
@@ -79,7 +80,7 @@ class UsersController extends Controller
                     'profile' => $user, 'ubank' => $ubank, 'banks' => $banks, 'username' => $request->username,
                     'wallets' => $wallets, 'default_wallet' => $default_wallet, 'pg_wallet' => $pgSoftGameWallet,
                     'transaction' => $transactions, 'levels' => $levels, 'bank_groups' => $bankGroups,
-                    'pgsoftPlayingSummary' => $pgsoftPlayingSummary
+                    'pgsoftPlayingSummary' => $pgsoftPlayingSummary, 'user_level' => $user_level
                     ]);
     }
 
@@ -182,5 +183,23 @@ class UsersController extends Controller
     private function getBanks()
     {
         return DB::table('banks')->where('is_active', 'Y')->where('status', 'CO')->get();
+    }
+
+
+    // CALL FUNCTION ///////////////////////////////////////
+
+    public function getUserAll()
+    {
+        return DB::table('users')->where('status', 'CO')->where('is_active', 'Y')->get();
+    }
+
+    public function getUserById($id)
+    {
+        return DB::table('users')->where('id', $id)->where('status', 'CO')->where('is_active', 'Y')->first();
+    }
+
+    public function getUserByLevelId($level_id)
+    {
+        return DB::table('users')->where('user_level_id', $level_id)->where('status', 'CO')->where('is_active', 'Y')->get();
     }
 }

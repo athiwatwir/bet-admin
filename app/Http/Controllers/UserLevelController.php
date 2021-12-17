@@ -122,6 +122,6 @@ class UserLevelController extends Controller
 
     public function getUserLevelById($id)
     {
-        return UserLevel::find($id)->get();
+        return UserLevel::find($id);
     }
 }

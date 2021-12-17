@@ -60,12 +60,20 @@
                             <td class="text-center">
                                 <div class="flex text-right">
                                     <a class="ml-2 mr-4" href="#!" title="เพิ่มเงินในกระเป๋าหลัก" 
-                                        data-toggle="modal" data-target="#increaseWalletModal" onClick="setDataIncreaseWalletAmount('{{ $default_wallet->id }}', {{ $default_wallet->amount }}, 'หลัก', '{{ $username }}')"
+                                        data-toggle="modal" data-target="#increaseWalletModal" 
+                                        onClick="setDataIncreaseWalletAmount(
+                                            '{{ $default_wallet->id }}', {{ $default_wallet->amount }}, 'หลัก', 
+                                            '{{ $username }}', {{ $user_level->limit_deposit }}
+                                        )"
                                     >
                                         <i class="fi fi-plus mr-0 text-primary"></i>
                                     </a>
                                     <a href="#!" title="ลดเงินในกระเป๋าหลัก" 
-                                        data-toggle="modal" data-target="#decreaseWalletModal" onClick="setDataDecreaseWalletAmount('{{ $default_wallet->id }}', {{ $default_wallet->amount }} , 'หลัก', '{{ $username }}')"
+                                        data-toggle="modal" data-target="#decreaseWalletModal" 
+                                        onClick="setDataDecreaseWalletAmount(
+                                            '{{ $default_wallet->id }}', {{ $default_wallet->amount }} , 'หลัก', 
+                                            '{{ $username }}', {{ $user_level->limit_withdraw }}
+                                        )"
                                     >
                                         <i class="fi fi-minus mr-0 text-danger"></i>
                                     </a>

@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 use App\Http\Controllers\PaymentTransactionController;
+use App\Http\Controllers\UsersController;
 
 class WalletsController extends Controller
 {
@@ -82,6 +84,74 @@ class WalletsController extends Controller
         return redirect()->back()->with('error', 'เกิดข้อผิดพลาดจำนวนเงินไม่ถูกต้อง');
     }
 
+
+    public function promotionWalletAmount(Request $request)
+    {
+        if($request->level_user) {
+            if(!isset($request->level)) return redirect()->back()->with('error', 'กรุณาเลือกกลุ่มลูกค้า');
+            foreach($request->level as $level) {
+                $users = (new UsersController)->getUserByLevelId($level);
+                $this->getUsersWallet($users, $request->description, $request->amount);
+            }
+        }
+
+        if($request->all_user) {
+            $users = (new UsersController)->getUserAll();
+            $this->getUsersWallet($users, $request->description, $request->amount);
+        }
+        
+        return redirect()->back()->with('success', 'เรียบร้อยแล้ว');
+    }
+
+    private function getUsersWallet($users, $promotion, $amount)
+    {
+        $payment_transaction_id = $this->saveToPaymentTransaction($promotion, $amount);
+        foreach($users as $user) {
+            $wallet = DB::table('wallets')->where('user_id', $user->id)->where('is_default', 'Y')->first();
+            if(isset($wallet)) {
+                // $is_amount = $wallet->amount." + ".$amount." = ".($wallet->amount + $amount);
+                // Log::debug($is_amount);
+                
+                $this->saveToPromotionTransaction($wallet->id, $payment_transaction_id);
+            }
+        }
+    }
+
+    private function saveToPaymentTransaction($promotion, $amount)
+    {
+        $transId = Str::uuid();
+        DB::table('payment_transactions')->insert([
+            'id' => $transId,
+            'staff_id' => Auth::user()->id,
+            'action_date' => date('Y-m-d H:i:s'),
+            'code' => 'ADJUST',
+            'code_status' => 'Promo',
+            'amount' => $amount,
+            'description' => $promotion,
+            'status' => 'DR',
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
+
+        return $transId;
+    }
+
+    public function callFromView()
+    {
+        return 'World';
+    }
+
+    private function saveToPromotionTransaction($wallet_id, $payment_transaction_id)
+    {
+        $transId = Str::uuid();
+        DB::table('payment_transaction_promotions')->insert([
+            'id' => $transId,
+            'wallet_id' => $wallet_id,
+            'payment_transaction_id' => $payment_transaction_id,
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
+    }
 
 
     // For Call Function

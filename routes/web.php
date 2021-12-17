@@ -19,6 +19,7 @@ use App\Http\Controllers\UserLevelController;
 use App\Http\Controllers\BankGroupController;
 use App\Http\Controllers\StaffRolesController;
 use App\Http\Controllers\AdjustController;
+use App\Http\Controllers\ApiSettingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -104,6 +105,10 @@ Route::middleware(['auth:webadmin'])->group(function () {
             Route::get('/cancle/{id}', [BankGroupController::class, 'cancle']);
             Route::post('/transfer', [BankGroupController::class, 'transfer']);
         });
+
+        Route::prefix('/api')->group(function () {
+            Route::get('/user-level', [ApiSettingController::class, 'userLevelIndex'])->name('setting-api-userlevel-index');
+        });
     });
 
     Route::get('/cbank', [CBankAccountController::class, 'index'])->name('cbank');
@@ -131,6 +136,7 @@ Route::middleware(['auth:webadmin'])->group(function () {
 
     Route::prefix('/transaction')->group(function () {
         Route::get('/payment', [PaymentTransactionController::class, 'index'])->name('transaction-all');
+        Route::get('/payment-adjust', [PaymentTransactionController::class, 'adjust']);
         Route::get('/confirm-payment-transaction/{id}', [PaymentTransactionController::class, 'confirmPaymentTransaction']);
         Route::get('/void-payment-transaction/{id}', [PaymentTransactionController::class, 'voidPaymentTransaction']);
 
@@ -138,6 +144,8 @@ Route::middleware(['auth:webadmin'])->group(function () {
         Route::get('/transfer', [PaymentTransactionController::class, 'transfer'])->name('transaction-transfer');
         Route::get('/withdraw', [PaymentTransactionController::class, 'withdraw'])->name('transaction-withdraw');
         Route::get('/adjust', [PaymentTransactionController::class, 'adjust'])->name('transaction-adjust');
+
+        Route::post('/promotion-adjust', [WalletsController::class, 'promotionWalletAmount']);
     });
 
     Route::prefix('/adjust')->group(function () {

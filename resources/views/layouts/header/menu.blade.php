@@ -123,6 +123,15 @@
                             </a>
                         </li>
                         <li class="dropdown-item text-wrap">
+                            <a href="{{ url('/transaction/transfer') }}" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
+                                <i class="fas fa-exchange-alt float-start fs--25 mt--n2"></i>
+                                <span class="h5-xs d-block fs--18">รายการโอนในระบบ</span>
+                                <span class="fs--11 text-muted text-uppercase">
+                                    รายการโอนในระบบ 
+                                </span>
+                            </a>
+                        </li>
+                        <li class="dropdown-item text-wrap">
                             <a href="{{ url('/transaction/withdraw') }}" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
                                 <i class="fas fa-hand-holding-usd float-start fs--25 mt--n2"></i>
                                 <span class="h5-xs d-block fs--18">การถอนเงิน</span>
@@ -211,6 +220,18 @@
                     <li class="dropdown-item">
                         <a class="dropdown-link" href="#!" >
                             SMS
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="dropdown-item dropdown">
+                 <a class="dropdown-link js-stoppropag" href="#!" data-toggle="dropdown">
+                    <i class="fas fa-plug"></i> API
+                </a>
+                <ul class="dropdown-menu dropdown-menu-hover shadow-primary-xs">
+                    <li class="dropdown-item">
+                        <a class="dropdown-link" href="{{ route('setting-api-userlevel-index') }}" >
+                            กลุ่มลูกค้า
                         </a>
                     </li>
                 </ul>
@@ -343,7 +364,7 @@
     <li class="nav-item dropdown">
         <a href="{{ route('adjust-index') }}" class="nav-link">
             <i class="fi fi-shield-ok float-start m-0"></i>
-            <span>ADJUST</span> 
+            <span>ADJUST FOR ADMIN</span> 
         </a>
     </li>
     @endif

@@ -51,7 +51,7 @@
         </header>
 
         <div id="wrapper_content" class="d-flex flex-fill">
-            <div class="container-xlg w-100 px-0">
+            <div class="container-xlg w-80 px-0">
                 <div id="middle" class="flex-fill">
                     <div class="page-title bg-transparent b-0">
                         <h1 class="h4 mt-4 mb-0 px-3 font-weight-normal">

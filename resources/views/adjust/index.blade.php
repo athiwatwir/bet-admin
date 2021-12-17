@@ -17,14 +17,10 @@
 
                 <div class="float-end">
 
-                    <a href="{{ route('role-create') }}" class="btn btn-sm btn-primary btn-pill px-2 py-1 fs--15 mt--n3">
-                        + เพิ่มตำแหน่ง
-                    </a>
-
                 </div>
 
                 <span class="d-block text-muted text-truncate font-weight-medium pt-1">
-                    ผู้ดูแลระบบทั้งหมด
+                    
                 </span>
             </div>
             <!-- /portlet : header -->
@@ -83,7 +79,6 @@
 
                     <tbody id="item_list">
                     @foreach ($adjusts as $key => $trans)
-                        @if($trans->status == 'DR')
                         <tr id="message_id_{{ $key }}" class="text-dark bg-increase">
 
                             <td style="line-height: 17px;">
@@ -107,69 +102,36 @@
                                 </small>
                             </td>
 
-                            <td class="text-center">
+                            <td class="text-center" style="line-height: 17px;">
                                 <strong>
                                     @if($trans->code_status == 'Plus')
                                         <span class="text-success">+ {{ number_format($trans->amount) }}</span>
+                                        @if($trans->amount > $trans->limit_deposit)
+                                            <br/>
+                                            <small class="fs--11 text-danger">เกินวงเงิน : {{ number_format($trans->limit_deposit) }}</small>
+                                        @endif
                                     @elseif($trans->code_status == 'Minus')
                                         <span class="text-danger">- {{ number_format($trans->amount) }}</span>
+                                        @if($trans->amount > $trans->limit_withdraw)
+                                            <br/>
+                                            <small class="fs--11 text-danger">เกินวงเงิน : {{ number_format($trans->limit_withdraw) }}</small>
+                                        @endif
                                     @endif
                                 </strong>
                             </td>
 
                             <td class="text-center">
-                                <a	href="#!" 
-                                    class="js-ajax-confirm btn btn-vv-sm btn-success mr-2 fs--14" 
-                                    data-href="{{ route('adjust-confirm', ['id' => $trans->id]) }}"
-                                    data-ajax-confirm-body="<center>
-                                                                <h4 class='mb-2'>ยืนยันการปรับเปลี่ยนยอดเงิน ? </h4>
-                                                                สมาชิก : {{ $trans->username }} | 
-                                                                จำนวนเงิน @if($trans->code_status == 'Plus')
-                                                                    <span class='text-success'>+ {{ number_format($trans->amount) }}</span>
-                                                                @elseif($trans->code_status == 'Minus')
-                                                                    <span class='text-danger'>- {{ number_format($trans->amount) }}</span>
-                                                                @endif
-                                                            </center>" 
-
-                                    data-ajax-confirm-method="GET" 
-
-                                    data-ajax-confirm-btn-yes-class="btn-sm btn-primary" 
-                                    data-ajax-confirm-btn-yes-text="ยืนยัน" 
-                                    data-ajax-confirm-btn-yes-icon="fi fi-check" 
-
-                                    data-ajax-confirm-btn-no-class="btn-sm btn-light" 
-                                    data-ajax-confirm-btn-no-text="ยกเลิก" 
-                                    data-ajax-confirm-btn-no-icon="fi fi-close">
-                                    ยืนยัน
-                                </a>
-
-                                <a	href="#!" 
-                                    class="js-ajax-confirm btn btn-vv-sm btn-danger mr-2 fs--14" 
-                                    data-href="{{ route('adjust-void', ['id' => $trans->id]) }}"
-                                    data-ajax-confirm-body="<center>
-                                                                <h4 class='mb-2'>ปฏิเสธการปรับเปลี่ยนยอดเงิน ? </h4>
-                                                                สมาชิก : {{ $trans->username }} | 
-                                                                จำนวนเงิน @if($trans->code_status == 'Plus')
-                                                                    <span class='text-success'>+ {{ number_format($trans->amount) }}</span>
-                                                                @elseif($trans->code_status == 'Minus')
-                                                                    <span class='text-danger'>- {{ number_format($trans->amount) }}</span>
-                                                                @endif
-                                                            </center>" 
-
-                                    data-ajax-confirm-method="GET" 
-
-                                    data-ajax-confirm-btn-yes-class="btn-sm btn-danger" 
-                                    data-ajax-confirm-btn-yes-text="ยืนยัน" 
-                                    data-ajax-confirm-btn-yes-icon="fi fi-check" 
-
-                                    data-ajax-confirm-btn-no-class="btn-sm btn-light" 
-                                    data-ajax-confirm-btn-no-text="ยกเลิก" 
-                                    data-ajax-confirm-btn-no-icon="fi fi-close">
-                                    ปฏิเสธ
-                                </a>
+                                @if($trans->amount > $trans->limit_deposit || $trans->amount > $trans->limit_withdraw)
+                                    @if(session('_p')['position'] == 'Super')
+                                        @include('adjust.components.adjust-button')
+                                    @else
+                                        <small><strong class="text-secondary">ผู้ดูแลระดับ Super เท่านั้น</strong></small>
+                                    @endif
+                                @else
+                                    @include('adjust.components.adjust-button')
+                                @endif
                             </td>
                         </tr>
-                        @endif
                     @endforeach
                     </tbody>
 

@@ -11,6 +11,12 @@
                     </button>
                 </div>
                 <div class="modal-body">
+                    <div class="row mb-0">
+                        <div class="col-md-6 offset-4 mb-0">
+                            <small id="limit_deposit" class="text-danger fs--11"></small>
+                        </div>
+                    </div>
+                    
                     <div class="form-group row">
                         <label for="wallet_amount" class="col-md-4 col-form-label text-md-right">{{ __('จำนวนเงิน') }} <span class="text-danger">*</span></label>
 

@@ -47,19 +47,21 @@ function formatNumber(num) {
 }
 
 // Profile Wallet Edit
-function setDataIncreaseWalletAmount(id, amount, game, username) {
+function setDataIncreaseWalletAmount(id, amount, game, username, limit_deposit = 0) {
     document.getElementById('wallet_id').value = id
     document.getElementById('is_wallet').value = amount
     document.getElementById('wallet_game').innerHTML = game
     document.getElementById('username').innerHTML = username
+    document.querySelector('#limit_deposit').innerHTML = 'จำกัดวงเงิน : ' + formatNumber(limit_deposit) + ' | เกินกว่านี้ต้องให้ SUPER อนุมัติ'
     document.getElementById('wallet_amount_notice').innerHTML = 'จำนวนเงินเดิม : ' + formatNumber(amount)
 }
 
-function setDataDecreaseWalletAmount(id, amount, game, username) {
+function setDataDecreaseWalletAmount(id, amount, game, username, limit_withdraw = 0) {
     document.getElementById('wallet_id_decrease').value = id
     document.getElementById('min_wallet').value = amount
     document.getElementById('wallet_game_decrease').innerHTML = game
     document.getElementById('username_decrease').innerHTML = username
+    document.querySelector('#limit_withdraw').innerHTML = 'จำกัดวงเงิน : ' + formatNumber(limit_withdraw) + ' | เกินกว่านี้ต้องให้ SUPER อนุมัติ'
     document.getElementById('wallet_amount_notice_min').innerHTML = 'จำนวนเงินเดิม : ' + formatNumber(amount)
 }
 

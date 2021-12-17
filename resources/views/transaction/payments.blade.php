@@ -14,13 +14,7 @@
 
                 </div>
 
-                <span class="d-block text-muted text-truncate font-weight-medium pt-1">
-                    <a href="@if($type == '') #! @else {{ route('transaction-all') }} @endif" class="btn btn-sm btn-primary @if($type == '') @else btn-soft @endif btn-pill mb-1 mr-3 ml-3">รายการทั้งหมด</a>
-                    <a href="@if($type == 'DEPOSIT') #! @else {{ route('transaction-deposit') }} @endif" class="btn btn-sm btn-primary @if($type == 'DEPOSIT') @else btn-soft @endif btn-pill mb-1 mr-3">คำร้องการฝากเงิน</a>
-                    <a href="@if($type == 'TRANSFER') #! @else {{ route('transaction-transfer') }} @endif" class="btn btn-sm btn-primary @if($type == 'TRANSFER') @else btn-soft @endif btn-pill mb-1 mr-3">รายการโอนในระบบ</a>
-                    <a href="@if($type == 'WITHDRAW') #! @else {{ route('transaction-withdraw') }} @endif" class="btn btn-sm btn-primary @if($type == 'WITHDRAW') @else btn-soft @endif btn-pill mb-1 mr-3">การถอนเงิน</a>
-                    <a href="@if($type == 'ADJUST') #! @else {{ route('transaction-adjust') }} @endif" class="btn btn-sm btn-primary @if($type == 'ADJUST') @else btn-soft @endif btn-pill mb-1 mr-3">ปรับเปลี่ยนยอดเงิน</a>
-                </span>
+                @include('transaction.components.menu_top')
             </div>
             <!-- /portlet : header -->
 
@@ -39,7 +33,7 @@
                         @if($type == 'ADJUST')
                         <div class="row" id="_user-transaction-adjust" style="display: none;">
                             <div class="col-md-8 offset-2">
-                                @include('transaction.adjust')
+                                @include('transaction.components.adjust')
                             </div>
                         </div>
                         @endif
@@ -219,6 +213,8 @@
                                                 @else
                                                     <small class="badge badge-secondary font-weight-normal">รอยืนยัน</small>
                                                 @endif
+                                                <br/>
+                                                <small class="fs--11">{{ $trans->admin_confirm }}</small>
                                             </td>
 
                                             <td class="text-align-end">

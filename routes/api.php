@@ -14,6 +14,8 @@ use App\Http\Controllers\Api\V1\ServicesController;
 
 use App\Http\Controllers\Api\V2\PgSoftGameController;
 
+use App\Http\Controllers\Api\V3\PaymentTransactionPromotionController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -89,5 +91,11 @@ Route::prefix('v2')->group(function () {
         Route::get('wallet/{user}', [PgSoftGameController::class, 'getUserWallet']);
         // Route::get('player-daily-summary', [PgSoftGameController::class, 'saveToDB']);
         Route::get('update-player-daily-summary', [PgSoftGameController::class, 'saveToDB']);
+    });
+});
+
+Route::prefix('v3')->group(function () {
+    Route::prefix('payment-transaction-promotion')->group(function () {
+        Route::get('wallet-list/{transaction_id}', [PaymentTransactionPromotionController::class, 'walletList']);
     });
 });

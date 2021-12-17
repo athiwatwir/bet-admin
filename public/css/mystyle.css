@@ -5,6 +5,13 @@ h1,h2,h3,h4{
     font-weight: 700 !important;
 }
 
+.w-80 {
+    width: 80%;
+}
+.w-90 {
+    width: 90%;
+}
+
 .btn-vv-sm {
     padding: 0 10px;
 }
