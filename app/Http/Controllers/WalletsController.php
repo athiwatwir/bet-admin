@@ -87,32 +87,35 @@ class WalletsController extends Controller
 
     public function promotionWalletAmount(Request $request)
     {
-        if($request->level_user) {
-            if(!isset($request->level)) return redirect()->back()->with('error', 'กรุณาเลือกกลุ่มลูกค้า');
-            foreach($request->level as $level) {
-                $users = (new UsersController)->getUserByLevelId($level);
-                $this->getUsersWallet($users, $request->description, $request->amount);
+        $payment_transaction_id = $this->saveToPaymentTransaction($request->description, $request->amount);
+        if($payment_transaction_id != false) {
+            if($request->level_user) {
+                if(!isset($request->level)) return redirect()->back()->with('error', 'กรุณาเลือกกลุ่มลูกค้า');
+                foreach($request->level as $level) {
+                    $users = (new UsersController)->getUserByLevelId($level);
+                    $this->getUsersWallet($users, $payment_transaction_id);
+                }
             }
-        }
 
-        if($request->all_user) {
-            $users = (new UsersController)->getUserAll();
-            $this->getUsersWallet($users, $request->description, $request->amount);
+            if($request->all_user) {
+                $users = (new UsersController)->getUserAll();
+                $this->getUsersWallet($users, $payment_transaction_id);
+            }
+            
+            return redirect()->back()->with('success', 'เรียบร้อยแล้ว');
         }
-        
-        return redirect()->back()->with('success', 'เรียบร้อยแล้ว');
+        return redirect()->back()->with('error', 'เกิดข้อผิดพลาด กรุณาลองใหม่...');
     }
 
-    private function getUsersWallet($users, $promotion, $amount)
+    private function getUsersWallet($users, $payment_transaction_id)
     {
-        $payment_transaction_id = $this->saveToPaymentTransaction($promotion, $amount);
         foreach($users as $user) {
             $wallet = DB::table('wallets')->where('user_id', $user->id)->where('is_default', 'Y')->first();
             if(isset($wallet)) {
                 // $is_amount = $wallet->amount." + ".$amount." = ".($wallet->amount + $amount);
                 // Log::debug($is_amount);
                 
-                $this->saveToPromotionTransaction($wallet->id, $payment_transaction_id);
+                $this->saveToPromotionTransaction($wallet->id, $payment_transaction_id, $user->user_level_id);
             }
         }
     }
@@ -120,34 +123,32 @@ class WalletsController extends Controller
     private function saveToPaymentTransaction($promotion, $amount)
     {
         $transId = Str::uuid();
-        DB::table('payment_transactions')->insert([
-            'id' => $transId,
-            'staff_id' => Auth::user()->id,
-            'action_date' => date('Y-m-d H:i:s'),
-            'code' => 'ADJUST',
-            'code_status' => 'Promo',
-            'amount' => $amount,
-            'description' => $promotion,
-            'status' => 'DR',
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s')
-        ]);
+        $inserted = DB::table('payment_transactions')->insert([
+                        'id' => $transId,
+                        'staff_id' => Auth::user()->id,
+                        'action_date' => date('Y-m-d H:i:s'),
+                        'code' => 'ADJUST',
+                        'code_status' => 'Promo',
+                        'amount' => $amount,
+                        'description' => $promotion,
+                        'status' => 'DR',
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ]);
 
-        return $transId;
+        if($inserted) return $transId;
+
+        return false;
     }
 
-    public function callFromView()
-    {
-        return 'World';
-    }
-
-    private function saveToPromotionTransaction($wallet_id, $payment_transaction_id)
+    private function saveToPromotionTransaction($wallet_id, $payment_transaction_id, $user_level_id)
     {
         $transId = Str::uuid();
         DB::table('payment_transaction_promotions')->insert([
             'id' => $transId,
             'wallet_id' => $wallet_id,
             'payment_transaction_id' => $payment_transaction_id,
+            'user_level_id' => $user_level_id,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ]);
