@@ -34,9 +34,29 @@ class ReportsController extends Controller
         if($request->type === 'P001') {
             $report = 'รายการเคลื่อนไหวทางการเงิน';
             $results = $this->transactionData($request->startdate, $request->enddate);
+            foreach($results as $key => $result) { 
+                if($result->code_status == 'Promo') $results[$key]->user_level = $this->getUserLevel($result->id);
+            }
         }
 
         return view('reports.index', ['reportTypes' => $this->ReportTypes, 'is_report' => $report, 'start' => $request->startdate, 'end' => $request->enddate, 'results' => $results]);
+    }
+
+    private function getUserLevel($payment_transaction_id)
+    {
+        $user_level = DB::table('payment_transaction_promotions')
+                ->leftJoin('user_levels', 'payment_transaction_promotions.user_level_id', '=', 'user_levels.id')
+                ->where('payment_transaction_promotions.payment_transaction_id', $payment_transaction_id)
+                ->groupBy('payment_transaction_promotions.user_level_id')
+                ->select('user_levels.name')
+                ->get();
+
+        $is_user_level = '';
+        for($i = 0; $i < count($user_level); $i++) {
+            if($i == 0) $is_user_level = $user_level[0]->name;
+            else $is_user_level .= ', '.$user_level[$i]->name;
+        }
+        return $is_user_level;
     }
 
     private function transactionData($start, $end)
