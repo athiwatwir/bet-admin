@@ -57,18 +57,30 @@
                 @elseif($trans->code == 'TRANSFER')
                     <small class="badge badge-warning font-weight-normal fs--14">โอนเงินในระบบ</small>
                 @elseif($trans->code == 'ADJUST')
-                    <small class="badge badge-primary font-weight-normal fs--14">ปรับเปลี่ยน</small>
+                    @if($trans->code_status == 'Promo')
+                        <small class="badge badge-pink font-weight-normal fs--14">โปรโมชั่น</small>
+                    @else
+                        <small class="badge badge-primary font-weight-normal fs--14">ปรับเปลี่ยน</small>
+                    @endif
                 @endif
             </td>
             <td>
-                <small>{{ $trans->username }} : {{ $trans->name }}</small>
+                @if($trans->code_status == 'Promo')
+                    <small>{{ $trans->description }}</small>
+                @else
+                    <small>{{ $trans->username }} : {{ $trans->name }}</small>
+                @endif
             </td>
             <td class="text-center">
                 <small>{{ date('d-m-Y', strtotime($trans->action_date)) }} | {{ date('H:i:s', strtotime($trans->action_date)) }}</small>
             </td>
             <td>
-                @if(isset($trans->by_admin))
-                    <small>ผู้ดูแลระบบ : {{ $trans->by_admin }} <span class="text-danger">>></span> @if($trans->to_default == 'Y') กระเป๋าหลัก @else กระเป๋าเกม : {{ $trans->to_game }} @endif</small>
+                @if($trans->code == 'ADJUST')
+                    @if($trans->code_status == 'Promo')
+                        <small>กลุ่มลูกค้า : {{ $trans->user_level }}</small>
+                    @else
+                        <small>ผู้ดูแลระบบ : {{ $trans->by_admin }} <span class="text-danger">>></span> @if($trans->to_default == 'Y') กระเป๋าหลัก @else กระเป๋าเกม : {{ $trans->to_game }} @endif</small>
+                    @endif
                 @else
                     @if($trans->code == 'DEPOSIT')
                         <small>{{ $trans->cbank_name }} : {{ $trans->account_name }} {{ $trans->account_number }}</small>
@@ -84,6 +96,8 @@
                 + 
                 @elseif($trans->code_status == 'Minus')
                 - 
+                @elseif($trans->code_status == 'Promo')
+                + 
                 @endif
                 {{ number_format($trans->amount) }}
             </td>
