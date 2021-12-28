@@ -87,6 +87,12 @@
                             </td>
 
                             <td style="line-height: 17px;">
+                                @if($trans->code_status == 'Promo')
+                                    <span class="badge badge-pink font-weight-normal fs--12">
+                                        โปรโมชั่น
+                                    </span>
+                                    <br/>
+                                @endif
                                 @if(isset($trans->description))
                                     <small><span class="text-danger">**</span> {{ $trans->description }}</small>
                                 @endif
@@ -98,7 +104,14 @@
                                 </small>
                                 <small><i class="fi fi-arrow-right-full text-warning"></i></small>
                                 <small>
-                                    <strong>สมาชิก : <a href="/users/{{ $trans->username }}/{{ $trans->user_id }}/view" target="_blank">{{ $trans->username }}</a></strong>
+                                    @if($trans->code_status == 'Promo')
+                                        <a href="#" data-toggle="modal" data-target="#promotionWalletList" onClick="promotionWalletList('{{ $trans->id }}')">
+                                            <i class="far fa-list-alt"></i> 
+                                            รายการบัญชี
+                                        </a>
+                                    @else
+                                        <strong>สมาชิก : <a href="/users/{{ $trans->username }}/{{ $trans->user_id }}/view" target="_blank">{{ $trans->username }}</a></strong>
+                                    @endif
                                 </small>
                             </td>
 
@@ -116,6 +129,8 @@
                                             <br/>
                                             <small class="fs--11 text-danger">เกินวงเงิน : {{ number_format($trans->limit_withdraw) }}</small>
                                         @endif
+                                    @elseif($trans->code_status == 'Promo')
+                                        <span class="text-indigo">+ {{ number_format($trans->amount) }}</span>
                                     @endif
                                 </strong>
                             </td>
@@ -153,4 +168,7 @@
         display: none;
     }
 </style>
+
+@include('transaction.modal.promotion_wallet_list')
+
 @endsection
