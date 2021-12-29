@@ -26,22 +26,31 @@ class AdjustController extends Controller
     public function update($id)
     {
         $trans = (new PaymentTransactionController)->getPaymentTransactionById($id)[0];
-        $wallet = $this->getWalletById($trans->to_wallet_id);
-        if($trans->code_status == 'Plus') {
-            $wallet_increase = $wallet->amount + $trans->amount;
-            $wallet->update(['amount' => $wallet_increase]);
-        }else if($trans->code_status == 'Minus') {
-            $wallet_decrease = $wallet->amount - $trans->amount;
-            $wallet->update(['amount' => $wallet_decrease]);
-        }
+        if($trans->code_status == 'Promo') {
+            $wallet_amount = $this->getWalletByTransactionId($id);
+            foreach($wallet_amount as $data) {
+                $amount = $data->amount + $trans->amount;
+                Log::debug($amount);
+            }
+            return redirect()->back();
+        }else{
+            $wallet = $this->getWalletById($trans->to_wallet_id);
+            if($trans->code_status == 'Plus') {
+                $wallet_increase = $wallet->amount + $trans->amount;
+                $wallet->update(['amount' => $wallet_increase]);
+            }else if($trans->code_status == 'Minus') {
+                $wallet_decrease = $wallet->amount - $trans->amount;
+                $wallet->update(['amount' => $wallet_decrease]);
+            }
 
-        $update_trans = $this->updatePaymentTransaction($id, 'CO');
+            $update_trans = $this->updatePaymentTransaction($id, 'CO');
 
-        if($update_trans) {
-            $this->updatePaymentTransactionLog($id, 'CO');
-            return redirect()->back()->with('success', 'ยืนยันจำนวนเงินเรียบร้อยแล้ว');
+            if($update_trans) {
+                $this->updatePaymentTransactionLog($id, 'CO');
+                return redirect()->back()->with('success', 'ยืนยันจำนวนเงินเรียบร้อยแล้ว');
+            }
+            return redirect()->back()->with('error', 'เกิดข้อผิดพลาดกรุณาลองใหม่');
         }
-        return redirect()->back()->with('error', 'เกิดข้อผิดพลาดกรุณาลองใหม่');
     }
 
     public function void($id)
@@ -68,5 +77,14 @@ class AdjustController extends Controller
                     'status' => $status,
                     'admin_id' => Auth::user()->id
                 ]);
+    }
+
+    private function getWalletByTransactionId($transaction_id)
+    {
+        return DB::table('payment_transaction_promotions')
+                    ->leftJoin('wallets', 'payment_transaction_promotions.wallet_id', '=', 'wallets.id')
+                    ->where('payment_transaction_promotions.payment_transaction_id', $transaction_id)
+                    ->select('wallets.amount')
+                    ->get();
     }
 }

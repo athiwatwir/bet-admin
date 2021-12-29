@@ -230,6 +230,11 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-hover shadow-primary-xs">
                     <li class="dropdown-item">
+                        <a class="dropdown-link" href="{{ route('setting-api-game-index') }}" >
+                            เกม
+                        </a>
+                    </li>
+                    <li class="dropdown-item">
                         <a class="dropdown-link" href="{{ route('setting-api-userlevel-index') }}" >
                             กลุ่มลูกค้า
                         </a>

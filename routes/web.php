@@ -20,6 +20,7 @@ use App\Http\Controllers\BankGroupController;
 use App\Http\Controllers\StaffRolesController;
 use App\Http\Controllers\AdjustController;
 use App\Http\Controllers\ApiSettingController;
+use App\Http\Controllers\ApiGameController;
 
 /*
 |--------------------------------------------------------------------------
@@ -107,6 +108,11 @@ Route::middleware(['auth:webadmin'])->group(function () {
         });
 
         Route::prefix('/api')->group(function () {
+            Route::prefix('/games')->group(function () {
+                Route::get('/', [ApiGameController::class, 'index'])->name('setting-api-game-index');
+                Route::post('/', [ApiGameController::class, 'create'])->name('setting-api-game-create');
+                Route::get('/edit/{id}', [ApiGameController::class, 'edit'])->name('setting-api-game-edit');
+            });
             Route::get('/user-level', [ApiSettingController::class, 'userLevelIndex'])->name('setting-api-userlevel-index');
         });
     });

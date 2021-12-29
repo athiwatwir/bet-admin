@@ -3,17 +3,23 @@
     data-href="{{ route('adjust-confirm', ['id' => $trans->id]) }}"
     data-ajax-confirm-body="<center>
                                 <h4 class='mb-2'>ยืนยันการปรับเปลี่ยนยอดเงิน ? </h4>
-                                สมาชิก : {{ $trans->username }} | 
-                                จำนวนเงิน @if($trans->code_status == 'Plus')
-                                    <span class='text-success'>+ {{ number_format($trans->amount) }}</span>
-                                @elseif($trans->code_status == 'Minus')
-                                    <span class='text-danger'>- {{ number_format($trans->amount) }}</span>
+                                @if($trans->code_status == 'Promo')
+                                    โปรโมชั่น : {{ $trans->description }} <br/>
+                                @else
+                                    สมาชิก : {{ $trans->username }} <br/>
                                 @endif
+                                    จำนวนเงิน @if($trans->code_status == 'Plus')
+                                        <span class='text-success'>+ {{ number_format($trans->amount) }}</span>
+                                    @elseif($trans->code_status == 'Minus')
+                                        <span class='text-danger'>- {{ number_format($trans->amount) }}</span>
+                                    @elseif($trans->code_status == 'Promo')
+                                        <span class='text-indigo'>+ {{ number_format($trans->amount) }}</span>
+                                    @endif
                             </center>" 
 
     data-ajax-confirm-method="GET" 
 
-    data-ajax-confirm-btn-yes-class="btn-sm btn-primary" 
+    data-ajax-confirm-btn-yes-class="btn-sm btn-success" 
     data-ajax-confirm-btn-yes-text="ยืนยัน" 
     data-ajax-confirm-btn-yes-icon="fi fi-check" 
 
@@ -28,12 +34,18 @@
     data-href="{{ route('adjust-void', ['id' => $trans->id]) }}"
     data-ajax-confirm-body="<center>
                                 <h4 class='mb-2'>ปฏิเสธการปรับเปลี่ยนยอดเงิน ? </h4>
-                                สมาชิก : {{ $trans->username }} | 
-                                จำนวนเงิน @if($trans->code_status == 'Plus')
-                                    <span class='text-success'>+ {{ number_format($trans->amount) }}</span>
-                                @elseif($trans->code_status == 'Minus')
-                                    <span class='text-danger'>- {{ number_format($trans->amount) }}</span>
+                                @if($trans->code_status == 'Promo')
+                                    โปรโมชั่น : {{ $trans->description }} <br/>
+                                @else
+                                    สมาชิก : {{ $trans->username }} <br/>
                                 @endif
+                                    จำนวนเงิน @if($trans->code_status == 'Plus')
+                                        <span class='text-success'>+ {{ number_format($trans->amount) }}</span>
+                                    @elseif($trans->code_status == 'Minus')
+                                        <span class='text-danger'>- {{ number_format($trans->amount) }}</span>
+                                    @elseif($trans->code_status == 'Promo')
+                                        <span class='text-indigo'>+ {{ number_format($trans->amount) }}</span>
+                                    @endif
                             </center>" 
 
     data-ajax-confirm-method="GET" 
