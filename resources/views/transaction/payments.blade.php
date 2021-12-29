@@ -144,18 +144,30 @@
                                             </td>
 
                                             <td class="text-center" style="line-height: 16px;">
-                                                @if(isset($trans->by_admin))
-                                                    <small>
-                                                        <strong>ผู้ดูแลระบบ : {{ $trans->by_admin }}</strong>
-                                                    </small><br/>
-                                                    <small><i class="fi fi-arrow-down-full text-primary"></i></small></br>
-                                                    <small>
-                                                        @if($trans->to_default == 'Y')
-                                                            กระเป๋าหลัก
-                                                        @else
-                                                            กระเป๋าเกม : {{ $trans->to_game }}
-                                                        @endif
-                                                    </small>
+                                                @if($trans->code == 'ADJUST')
+                                                    @if($trans->code_status == 'Promo')
+                                                        <small>
+                                                            <strong>ผู้ดูแลระบบ : {{ $trans->by_admin }}</strong>
+                                                        </small><br/>
+                                                        <small><i class="fi fi-arrow-down-full text-primary"></i></br>
+                                                            <a href="#" data-toggle="modal" data-target="#promotionWalletList" onClick="promotionWalletList('{{ $trans->id }}')">
+                                                                <i class="far fa-list-alt"></i> 
+                                                                รายการบัญชี
+                                                            </a>
+                                                        </small>
+                                                    @else
+                                                        <small>
+                                                            <strong>ผู้ดูแลระบบ : {{ $trans->by_admin }}</strong>
+                                                        </small><br/>
+                                                        <small><i class="fi fi-arrow-down-full text-primary"></i></small></br>
+                                                        <small>
+                                                            @if($trans->to_default == 'Y')
+                                                                กระเป๋าหลัก
+                                                            @else
+                                                                กระเป๋าเกม : {{ $trans->to_game }}
+                                                            @endif
+                                                        </small>
+                                                    @endif
                                                 @else
                                                     @if($trans->code == 'DEPOSIT')
                                                         {{ $trans->cbank_name }}<br/>
@@ -331,4 +343,5 @@
     @include('user.modal.payment_slip')
     @include('user.modal.wallet_increase')
     @include('user.modal.wallet_decrease')
+    @include('transaction.modal.promotion_wallet_list')
 @endsection
