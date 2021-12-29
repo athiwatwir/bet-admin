@@ -17,7 +17,7 @@ class UserLevelController extends Controller
 
     public function index()
     {
-        $level = UserLevel::orderBy('name', 'ASC')->withCount('users')->get();
+        $level = UserLevel::where('status', 'CO')->orderBy('name', 'ASC')->withCount('users')->get();
         return view('userlevel.index', ['levels' => $level]);
     }
 
@@ -110,7 +110,7 @@ class UserLevelController extends Controller
             User::find($user->id)->update(['user_level_id' => $default_level->id]);
         }
 
-        $user_level_deleted = UserLevel::find($id)->delete();
+        $user_level_deleted = UserLevel::find($id)->update(['status' => 'VO']);
         if($user_level_deleted) return redirect()->back()->with('success', 'ลบกลุ่มลูกคาเรียบร้อยแล้ว');
         return redirect()->back()->with('error', 'เกิดข้อผิดพลาด กรุณาลองใหม่');
     }
