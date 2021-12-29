@@ -11,7 +11,7 @@ class UserLevel extends Model
     use HasFactory, Uuids;
 
     protected $fillable = [
-        'name', 'limit_transfer', 'limit_withdraw' , 'limit_deposit' , 'isactive', 'isdefault'
+        'name', 'limit_transfer', 'limit_withdraw' , 'limit_deposit' , 'isactive', 'isdefault', 'status'
     ];
 
     /**
