@@ -17,8 +17,9 @@ class UserLevelController extends Controller
 
     public function index()
     {
-        $level = UserLevel::where('status', 'CO')->orderBy('name', 'ASC')->withCount('users')->get();
-        return view('userlevel.index', ['levels' => $level]);
+        $level_default = UserLevel::where('isdefault', 'Y')->withCount('users')->first();
+        $level = UserLevel::where('status', 'CO')->where('isdefault', 'N')->orderBy('name', 'ASC')->withCount('users')->get();
+        return view('userlevel.index', ['default' => $level_default, 'levels' => $level]);
     }
 
     public function create(Request $request)
