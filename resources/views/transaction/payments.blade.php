@@ -81,7 +81,7 @@
                                         <tr class="text-muted fs--13">
                                             <th>ประเภทรายการ</th>
                                             <th class="text-center">รายการของ</th>
-                                            <th class="text-center">วัน-เวลา</th>
+                                            <th class="text-center" style="width: 150px;">วัน-เวลา</th>
                                             <th class="text-center">ไปยังบัญชี</th>
                                             <th class="text-center">จำนวนเงิน</th>
                                             <th class="text-center">สถานะ</th>
@@ -113,22 +113,32 @@
                                                             โอนเงินในระบบ
                                                         </span>
                                                     @elseif($trans->code == 'ADJUST')
-                                                        <span class="badge badge-primary font-weight-normal fs--16">
-                                                            ปรับเปลี่ยน
-                                                        </span>
+                                                        @if($trans->code_status == 'Promo')
+                                                            <span class="badge badge-pink font-weight-normal fs--16">
+                                                                โปรโมชั่น
+                                                            </span>
+                                                        @else
+                                                            <span class="badge badge-primary font-weight-normal fs--16">
+                                                                ปรับเปลี่ยน
+                                                            </span>
+                                                        @endif
                                                     @endif
                                                 </p>
-                                                @if(isset($trans->description))
+                                                @if(isset($trans->description) && $trans->code_status != 'Promo')
                                                     <small><small><span class="text-danger">**</span> {{ $trans->description }}</small></small>
                                                 @endif
                                             </td>
 
                                             <td class="text-center" style="line-height: 16px;">
-                                                {{ $trans->username }}<br/>
-                                                <small class="">{{ $trans->name }}</small>
+                                                @if($trans->code_status == 'Promo')
+                                                    {{ $trans->description }}
+                                                @else
+                                                    {{ $trans->username }}<br/>
+                                                    <small class="">{{ $trans->name }}</small>
+                                                @endif
                                             </td>
 
-                                            <td class="text-center" style="line-height: 17px;">
+                                            <td class="text-center" style="line-height: 15px; font-size: 13px;">
                                                 {{ date('d-m-Y', strtotime($trans->action_date)) }}<br/>
                                                 <small>{{ date('H:i:s', strtotime($trans->action_date)) }}</small>
                                             </td>
@@ -186,6 +196,8 @@
                                                         <span class="text-success">+ {{ number_format($trans->amount) }}</span>
                                                     @elseif($trans->code_status == 'Minus')
                                                         <span class="text-danger">- {{ number_format($trans->amount) }}</span>
+                                                    @elseif($trans->code_status == 'Promo')
+                                                        <span class="text-indigo">+ {{ number_format($trans->amount) }}</span>
                                                     @else
                                                         <span class="text-dark">{{ number_format($trans->amount) }}</span>
                                                     @endif
@@ -217,6 +229,7 @@
                                                 <small class="fs--11">{{ $trans->admin_confirm }}</small>
                                             </td>
 
+                                            @if($type == 'DEPOSIT' || $type == 'WITHDRAW')
                                             <td class="text-align-end">
 
                                                 @if($trans->status == NULL)
@@ -261,6 +274,7 @@
                                                 @endif
 
                                             </td>
+                                            @endif
 
                                         </tr>
                                     @endforeach
