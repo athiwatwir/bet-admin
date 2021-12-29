@@ -81,13 +81,50 @@
                             <th class="text-center">ยอดฝากสูงสุด</th>
                             <th class="text-center">ยอดถอนสูงสุด</th>
                             <th class="text-center">ยอดโอนสูงสุด</th>
-                            <th class="text-center">จำนวนสมาชิกกลุ่ม</th>
                             <th class="text-center">สถานะ</th>
                             <th class="w--150 text-center"></th>
                         </tr>
                     </thead>
 
                     <tbody>
+                        <tr class="text-dark">
+
+                            <td class="text-center">
+                                
+                            </td>
+
+                            <td style="line-height: 17px;">
+                                <p class="mb-0 d-flex">
+                                    <strong class="text-primary">{{ $default->name }}</strong>
+                                    <small class="ml-2">
+                                        <span class="badge badge-primary font-weight-normal">ค่าเริ่มต้น</span>
+                                    </small>
+                                </p>
+                                <small class="fs--11">จำนวนสมาชิกกลุ่ม <strong>{{ $default->users_count }}</strong></small>
+                            </td>
+
+                            <td class="text-center">
+                                {{ number_format($default->limit_deposit) }}
+                            </td>
+
+                            <td class="text-center">
+                                {{ number_format($default->limit_withdraw) }}
+                            </td>
+
+                            <td class="text-center">
+                                {{ number_format($default->limit_transfer) }}
+                            </td>
+
+                            <td class="text-center">
+                                <span class="badge badge-success font-weight-normal mt-1">เปิดใช้งาน</span>
+                            </td>
+
+                            <td class="text-center">
+                                <a class="text-truncate mr-2" href="#!" title="แก้ไข" data-toggle="modal" data-target="#editUserLevel" onClick="setDataUserLevel('{{$default->id}}', '{{$default->name}}', {{$default->limit_deposit}}, {{$default->limit_withdraw}}, {{$default->limit_transfer}}, '{{$default->isdefault}}')">
+                                    <i class="fi fi-pencil"></i>
+                                </a>
+                            </td>
+                        </tr>
                     @foreach ($levels as $key => $level)
                         <tr class="text-dark">
 
@@ -96,9 +133,10 @@
                             </td>
 
                             <td style="line-height: 17px;">
-                                <span class="@if($level->isdefault == 'Y') text-danger @endif">
-                                    {{ $level->name }} @if($level->isdefault == 'Y') <small class="text-dark fs--11">(ค่าเริ่มต้น)</small> @endif
-                                </span>
+                                <p class="mb-0 d-flex">
+                                    <strong class="text-dark">{{ $level->name }}</strong>
+                                </p>
+                                <small class="fs--11">จำนวนสมาชิกกลุ่ม <strong>{{ $level->users_count }}</strong></small>
                             </td>
 
                             <td class="text-center">
@@ -111,10 +149,6 @@
 
                             <td class="text-center">
                                 {{ number_format($level->limit_transfer) }}
-                            </td>
-
-                            <td class="text-center">
-                                {{ $level->users_count }}
                             </td>
 
                             <td class="text-center">
@@ -166,7 +200,6 @@
                             <th class="text-center">ยอดฝากสูงสุด</th>
                             <th class="text-center">ยอดถอนสูงสุด</th>
                             <th class="text-center">ยอดโอนสูงสุด</th>
-                            <th class="text-center">จำนวนสมาชิกกลุ่ม</th>
                             <th class="text-center">สถานะ</th>
                             <th class="w--150 text-center"></th>
                         </tr>
