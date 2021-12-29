@@ -48,12 +48,6 @@ class WalletsController extends Controller
 
         $trans = (new PaymentTransactionController)->insertTransactionByAdmin($request->wallet_amount, $request->is_reason, 'เพิ่ม', $wallet->user_id, $request->wallet_id);
         if($trans) {
-            // $wallet_increase = $wallet->amount + $request->wallet_amount;
-            // $wallet_query = DB::table('wallets')->where('id', $request->wallet_id)->update(['amount' => $wallet_increase]);
-
-            // if($wallet_query) return redirect()->back()->with('success', 'แก้ไขจำนวนเงินเรียบร้อยแล้ว');
-
-            // return redirect()->back()->with('error', 'เกิดข้อผิดพลาดกรุณาลองใหม่');
             return redirect()->back()->with('success', 'กำลังส่งคำร้องขอไปยังผู้ดูแลระบบที่รับผิดชอบ');
         }
         return redirect()->back()->with('error', 'เกิดข้อผิดพลาด Transaction');
@@ -71,12 +65,6 @@ class WalletsController extends Controller
         if($wallet->amount > $request->wallet_amount) {
             $trans = (new PaymentTransactionController)->insertTransactionByAdmin($request->wallet_amount, $request->is_reason, 'ลด', $wallet->user_id, $request->wallet_id);
             if($trans) {
-                // $wallet_decrease = $wallet->amount - $request->wallet_amount;
-                // $wallet_query = DB::table('wallets')->where('id', $request->wallet_id)->update(['amount' => $wallet_decrease]);
-    
-                // if($wallet_query) return redirect()->back()->with('success', 'แก้ไขจำนวนเงินเรียบร้อยแล้ว');
-    
-                // return redirect()->back()->with('error', 'เกิดข้อผิดพลาดกรุณาลองใหม่');
                 return redirect()->back()->with('success', 'กำลังส่งคำร้องขอไปยังผู้ดูแลระบบที่รับผิดชอบ');
             }
             return redirect()->back()->with('error', 'เกิดข้อผิดพลาด Transaction');
@@ -112,10 +100,7 @@ class WalletsController extends Controller
         foreach($users as $user) {
             $wallet = DB::table('wallets')->where('user_id', $user->id)->where('is_default', 'Y')->first();
             if(isset($wallet)) {
-                // $is_amount = $wallet->amount." + ".$amount." = ".($wallet->amount + $amount);
-                // Log::debug($is_amount);
-                
-                $this->saveToPromotionTransaction($wallet->id, $payment_transaction_id, $user->user_level_id);
+                $this->saveToPromotionTransaction($wallet->id, $payment_transaction_id, $user->id, $user->user_level_id);
             }
         }
     }
@@ -141,13 +126,14 @@ class WalletsController extends Controller
         return false;
     }
 
-    private function saveToPromotionTransaction($wallet_id, $payment_transaction_id, $user_level_id)
+    private function saveToPromotionTransaction($wallet_id, $payment_transaction_id, $user_id, $user_level_id)
     {
         $transId = Str::uuid();
         DB::table('payment_transaction_promotions')->insert([
             'id' => $transId,
             'wallet_id' => $wallet_id,
             'payment_transaction_id' => $payment_transaction_id,
+            'user_id' => $user_id,
             'user_level_id' => $user_level_id,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
