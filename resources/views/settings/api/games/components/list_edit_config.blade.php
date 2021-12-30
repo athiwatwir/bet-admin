@@ -49,22 +49,22 @@
         <!-- admin -->
         <tr class="text-dark">
 
-            <td>
+            <td class="p-0">
                 <input id="key_name-{{ $key }}" class="custom-form-control setting-form-control" disabled value="{{ $config->key_name }}">
             </td>
 
-            <td class="text-center">
+            <td class="text-center p-0">
                 <select id="method-{{ $key }}" class="custom-form-control setting-form-control" disabled>
                     <option value="POST" @if($config->method == 'POST') selected @endif>POST</option>
                     <option value="GET" @if($config->method == 'GET') selected @endif>GET</option> 
                 </select>
             </td>
 
-            <td>
+            <td class="p-0">
                 <input id="parameter-{{ $key }}" class="custom-form-control setting-form-control" disabled value="{{ $config->value }}">
             </td>
 
-            <td class="text-center">
+            <td class="text-center p-0">
                 <button type="button" id="edit_btn-{{ $key }}" class="btn btn-vv-sm btn-link text-success" title="แก้ไข" onClick="setConfigEditBtn({{ $key }})">
                     <i class="fi fi-pencil"></i>
                 </button>

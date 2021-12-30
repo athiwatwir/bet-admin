@@ -81,13 +81,13 @@ class WalletsController extends Controller
                 if(!isset($request->level)) return redirect()->back()->with('error', 'กรุณาเลือกกลุ่มลูกค้า');
                 foreach($request->level as $level) {
                     $users = (new UsersController)->getUserByLevelId($level);
-                    $this->getUsersWallet($users, $payment_transaction_id);
+                    $this->getUsersWallet($users, $payment_transaction_id, 'level');
                 }
             }
 
             if($request->all_user) {
                 $users = (new UsersController)->getUserAll();
-                $this->getUsersWallet($users, $payment_transaction_id);
+                $this->getUsersWallet($users, $payment_transaction_id, 'all');
             }
             
             return redirect()->back()->with('success', 'เรียบร้อยแล้ว');
@@ -95,12 +95,12 @@ class WalletsController extends Controller
         return redirect()->back()->with('error', 'เกิดข้อผิดพลาด กรุณาลองใหม่...');
     }
 
-    private function getUsersWallet($users, $payment_transaction_id)
+    private function getUsersWallet($users, $payment_transaction_id, $type)
     {
         foreach($users as $user) {
             $wallet = DB::table('wallets')->where('user_id', $user->id)->where('is_default', 'Y')->first();
             if(isset($wallet)) {
-                $this->saveToPromotionTransaction($wallet->id, $payment_transaction_id, $user->id, $user->user_level_id);
+                $this->saveToPromotionTransaction($wallet->id, $payment_transaction_id, $user->id, $user->user_level_id, $type);
             }
         }
     }
@@ -126,7 +126,7 @@ class WalletsController extends Controller
         return false;
     }
 
-    private function saveToPromotionTransaction($wallet_id, $payment_transaction_id, $user_id, $user_level_id)
+    private function saveToPromotionTransaction($wallet_id, $payment_transaction_id, $user_id, $user_level_id, $type)
     {
         $transId = Str::uuid();
         DB::table('payment_transaction_promotions')->insert([
@@ -134,7 +134,7 @@ class WalletsController extends Controller
             'wallet_id' => $wallet_id,
             'payment_transaction_id' => $payment_transaction_id,
             'user_id' => $user_id,
-            'user_level_id' => $user_level_id,
+            'user_level_id' => $type == 'level' ? $user_level_id : NULL,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ]);

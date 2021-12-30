@@ -52,11 +52,15 @@ class ReportsController extends Controller
                 ->get();
 
         $is_user_level = '';
-        for($i = 0; $i < count($user_level); $i++) {
-            if($i == 0) $is_user_level = $user_level[0]->name;
-            else $is_user_level .= ', '.$user_level[$i]->name;
+        if($user_level[0]->name != NULL) {
+            for($i = 0; $i < count($user_level); $i++) {
+                if($i == 0) $is_user_level = $user_level[0]->name;
+                else $is_user_level .= ', '.$user_level[$i]->name;
+            }
+            return $is_user_level;
         }
-        return $is_user_level;
+
+        return $is_user_level = 'สมาชิกทุกคน';
     }
 
     private function transactionData($start, $end)

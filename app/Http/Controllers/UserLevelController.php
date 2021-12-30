@@ -118,7 +118,7 @@ class UserLevelController extends Controller
 
     public function getAllUserLevel()
     {
-        return UserLevel::where('isactive', 'Y')->get();
+        return UserLevel::where('isactive', 'Y')->where('status', 'CO')->get();
     }
 
     public function getUserLevelById($id)

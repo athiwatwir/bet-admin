@@ -30,9 +30,10 @@ class AdjustController extends Controller
             $wallet_amount = $this->getWalletByTransactionId($id);
             foreach($wallet_amount as $data) {
                 $amount = $data->amount + $trans->amount;
-                Log::debug($amount);
+                Wallet::find($data->id)->update(['amount' => $amount]);
             }
-            return redirect()->back();
+            $update_trans = $this->updatePaymentTransaction($id, 'CO');
+            return redirect()->back()->with('success', 'ยืนยันจำนวนเงินเรียบร้อยแล้ว');
         }else{
             $wallet = $this->getWalletById($trans->to_wallet_id);
             if($trans->code_status == 'Plus') {
@@ -84,7 +85,7 @@ class AdjustController extends Controller
         return DB::table('payment_transaction_promotions')
                     ->leftJoin('wallets', 'payment_transaction_promotions.wallet_id', '=', 'wallets.id')
                     ->where('payment_transaction_promotions.payment_transaction_id', $transaction_id)
-                    ->select('wallets.amount')
+                    ->select('wallets.id', 'wallets.amount')
                     ->get();
     }
 }
