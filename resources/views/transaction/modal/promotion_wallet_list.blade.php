@@ -9,7 +9,7 @@
                 <div id="payment-transaction-promotion-loaded" style="display: none;">
                     <p class="mb-1">รายละเอียดโปรโมชั่น : <strong id="promotion-description" class="text-dark"></strong></p>
                     <p class="mb-1">จำนวนเงิน : <strong id="promotion-amount" class="text-indigo"></strong></p>
-                    <p class="mb-1">เป้าหมายโปรโมชั่น : <strong id="promotion-target" class="text-dark"></strong></p>
+                    <p class="mb-1">กลุ่มเป้าหมายโปรโมชั่น : <strong id="promotion-target" class="text-dark"></strong></p>
 
                     <hr/>
                     

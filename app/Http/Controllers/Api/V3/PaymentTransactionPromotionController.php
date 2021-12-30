@@ -30,7 +30,6 @@ class PaymentTransactionPromotionController extends Controller
         $user_level = DB::table('payment_transaction_promotions')
                 ->leftJoin('user_levels', 'payment_transaction_promotions.user_level_id', '=', 'user_levels.id')
                 ->where('payment_transaction_promotions.payment_transaction_id', $payment_transaction_id)
-                ->groupBy('payment_transaction_promotions.user_level_id')
                 ->select('user_levels.name')
                 ->get();
 
@@ -40,7 +39,7 @@ class PaymentTransactionPromotionController extends Controller
                 if($i == 0) $is_user_level = $user_level[0]->name;
                 else $is_user_level .= ', '.$user_level[$i]->name;
             }
-            return $is_user_level;
+            return implode(', ',array_unique(explode(', ', $is_user_level)));
         }
 
         return $is_user_level = 'สมาชิกทุกคน';
