@@ -1,11 +1,11 @@
-<table class="table-datatable table table-bordered table-hover table-striped px-3"
+<table class="table-datatable table table-bordered table-hover table-striped px-3 pb-2"
     data-lng-empty="ไม่มีข้อมูล..." 
-    data-lng-page-info="แสดงผลเกมที่ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ เกม" 
+    data-lng-page-info="แสดงผล API URL ที่ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ API URL" 
     data-lng-filtered="(filtered from _MAX_ total entries)" 
     data-lng-loading="กำลังโหลด..." 
     data-lng-processing="กำลังดำเนินการ..." 
-    data-lng-search="ค้นหาเกม..." 
-    data-lng-norecords="ไม่มีเกมที่ค้นหา..." 
+    data-lng-search="ค้นหารายการ..." 
+    data-lng-norecords="ไม่มีรายการที่ค้นหา..." 
     data-lng-sort-ascending=": activate to sort column ascending" 
     data-lng-sort-descending=": activate to sort column descending" 
 
@@ -35,12 +35,16 @@
     data-export='["csv", "pdf", "xls"]' 
     data-options='["copy", "print"]' 
 >
+    <strong class="text-dark float-left">รายการ API URL</strong>
+    <button type="button" id="edit-config" class="btn btn-vv-sm btn-warning float-right fs--14 mx-1"><i class="fas fa-edit"></i> แก้ไขรายการ</button>
+    <button type="button" id="cancel-config" class="btn btn-vv-sm btn-secondary float-right fs--14 mx-1" style="display: none;"><i class="fas fa-times"></i> ยกเลิก</button>
+    <button type="button" id="add-config" class="btn btn-vv-sm btn-primary float-right fs--14 mx-1"><i class="fas fa-plus"></i> เพิ่มรายการ</button>
+    <button type="submit" id="save-config" class="btn btn-vv-sm btn-success float-right fs--14 mx-1" style="display: none;"><i class="fas fa-save"></i> บันทึกการแก้ไข</button>
     <thead>
         <tr class="text-muted fs--13">
-            <th>รายการ</th>
+            <th style="width: 250px;">รายการ</th>
             <th class="text-center">Method</th>
-            <th>พารามิเตอร์</th>
-            <th class="w--150 text-center">แก้ไข</th>
+            <th>API URL</th>
         </tr>
     </thead>
 
@@ -49,30 +53,21 @@
         <!-- admin -->
         <tr class="text-dark">
 
-            <td class="p-0">
-                <input id="key_name-{{ $key }}" class="custom-form-control setting-form-control" disabled value="{{ $config->key_name }}">
+            <td class="p-0 td-list-item">
+                <input id="key_name-{{ $key }}" name="config[{{ $key }}][key_name]" class="custom-form-control setting-form-control is-key_name" disabled value="{{ $config->key_name }}" autocomplete="off">
             </td>
 
-            <td class="text-center p-0">
-                <select id="method-{{ $key }}" class="custom-form-control setting-form-control" disabled>
+            <td class="text-center p-0 td-list-item">
+                <select id="method-{{ $key }}" name="config[{{ $key }}][method]" class="custom-form-control setting-form-control text-center is-method" disabled>
                     <option value="POST" @if($config->method == 'POST') selected @endif>POST</option>
                     <option value="GET" @if($config->method == 'GET') selected @endif>GET</option> 
                 </select>
             </td>
 
-            <td class="p-0">
-                <input id="parameter-{{ $key }}" class="custom-form-control setting-form-control" disabled value="{{ $config->value }}">
+            <td class="p-0 td-list-item">
+                <input id="parameter-{{ $key }}" name="config[{{ $key }}][parameter]" class="custom-form-control setting-form-control is-parameter" disabled value="{{ $config->value }}" autocomplete="off">
+                <input type="hidden" name="config[{{ $key }}][id]" value="{{ $config->id }}">
             </td>
-
-            <td class="text-center p-0">
-                <button type="button" id="edit_btn-{{ $key }}" class="btn btn-vv-sm btn-link text-success" title="แก้ไข" onClick="setConfigEditBtn({{ $key }})">
-                    <i class="fi fi-pencil"></i>
-                </button>
-                <button type="button" id="cancel_btn-{{ $key }}" class="btn btn-vv-sm btn-link text-danger" style="display: none;" title="ยกเลิก" onClick="setConfigCancelBtn({{ $key }})">
-                    X
-                </button>
-            </td>
-
         </tr>
         <!-- /admin -->
     @endforeach
@@ -96,41 +91,60 @@
     .setting-form-control {
         padding: 0 15px;
         height: 40px;
+        border-color: #ccc;
+        border-top: none;
+        border-right: none;
+        border-left: none;
+        border-radius: 0;
+        background-color: transparent;
+    }
+    .td-list-item {
+        padding: 0 5px !important;
     }
 </style>
 
 <script>
-    function setConfigAttribute(id, index){
-        let CONFIG = document.querySelector('#'+id+'-'+index)
-        CONFIG.classList.remove('custom-form-control')
-        CONFIG.classList.add('form-control')
-        CONFIG.removeAttribute('disabled')
+    const INPUT_ID = ['key_name', 'parameter', 'method']
+    const EDIT_BTN = document.querySelector('#edit-config')
+    const EDIT_BTN_CANCEL = document.querySelector('#cancel-config')
+    const SAVE_BTN = document.querySelector('#save-config')
+    const ADD_BTN = document.querySelector('#add-config')
+
+    EDIT_BTN.addEventListener('click', () => {
+        this.setConfigAttribute(document.querySelectorAll('input.is-key_name'))
+        this.setConfigAttribute(document.querySelectorAll('select.is-method'))
+        this.setConfigAttribute(document.querySelectorAll('input.is-parameter'))
+        this.setAttributeConfigBtn('none', 'initial')
+    })
+
+    EDIT_BTN_CANCEL.addEventListener('click', () => {
+        this.cancelConfigAttribute(document.querySelectorAll('input.is-key_name'))
+        this.cancelConfigAttribute(document.querySelectorAll('select.is-method'))
+        this.cancelConfigAttribute(document.querySelectorAll('input.is-parameter'))
+        this.setAttributeConfigBtn('initial', 'none')
+    })
+
+    function setConfigAttribute(data) {
+        data.forEach((key) => {
+            key.classList.remove('custom-form-control')
+            key.classList.add('form-control')
+            key.removeAttribute('disabled')
+        })
     }
 
-    function cancelConfigAttribute(id, index){
-        let CONFIG = document.querySelector('#'+id+'-'+index)
-        CONFIG.classList.remove('form-control')
-        CONFIG.classList.add('custom-form-control')
-        CONFIG.setAttribute('disabled', 'true')
+    function cancelConfigAttribute(data) {
+        data.forEach((key) => {
+            key.classList.remove('form-control')
+            key.classList.add('custom-form-control')
+            key.setAttribute('disabled', 'true')
+        })
     }
 
-    function setConfigEditBtn(index) {
-        this.setConfigAttribute('key_name', index)
-        this.setConfigAttribute('parameter', index)
-        this.setConfigAttribute('method', index)
-        let BTN_EDIT = document.querySelector('#edit_btn-'+index)
-        let BTN_CANCEL = document.querySelector('#cancel_btn-'+index)
-        BTN_EDIT.style.display = 'none'
-        BTN_CANCEL.style.display = 'initial'
-    }
-
-    function setConfigCancelBtn(index) {
-        this.cancelConfigAttribute('key_name', index)
-        this.cancelConfigAttribute('parameter', index)
-        this.cancelConfigAttribute('method', index)
-        let BTN_EDIT = document.querySelector('#edit_btn-'+index)
-        let BTN_CANCEL = document.querySelector('#cancel_btn-'+index)
-        BTN_EDIT.style.display = 'initial'
-        BTN_CANCEL.style.display = 'none'
+    function setAttributeConfigBtn(display1, display2) {
+        ADD_BTN.style.display = display1
+        EDIT_BTN.style.display = display1
+        
+        EDIT_BTN_CANCEL.style.display = display2
+        SAVE_BTN.style.display = display2
     }
 </script>

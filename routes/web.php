@@ -112,6 +112,11 @@ Route::middleware(['auth:webadmin'])->group(function () {
                 Route::get('/', [ApiGameController::class, 'index'])->name('setting-api-game-index');
                 Route::post('/', [ApiGameController::class, 'create'])->name('setting-api-game-create');
                 Route::get('/edit/{id}', [ApiGameController::class, 'edit'])->name('setting-api-game-edit');
+                Route::get('/active/{id}', [ApiGameController::class, 'active'])->name('setting-api-game-active');
+
+                Route::post('/update-config', [ApiGameController::class, 'updateConfig'])->name('setting-api-game-update-config');
+                Route::post('/update-api', [ApiGameController::class, 'updateApi'])->name('setting-api-game-update-api-domain');
+                Route::post('/update-token', [ApiGameController::class, 'updateToken'])->name('setting-api-game-update-token');
             });
             Route::get('/user-level', [ApiSettingController::class, 'userLevelIndex'])->name('setting-api-userlevel-index');
         });

@@ -23,4 +23,9 @@ class ApiGame extends Model
     {
         return $this->hasMany(ApiGameConfig::class);
     }
+
+    public function api_token()
+    {
+        return $this->hasMany(ApiGameToken::class);
+    }
 }

@@ -61,15 +61,15 @@
             </td>
 
             <td class="text-center">
-                <a class="text-truncate mr-2 text-success" href="{{ route('setting-api-game-edit', ['id' => $game->id]) }}" title="แก้ไข">
+                <a class="text-truncate mr-2 text-primary" href="{{ route('setting-api-game-edit', ['id' => $game->id]) }}" title="แก้ไข">
                     <i class="fi fi-pencil"></i>
                 </a>
 
-                <a href="{{ route('role-active', ['id' => $game->id]) }}" class="text-truncate mr-2 text-success" title="เปลี่ยนแปลงสถานะ" onclick="return confirm('เปลี่ยนแปลงสถานะ')">
+                <a href="{{ route('setting-api-game-active', ['id' => $game->id]) }}" class="text-truncate mr-2 text-success" title="เปลี่ยนแปลงสถานะ" onclick="return confirm('เปลี่ยนแปลงสถานะ')">
                     @if($game->isactive == 'Y')
-                        <i class="fas fa-eye text-dark"></i>
+                        <i class="fas fa-link text-success"></i>
                     @elseif($game->isactive == 'N')
-                        <i class="fas fa-eye-slash text-dark"></i>
+                        <i class="fas fa-unlink text-dark"></i>
                     @endif
                 </a>
                 <a	href="#!" 

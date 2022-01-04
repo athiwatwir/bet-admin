@@ -15,22 +15,36 @@
                 </div>
                 <section>
                     <div id="api-game-edit">
-                        <h4>Edit Api Game</h4>
+                        <h4>แก้ไข Api เกม</h4>
                         <div class="form-label-group mb-3">
                             <input placeholder="ชื่อเกม" name="edit[0][game_name]" type="text" class="form-control" value="{{ $game->name }}" disabled>
                             <label>ชื่อเกม</label>
                         </div>
                         <hr/>
-                        @foreach($game->api_url as $key => $url)
-                            <div class="form-label-group mb-3">
-                                <input placeholder="URL" name="edit[{{ $key }}][url]" type="text" class="form-control" value="{{ $url->url }}" disabled>
-                                <label>URL</label>
+                        <div class="card">
+                            <div class="card-body">
+                                <form method="POST" action="{{ route('setting-api-game-update-api-domain') }}">
+                                @csrf
+                                    @include('settings.api.games.components.list_edit_url')
+                                </form>
                             </div>
-                        @endforeach
+                        </div>
                         <hr/>
                         <div class="card">
                             <div class="card-body">
-                                @include('settings.api.games.components.list_edit_config')
+                                <form method="POST" action="{{ route('setting-api-game-update-token') }}">
+                                @csrf
+                                    @include('settings.api.games.components.list_edit_token')
+                                </form>
+                            </div>
+                        </div>
+                        <hr/>
+                        <div class="card">
+                            <div class="card-body">
+                                <form method="POST" action="{{ route('setting-api-game-update-config') }}">
+                                @csrf
+                                    @include('settings.api.games.components.list_edit_config')
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -43,7 +57,9 @@
 
 </div>
 
-<script>
-    
-</script>
+<style>
+    div.dataTables_wrapper div.dataTables_filter input {
+        display: none;
+    }
+</style>
 @endsection
