@@ -38,6 +38,7 @@
     <thead>
         <tr class="text-muted fs--13">
             <th>เกม</th>
+            <th>รหัสเกม</th>
             <th class="w--150 text-center">สถานะ</th>
             <th class="w--150 text-center">จัดการ</th>
         </tr>
@@ -50,6 +51,10 @@
 
             <td>
                 <span class="text-dark">{{ $game->name }}</span>
+            </td>
+
+            <td>
+                <span class="text-dark">{{ $game->gamecode }}</span>
             </td>
 
             <td class="text-center">

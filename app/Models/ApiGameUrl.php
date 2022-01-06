@@ -13,4 +13,8 @@ class ApiGameUrl extends Model
     protected $fillable = [
         'api_game_id', 'name','url'
     ];
+
+    protected $hidden = [
+        'created_at', 'updated_at'
+    ];
 }

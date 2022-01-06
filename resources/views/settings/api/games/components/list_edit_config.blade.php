@@ -1,4 +1,4 @@
-<table class="table-datatable table table-bordered table-hover table-striped px-3 pb-2"
+<table class="table-datatable table table-hover px-3 pb-2"
     data-lng-empty="ไม่มีข้อมูล..." 
     data-lng-page-info="แสดงผล API URL ที่ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ API URL" 
     data-lng-filtered="(filtered from _MAX_ total entries)" 
@@ -35,7 +35,7 @@
     data-export='["csv", "pdf", "xls"]' 
     data-options='["copy", "print"]' 
 >
-    <strong class="text-dark float-left">รายการ API URL</strong>
+    <strong class="text-dark float-left">รายการ API URL</strong> <small id="editing-config" class="text-danger ml-2"></small>
     <button type="button" id="edit-config" class="btn btn-vv-sm btn-warning float-right fs--14 mx-1"><i class="fas fa-edit"></i> แก้ไขรายการ</button>
     <button type="button" id="cancel-config" class="btn btn-vv-sm btn-secondary float-right fs--14 mx-1" style="display: none;"><i class="fas fa-times"></i> ยกเลิก</button>
     <button type="button" id="add-config" class="btn btn-vv-sm btn-primary float-right fs--14 mx-1"><i class="fas fa-plus"></i> เพิ่มรายการ</button>
@@ -48,10 +48,10 @@
         </tr>
     </thead>
 
-    <tbody id="item_list">
+    <tbody id="item_list_config">
     @foreach($game->api_config as $key => $config)
         <!-- admin -->
-        <tr class="text-dark">
+        <tr id="tr-form" class="text-dark">
 
             <td class="p-0 td-list-item">
                 <input id="key_name-{{ $key }}" name="config[{{ $key }}][key_name]" class="custom-form-control setting-form-control is-key_name" disabled value="{{ $config->key_name }}" autocomplete="off">
@@ -74,47 +74,24 @@
     </tbody>
 </table>
 
-<style>
-    .dt-buttons.btn-group.flex-wrap {
-        display: none;
-    }
-    div.dataTables_wrapper div.dataTables_info {
-        font-size: 13px;
-    }
-    select.custom-select.custom-select-sm.form-control.form-control-sm {
-        display: none;
-    }
-    .custom-form-control {
-        border: none;
-        background: transparent;
-    }
-    .setting-form-control {
-        padding: 0 15px;
-        height: 40px;
-        border-color: #ccc;
-        border-top: none;
-        border-right: none;
-        border-left: none;
-        border-radius: 0;
-        background-color: transparent;
-    }
-    .td-list-item {
-        padding: 0 5px !important;
-    }
-</style>
-
 <script>
     const INPUT_ID = ['key_name', 'parameter', 'method']
     const EDIT_BTN = document.querySelector('#edit-config')
     const EDIT_BTN_CANCEL = document.querySelector('#cancel-config')
     const SAVE_BTN = document.querySelector('#save-config')
     const ADD_BTN = document.querySelector('#add-config')
+    const EDITTING_CONFIG = document.querySelector('#editing-config')
+    const CARD_CONFIG = document.querySelector('#card-config')
+    let key_config = 1
 
     EDIT_BTN.addEventListener('click', () => {
         this.setConfigAttribute(document.querySelectorAll('input.is-key_name'))
         this.setConfigAttribute(document.querySelectorAll('select.is-method'))
         this.setConfigAttribute(document.querySelectorAll('input.is-parameter'))
         this.setAttributeConfigBtn('none', 'initial')
+        CARD_CONFIG.classList.add('border-warning')
+        CARD_CONFIG.classList.remove('border-secondary')
+        EDITTING_CONFIG.innerHTML = '( <i class="fi fi-circle-spin fi-spin text-dark"></i> กำลังแก้ไข... )'
     })
 
     EDIT_BTN_CANCEL.addEventListener('click', () => {
@@ -122,6 +99,68 @@
         this.cancelConfigAttribute(document.querySelectorAll('select.is-method'))
         this.cancelConfigAttribute(document.querySelectorAll('input.is-parameter'))
         this.setAttributeConfigBtn('initial', 'none')
+        CARD_CONFIG.classList.add('border-secondary')
+        CARD_CONFIG.classList.remove('border-warning')
+        EDITTING_CONFIG.innerHTML = ''
+    })
+
+    ADD_BTN.addEventListener('click', () => {
+        let form = document.querySelector('#item_list_config')
+
+        let TR = document.createElement('tr')
+        TR.setAttribute('class', 'text-dark')
+
+        let TD_1 = document.createElement('td')
+        TD_1.setAttribute('class', 'p-0 td-list-item')
+
+        let API_NAME = document.createElement('input')
+        API_NAME.setAttribute('type', 'text')
+        API_NAME.setAttribute('placeholder', 'รายการ')
+        API_NAME.setAttribute('name', 'config['+key_config+'][key_name]')
+        API_NAME.setAttribute('required', 'true')
+        API_NAME.setAttribute('class', 'form-control setting-form-control')
+        API_NAME.setAttribute('autocomplete', 'off')
+
+        let TD_2 = document.createElement('td')
+        TD_2.setAttribute('class', 'text-center p-0 td-list-item')
+
+        let SELECT = document.createElement("select")
+        SELECT.setAttribute("class", "form-control setting-form-control text-center")
+        SELECT.setAttribute("id", "method")
+        SELECT.setAttribute("name", "config["+key_config+"][method]")
+
+        let OPTION_1 = document.createElement("option")
+        OPTION_1.setAttribute("value", "POST")
+        OPTION_1.innerText = "POST"
+
+        let OPTION_2 = document.createElement("option")
+        OPTION_2.setAttribute("value", "GET")
+        OPTION_2.innerText = "GET"
+
+        let TD_3 = document.createElement('td')
+        TD_3.setAttribute('class', 'p-0 td-list-item')
+
+        let API_URL = document.createElement('input')
+        API_URL.setAttribute('type', 'text')
+        API_URL.setAttribute('placeholder', 'API URL')
+        API_URL.setAttribute('name', 'config['+key_config+'][value]')
+        API_URL.setAttribute('required', 'true')
+        API_URL.setAttribute('class', 'form-control setting-form-control')
+        API_URL.setAttribute('autocomplete', 'off')
+
+        form.prepend(TR)
+        TR.append(TD_1)
+        TD_1.append(API_NAME)
+
+        TR.append(TD_2)
+        TD_2.append(SELECT)
+        SELECT.append(OPTION_1)
+        SELECT.append(OPTION_2)
+
+        TR.append(TD_3)
+        TD_3.append(API_URL)
+
+        key_config++
     })
 
     function setConfigAttribute(data) {

@@ -19,7 +19,7 @@
                         @include('settings.api.games.components.list')
                     </div>
                     <div id="api-game-create" style="display: none;">
-                        @include('settings.api.games.components.create')
+                        @include('settings.api.games.create')
                     </div>
                 </section>
             </div>

@@ -16,6 +16,8 @@ use App\Http\Controllers\Api\V2\PgSoftGameController;
 
 use App\Http\Controllers\Api\V3\PaymentTransactionPromotionController;
 
+use App\Http\Controllers\Api\Games\CoreApiController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -98,4 +100,8 @@ Route::prefix('v3')->group(function () {
     Route::prefix('payment-transaction-promotion')->group(function () {
         Route::get('wallet-list/{transaction_id}', [PaymentTransactionPromotionController::class, 'walletList']);
     });
+});
+
+Route::prefix('games')->group(function () {
+    Route::get('call/{gamecode}/{action}', [CoreApiController::class, 'checkpoint']);
 });

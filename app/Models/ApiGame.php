@@ -11,7 +11,11 @@ class ApiGame extends Model
     use HasFactory, Uuids;
 
     protected $fillable = [
-        'name', 'isactive', 'status'
+        'name', 'gamecode', 'isactive', 'status'
+    ];
+
+    protected $hidden = [
+        'created_at', 'updated_at'
     ];
 
     public function api_url()

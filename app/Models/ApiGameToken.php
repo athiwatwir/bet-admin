@@ -13,4 +13,8 @@ class ApiGameToken extends Model
     protected $fillable = [
         'api_game_id', 'name', 'value'
     ];
+
+    protected $hidden = [
+        'created_at', 'updated_at'
+    ];
 }

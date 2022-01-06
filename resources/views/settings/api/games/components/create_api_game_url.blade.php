@@ -1,0 +1,92 @@
+<div id="body-create-api-game-url" class="card-body bg-light">
+    <div id="row_url-0" class="row">
+        <div class="col-12 col-lg-3">
+            <div class="form-label-group mb-3">
+                <input placeholder="URL" name="url[0][name]" type="text" value="" class="form-control" required autocomplete="off">
+                <label>ชื่อ API Domain</label>
+            </div>
+        </div>
+        <div class="col-12 col-lg-8">
+            <div class="form-label-group mb-3">
+                <input placeholder="URL" name="url[0][url]" type="text" value="" class="form-control" required autocomplete="off">
+                <label>API Domain</label>
+            </div>
+        </div>
+        <div class="col-12 col-lg-1 text-center mt-2">
+            <button type="button" id="remove-create-api-game-config" class="btn btn-vv-sm btn-danger" onClick="removeContent('url', '0')">X</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let add_url = document.querySelector('#add-create-api-game-url')
+    let key_url = 1
+
+    add_url.addEventListener('click', () => {
+        let form = document.querySelector('#body-create-api-game-url')
+        
+        let ROW = document.createElement('div')
+        ROW.setAttribute('class', 'row')
+        ROW.setAttribute('id', 'row_url-'+key_url)
+
+        let COL_0_1 = document.createElement('div')
+        COL_0_1.setAttribute('class', 'col-12 col-lg-3')
+
+        let COL_0_2 = document.createElement('div')
+        COL_0_2.setAttribute('class', 'form-label-group mb-3')
+
+        let NAME = document.createElement('input')
+        NAME.setAttribute('type', 'text')
+        NAME.setAttribute('placeholder', 'ชื่อ API Domain')
+        NAME.setAttribute('name', 'url['+key_url+'][name]')
+        NAME.setAttribute('required', 'true')
+        NAME.setAttribute('class', 'form-control')
+        NAME.setAttribute('autocomplete', 'off')
+
+        let LABEL_NAME = document.createElement("label")
+        LABEL_NAME.innerText = "ชื่อ API Domain"
+
+        let COL_1_1 = document.createElement('div')
+        COL_1_1.setAttribute('class', 'col-12 col-lg-8')
+
+        let COL_1_2 = document.createElement('div')
+        COL_1_2.setAttribute('class', 'form-label-group mb-3')
+
+        let URL = document.createElement('input')
+        URL.setAttribute('type', 'text')
+        URL.setAttribute('placeholder', 'API Domain')
+        URL.setAttribute('name', 'url['+key_url+'][url]')
+        URL.setAttribute('required', 'true')
+        URL.setAttribute('class', 'form-control')
+        URL.setAttribute('autocomplete', 'off')
+
+        let LABEL_URL = document.createElement("label")
+        LABEL_URL.innerText = "API Domain"
+
+        let COL_2= document.createElement("div")
+        COL_2.setAttribute("class", "col-12 col-lg-1 pt-3 text-center")
+
+        let REMOVE = document.createElement("button")
+        REMOVE.setAttribute("class", "btn btn-vv-sm btn-danger")
+        REMOVE.setAttribute("type", "button")
+        REMOVE.setAttribute("title", "ลบรายการที่เลือก")
+        REMOVE.setAttribute("onClick", "removeContent('url', "+ key_url +")")
+        REMOVE.innerText = 'X'
+
+        form.prepend(ROW)
+        ROW.append(COL_0_1)
+        COL_0_1.append(COL_0_2)
+        COL_0_2.append(NAME)
+        COL_0_2.append(LABEL_NAME)
+
+        ROW.append(COL_1_1)
+        COL_1_1.append(COL_1_2)
+        COL_1_2.append(URL)
+        COL_1_2.append(LABEL_URL)
+        
+        ROW.append(COL_2)
+        COL_2.append(REMOVE)
+
+        key_url++
+    })
+</script>
