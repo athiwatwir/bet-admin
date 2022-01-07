@@ -15,6 +15,6 @@ class ApiGameUrl extends Model
     ];
 
     protected $hidden = [
-        'created_at', 'updated_at'
+        'api_game_id', 'created_at', 'updated_at'
     ];
 }
