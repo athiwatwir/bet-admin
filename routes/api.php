@@ -16,7 +16,9 @@ use App\Http\Controllers\Api\V2\PgSoftGameController;
 
 use App\Http\Controllers\Api\V3\PaymentTransactionPromotionController;
 
-use App\Http\Controllers\Api\Games\CoreApiController;
+// use App\Http\Controllers\Api\Games\CoreApiController;
+
+use App\Helpers\CoreGameComponent as CoreGame;
 
 /*
 |--------------------------------------------------------------------------
@@ -104,6 +106,9 @@ Route::prefix('v3')->group(function () {
 
 Route::prefix('games')->group(function () {
     Route::middleware(['auth:api'])->group(function () {
-        Route::get('call/{gamecode}/{action}/{amount?}', [CoreApiController::class, 'checkpoint']);
+        Route::get('call/{gamecode}/{action}/{amount?}', function ($gamecode, $action, $amount = NULL) {
+            $accessToken = auth()->user()->token();
+            return (new CoreGame)->checkpoint($accessToken->user_id, $gamecode, $action, $amount);
+        });
     });
 });
