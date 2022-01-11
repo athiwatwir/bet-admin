@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-use App\Http\Controllers\Api\Games\PgSoftGameController as PgSoft;
+use App\Helpers\PgSoftGameComponent as PgGameComponent;
 
 class CoreApiController extends Controller
 {
@@ -16,32 +16,50 @@ class CoreApiController extends Controller
         $accessToken = auth()->user()->token();
         switch ($gamecode) {
             case 'PGGAME' :
-                $response = $this->pgGameAction($accessToken->user_id, $gamecode, $action, $amount);
+                $response = $this->pgGameAction($accessToken->user_id, $action, $amount);
                 return response()->json(['data' => $response]);
                 break;
             case 'CASINOGAME' :
                 $response = $this->casinoGameAction($gamecode, $action);
-                return response()->json(['data' => $response, 'error' => null]);
+                return response()->json(['data' => $response]);
                 break;
         }
     }
 
-    private function pgGameAction($user_id, $gamecode, $action, $amount) {
+    private function pgGameAction($user_id, $action, $amount) {
         switch ($action) {
             case 'create-player' :
-                return (new PgSoft)->createPlayer($user_id, $gamecode);
+                return (new PgGameComponent)->createPlayer($user_id);
+                break;
+            case 'delete-player' :
+                return (new PgGameComponent)->deletePlayer($user_id);
+                break;
+            case 'suspend-player' :
+                return (new PgGameComponent)->suspendPlayer($user_id);
+                break;
+            case 'resume-player' :
+                return (new PgGameComponent)->resumePlayer($user_id);
+                break;
+            case 'player-status' :
+                return (new PgGameComponent)->checkPlayerStatus($user_id);
                 break;
             case 'login-to-game' :
-                return (new PgSoft)->loginToGame($user_id, $gamecode);
+                return (new PgGameComponent)->loginToGame($user_id);
                 break;
             case 'transfer-in' :
-                return (new PgSoft)->transferIn($user_id, $gamecode, $amount);
+                return (new PgGameComponent)->transferIn($user_id, $amount);
                 break;
             case 'transfer-out' :
-                return (new PgSoft)->transferOut($user_id, $gamecode, $amount);
+                return (new PgGameComponent)->transferOut($user_id, $amount);
                 break;
             case 'get-balance' :
-                return (new PgSoft)->getBalance($user_id, $gamecode);
+                return (new PgGameComponent)->getBalance($user_id);
+                break;
+            case 'get-report-all' :
+                return (new PgGameComponent)->getReportAll();
+                break;
+            case 'get-report-with-player' :
+                return (new PgGameComponent)->getReportWithPlayer($user_id);
                 break;
         }
     }

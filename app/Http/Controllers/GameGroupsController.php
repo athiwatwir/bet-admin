@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
+use App\Models\GameGroup;
+
 class GameGroupsController extends Controller
 {
     public function __construct()
@@ -148,5 +150,10 @@ class GameGroupsController extends Controller
         }
 
         return redirect()->back()->with('error', 'เกิดข้อผิดพลาด กรุณาลองใหม่');
+    }
+
+    public function getGameGroupAll()
+    {
+        return GameGroup::where('is_active', 'Y')->get();
     }
 }

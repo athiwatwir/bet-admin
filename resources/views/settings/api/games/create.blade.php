@@ -1,19 +1,47 @@
 <div class="row">
     <div class="col-12">
-        <form method="POST" id="e-form" action="{{ route('setting-api-game-create') }}">
+        <form method="POST" id="e-form" action="{{ route('setting-api-game-create') }}" enctype="multipart/form-data">
             @csrf
             <div class="card">
                 <div class="bg-light p-2">
                     <strong>รายละเอียดเกม</strong>
                 </div>
                 <div class="card-body bg-light">
-                    <div class="form-label-group">
-                        <input placeholder="ชื่อเกม" id="name" name="name" type="text" value="" class="form-control" required autocomplete="off">
-                        <label for="name">ชื่อเกม</label>
-                    </div>
-                    <div class="form-label-group mt-3">
-                        <input placeholder="รหัสเกม" id="code-input" name="code" type="text" value="" class="form-control" required autocomplete="off">
-                        <label for="code">รหัสเกม <small>(ภาษาอังกฤษตัวใหญ่ทั้งหมด)</small></label>
+                    <div class="row">
+                        <div class="col-12 col-lg-4 text-center align-self-center">
+                            <img src="#" id="simple-img-logo" class="w-50" style="display: none;"><br/>
+                            <i id="is-no-logo" class="far fa-file-image fs--40"></i><br/>
+                            <input type="file" id="logo-upload" name="logo" class="fs--12 border mt-3"><br/>
+                            <small id="nottice-game-logo" class="text-danger"><small>ขนาด 120 x 60 px ไฟล์ PNG ไม่เกิน 100 Kb</small></small>
+                        </div>
+                        <div class="col-12 col-lg-8">
+                            
+                            <div class="form-label-group">
+                                <input placeholder="ชื่อเกม" id="name" name="name" type="text" value="" class="form-control" required autocomplete="off">
+                                <label for="name">ชื่อเกม</label>
+                            </div>
+
+                            <div class="form-label-group mt-3">
+                                <input placeholder="รหัสเกม" id="code-input" name="code" type="text" value="" class="form-control" required autocomplete="off">
+                                <label for="code-input">รหัสเกม <small>(ภาษาอังกฤษตัวใหญ่ทั้งหมด)</small></label>
+                            </div>
+
+                            <div class="form-label-group mt-3">
+                                <input placeholder="ลิงค์เกม" id="url-input" name="link" type="text" value="" class="form-control" required autocomplete="off">
+                                <label for="url-input">ลิงค์เกม</label>
+                            </div>
+
+                            <div class="form-label-group mt-3">
+                                <select placeholder="กลุ่มเกม" id="group-input" name="group" class="form-control" required>
+                                    <option value="" selected disabled>เลือกกลุ่มเกม</option>
+                                    @foreach($gamegroups as $gamegroup)
+                                        <option value="{{ $gamegroup->id }}">{{ $gamegroup->name }}</option>
+                                    @endforeach
+                                <select>
+                                <label for="group-input">กลุ่มเกม</label>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -41,9 +69,19 @@
 
 <script>
     const CODE_INPUT = document.querySelector('#code-input')
+    const LOGO_INPUT = document.querySelector('#logo-upload')
 
     CODE_INPUT.addEventListener('keyup', () => {
         CODE_INPUT.value = CODE_INPUT.value.replace(/[^A-Za-z]/ig, '').toUpperCase()
+    })
+
+    LOGO_INPUT.addEventListener('change', () => {
+        const [file] = LOGO_INPUT.files
+        if (file) {
+            document.querySelector('#simple-img-logo').style.display = 'initial'
+            document.querySelector('#is-no-logo').style.display = 'none'
+            document.querySelector('#simple-img-logo').src = URL.createObjectURL(file)
+        }
     })
 
     function removeContent(type, index) {

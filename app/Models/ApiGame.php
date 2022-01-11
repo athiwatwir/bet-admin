@@ -11,7 +11,7 @@ class ApiGame extends Model
     use HasFactory, Uuids;
 
     protected $fillable = [
-        'name', 'gamecode', 'isactive', 'status'
+        'game_group_id', 'name', 'gamecode', 'url', 'logo', 'isactive', 'status'
     ];
 
     protected $hidden = [
@@ -31,5 +31,10 @@ class ApiGame extends Model
     public function api_token()
     {
         return $this->hasMany(ApiGameToken::class);
+    }
+    
+    public function game_group()
+    {
+        return $this->belongsTo(GameGroup::class);
     }
 }

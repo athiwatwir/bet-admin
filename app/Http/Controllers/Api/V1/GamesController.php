@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
+use App\Http\Controllers\Api\Games\CoreApiController as CoreApi;
+
 class GamesController extends Controller
 {
     public function menuGames()
@@ -48,7 +50,7 @@ class GamesController extends Controller
         $gameToken = $this->getGameToken($table);
         // Log::debug($gameToken[0]->operator_token);
 
-        //น่าจะต้องลองส่งส่วนนี้ไปให้ pg.playszone.com พร้อมๆ กับ accesstoken
+        // น่าจะต้องลองส่งส่วนนี้ไปให้ pg.playszone.com พร้อมๆ กับ accesstoken
         $response = Http::asForm()->post($gameToken[0]->pgsoft_api_domain.'Login/v1/LoginGame?trace_id='.Str::uuid(),[
                         'operator_token' => $gameToken[0]->operator_token,
                         'secret_key' => $gameToken[0]->secret_key,
@@ -62,6 +64,9 @@ class GamesController extends Controller
         if($response['data']['player_session'] == strtoupper($player[0]->player_session)) {
             return response()->json(['data' => $player[0]->operator_player_session], 200);
         }
+
+        // $response = (new CoreApi)->checkpoint('PGGAME', 'login-to-game');
+        // return $response;
     }
 
     public function checkGameBalance(Request $request)

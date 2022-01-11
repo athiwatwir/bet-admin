@@ -104,6 +104,6 @@ Route::prefix('v3')->group(function () {
 
 Route::prefix('games')->group(function () {
     Route::middleware(['auth:api'])->group(function () {
-        Route::get('call/{gamecode}/{action}', [CoreApiController::class, 'checkpoint']);
+        Route::get('call/{gamecode}/{action}/{amount?}', [CoreApiController::class, 'checkpoint']);
     });
 });

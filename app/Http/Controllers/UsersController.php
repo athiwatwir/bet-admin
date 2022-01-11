@@ -17,6 +17,8 @@ use App\Http\Controllers\UserLevelController;
 use App\Http\Controllers\BankGroupController;
 use App\Http\Controllers\ReportsController;
 
+use App\Helpers\PgSoftGameComponent as PgSoft;
+
 class UsersController extends Controller
 {
     public function __construct()
@@ -70,7 +72,7 @@ class UsersController extends Controller
         $default_wallet = (new WalletsController)->getDefaultWalletByUserId($request->id);
         $transactions = (new PaymentTransactionController)->getPaymentTransactionByUserId($request->id);
         $banks = $this->getBanks();
-        $pgSoftGameWallet = $this->getPgsoftgameWallet($user->username);
+        $pgSoftGameWallet = (new PgSoft)->getBalance($user->id);
         $levels = (new UserLevelController)->getAllUserLevel();
         $user_level = (new UserLevelController)->getUserLevelById($user->user_level_id);
         $bankGroups = (new BankGroupController)->getAllBankGroups();
@@ -96,6 +98,8 @@ class UsersController extends Controller
         if($response['error'] == null) {
             return $response['data']['totalBalance'];
         }
+
+        return 100;
     }
 
     public function editProfile(Request $request)

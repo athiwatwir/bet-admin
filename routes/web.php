@@ -47,6 +47,7 @@ Route::middleware(['auth:webadmin'])->group(function () {
     Route::get('/logout', [AdminController::class, 'adminLogout'])->name('admin-logout');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/test-helper', [DashboardController::class, 'testHelper']);
 
     Route::get('/account-setting', [AccountSettingController::class, 'index'])->name('account-setting');
     Route::post('/account-setting/update/{id}', [AccountSettingController::class, 'update']);
@@ -114,7 +115,7 @@ Route::middleware(['auth:webadmin'])->group(function () {
                 Route::get('/edit/{id}', [ApiGameController::class, 'edit'])->name('setting-api-game-edit');
                 Route::get('/active/{id}', [ApiGameController::class, 'active'])->name('setting-api-game-active');
 
-                Route::post('/update-game', [ApiGameController::class, 'updateGameName'])->name('setting-api-game-update-name');
+                Route::post('/update-game', [ApiGameController::class, 'updateGameDetail'])->name('setting-api-game-update-name');
                 Route::post('/update-config', [ApiGameController::class, 'updateConfig'])->name('setting-api-game-update-config');
                 Route::post('/update-api', [ApiGameController::class, 'updateApi'])->name('setting-api-game-update-api-domain');
                 Route::post('/update-token', [ApiGameController::class, 'updateToken'])->name('setting-api-game-update-token');

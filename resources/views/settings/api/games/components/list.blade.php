@@ -38,7 +38,6 @@
     <thead>
         <tr class="text-muted fs--13">
             <th>เกม</th>
-            <th>รหัสเกม</th>
             <th class="w--150 text-center">สถานะ</th>
             <th class="w--150 text-center">จัดการ</th>
         </tr>
@@ -49,12 +48,12 @@
         <!-- admin -->
         <tr class="text-dark">
 
-            <td>
-                <span class="text-dark">{{ $game->name }}</span>
-            </td>
-
-            <td>
-                <span class="text-dark">{{ $game->gamecode }}</span>
+            <td class="d-flex" style="line-height: 17px;">
+                <img src="{{ Request::root() }}/logogames/{{ $game->logo }}" style="width: 60px;">
+                <div class="ml-3">
+                    <span class="text-dark">{{ $game->name }}</span><br/>
+                    <small class="text-secondary fs--11">รหัสเกม : {{ $game->gamecode }}</small>
+                </div>
             </td>
 
             <td class="text-center">

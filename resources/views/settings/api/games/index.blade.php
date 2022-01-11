@@ -1,6 +1,6 @@
 @extends('layouts.core')
 
-@section('title', 'ตั้งค่า API : เกม')
+@section('title', 'รายการเกม')
 
 @section('content')
 <div class="row gutters-sm">
