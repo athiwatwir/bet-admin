@@ -12,6 +12,8 @@ use Carbon\Carbon;
 use App\Models\Pgsoftgame;
 use App\Models\PlayingTransaction;
 
+use App\Helpers\CoreGameComponent as CoreGame;
+
 class ReportsController extends Controller
 {
     public function __construct(){

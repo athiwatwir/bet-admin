@@ -155,11 +155,13 @@ class WalletsController extends Controller
     public function getWalletsByUserId($id)
     {
         return DB::table('wallets')
-                    ->leftJoin('games', 'wallets.game_id', '=', 'games.id')
+                    ->leftJoin('api_games', 'wallets.api_game_id', '=', 'api_games.id')
                     ->where('wallets.user_id', $id)
                     ->where('wallets.status', 'CO')
                     ->where('wallets.is_default', 'N')
-                    ->select(['wallets.id', 'wallets.amount', 'wallets.currency', 'games.name as game_name'])
-                    ->paginate(10);
+                    ->select([
+                        'wallets.id', 'wallets.amount', 'wallets.currency', 'wallets.user_id',
+                        'api_games.name as api_game_name', 'api_games.gamecode as gamecode'])
+                    ->get();
     }
 }

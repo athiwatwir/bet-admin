@@ -9,33 +9,81 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
+use App\Helpers\PgSoftGameComponent as PgGameComponent;
+use App\Helpers\CoreGameComponent as CoreGame;
+
+use App\Models\User;
 use App\Models\Wallet;
 use App\Models\UserLog;
+use App\Models\UserPlayingPgsoftgame;
 
 class ServicesController extends Controller
 {
     public function updateGameWallet()
     {
         $useronline = $this->getUserOnline();
+        // return response()->json(['data' => $useronline]);
 
         if(sizeof($useronline) > 0) {
             foreach($useronline as $user) {
-                $wallet = $this->getUserWallet($user->username);
-                Wallet::where('user_id', $user->user_id)->where('game_id', '22')->update(['amount' => $wallet]);
-                // return response()->json(['data' => $wallet], 200);
+                $balance = (new CoreGame)->checkpoint($user->user_id, $user->gamecode, 'get-balance');
+                Wallet::where('user_id', $user->user_id)->where('api_game_id', $user->api_game_id)->update(['amount' => $balance]);
             }
         }
-        // return response()->json(['data' => []], 200);
+        return response()->json(['data' => []], 200);
+    }
+
+    public function updatePgSoftGamePlayerDailySummaryToDB() {
+        $results = (new PgGameComponent)->getReportAll();
+        $games = (new PgGameComponent)->getGameName();
+        $users = User::get();
+        
+        foreach($results as $result) {
+            UserPlayingPgsoftgame::updateOrCreate(
+                [
+                    'user_id' => $this->searchUserName($users, $result['playerName']),
+                    'game_name' => $this->searchGameName($games, $result['gameId']),
+                    'row_version' => date('Y-m-d', $result['rowVersion'] / 1000)
+                ],
+                [
+                    'hands' => $result['hands'],
+                    'bet_amount' => $result['betAmount'],
+                    'win_loss_amount' => $result['winLossAmount'],
+                ]
+            );
+        }
+
+        return response()->json(['data' => 'done!', 'error' => null], 200);
+    }
+
+
+
+
+    // Private Function ////////////////////////////////////////////////////////////////////////////
+
+    private function searchUserName($users, $username)
+    {
+        foreach($users as $user) {
+            if($user['username'] == $username) return $user['id'];
+        }
+        return '1';
+    }
+
+    private function searchGameName($games, $game_id)
+    {
+        foreach($games as $game) {
+            if($game['gameId'] == $game_id) return $game['gameName'];
+        }
     }
 
     private function getUserOnline()
     {
         return DB::table('user_logs')
                 ->leftJoin('wallets', 'user_logs.user_id', '=', 'wallets.user_id')
-                ->leftJoin('users', 'user_logs.user_id', '=', 'users.id')
-                ->where('wallets.game_id', '=', '22')
+                ->leftJoin('api_games', 'wallets.api_game_id', '=', 'api_games.id')
+                ->where('wallets.is_default', 'N')
                 ->whereRaw('user_logs.updated_at >= now() - interval 5 minute')
-                ->select(['user_logs.user_id', 'users.username'])
+                ->select(['user_logs.user_id', 'wallets.api_game_id', 'api_games.gamecode'])
                 ->get();
     }
 

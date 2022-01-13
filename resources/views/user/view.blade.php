@@ -83,6 +83,4 @@
     @include('user.modal.wallet_decrease')
 
     @include('user.modal.payment_slip')
-
-    @include('user.modal.pgsoft_playing_summary')
 @endsection

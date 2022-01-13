@@ -18,6 +18,7 @@ use App\Http\Controllers\BankGroupController;
 use App\Http\Controllers\ReportsController;
 
 use App\Helpers\PgSoftGameComponent as PgSoft;
+use App\Helpers\CoreGameComponent as CoreGame;
 
 class UsersController extends Controller
 {
@@ -72,18 +73,27 @@ class UsersController extends Controller
         $default_wallet = (new WalletsController)->getDefaultWalletByUserId($request->id);
         $transactions = (new PaymentTransactionController)->getPaymentTransactionByUserId($request->id);
         $banks = $this->getBanks();
-        $pgSoftGameWallet = (new PgSoft)->getBalance($user->id);
         $levels = (new UserLevelController)->getAllUserLevel();
         $user_level = (new UserLevelController)->getUserLevelById($user->user_level_id);
         $bankGroups = (new BankGroupController)->getAllBankGroups();
-        $pgsoftPlayingSummary = (new ReportsController)->getPgsoftByPlayerPlaying($user->username);
+
+        // $getAllGameBalance = $this->getGameBalance($request->id, $wallets);
 
         return view('user.view', [
-                    'profile' => $user, 'ubank' => $ubank, 'banks' => $banks, 'username' => $request->username,
-                    'wallets' => $wallets, 'default_wallet' => $default_wallet, 'pg_wallet' => $pgSoftGameWallet,
-                    'transaction' => $transactions, 'levels' => $levels, 'bank_groups' => $bankGroups,
-                    'pgsoftPlayingSummary' => $pgsoftPlayingSummary, 'user_level' => $user_level
+                    'profile' => $user, 'ubank' => $ubank, 'banks' => $banks, 'username' => $request->username, 
+                    'wallets' => $wallets, 'default_wallet' => $default_wallet, 'transaction' => $transactions, 
+                    'levels' => $levels, 'bank_groups' => $bankGroups, 'user_level' => $user_level
                     ]);
+    }
+
+    private function getGameBalance($user_id, $wallets)
+    {
+        $gameWallets = [];
+        foreach($wallets as $wallet) {
+            $game = (new CoreGame)->checkpoint($user_id, $wallet->gamecode, 'get-balance');
+            array_push($gameWallets, ['user_id' => $user_id, 'game' => $wallet->api_game_name, 'gamecode' => $wallet->gamecode, 'balance' => $game , 'currency' => $wallet->currency]);
+        }
+        return $gameWallets;
     }
 
     // get PGSoftGame Wallet Temporary

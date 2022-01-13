@@ -11,7 +11,7 @@ class CoreGameComponent
         switch ($gamecode) {
             case 'PGGAME' :
                 $response = $this->pgGameAction($user_id, $action, $amount);
-                return response()->json(['data' => $response]);
+                return $response;
                 break;
             case 'CASINOGAME' :
                 $response = $this->casinoGameAction($gamecode, $action);
@@ -49,11 +49,8 @@ class CoreGameComponent
             case 'get-balance' :
                 return (new PgGameComponent)->getBalance($user_id);
                 break;
-            case 'get-report-all' :
-                return (new PgGameComponent)->getReportAll();
-                break;
-            case 'get-report-with-player' :
-                return (new PgGameComponent)->getReportWithPlayer($user_id);
+            case 'get-report' :
+                return (new PgGameComponent)->getReport($user_id);
                 break;
         }
     }

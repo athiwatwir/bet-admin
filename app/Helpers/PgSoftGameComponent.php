@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use App\Models\ApiGame;
 use App\Models\User;
 use App\Models\UserPgsoftgame;
+use App\Models\UserPlayingPgsoftgame;
 
 class PgSoftGameComponent
 {
@@ -136,12 +137,12 @@ class PgSoftGameComponent
         return $response['data']['totalBalance'];
     }
 
-    public function getReportAll() { // save report to db : V2 -> PgSoftGameController -> saveToDB
+    public function getReportAll() { 
         $game_data = $this->getGameData();
 
         $date_now = date('m/d/Y');
         $millisec = date_create($date_now)->format('U').'000';
-        $response = Http::asForm()->post($this->getPgSoftAPIDomain($game_data->api_url).'Bet/v4/GetPlayerDailySummaryForSpecificTimeRange', [
+        $response = Http::asForm()->post($this->getDataGrabAPIDomain($game_data->api_url).'Bet/v4/GetPlayerDailySummaryForSpecificTimeRange', [
             'operator_token' => $this->getOperatorToken($game_data->api_token),
             'secret_key' => $this->getSecretKey($game_data->api_token),
             'count' => 5000,
@@ -160,7 +161,7 @@ class PgSoftGameComponent
 
         $date_now = date('m/d/Y');
         $millisec = date_create($date_now)->format('U').'000';
-        $response = Http::asForm()->post($this->getPgSoftAPIDomain($game_data->api_url).'Bet/v4/GetPlayerHistory', [
+        $response = Http::asForm()->post($this->getDataGrabAPIDomain($game_data->api_url).'Bet/v4/GetPlayerHistory', [
             'operator_token' => $this->getOperatorToken($game_data->api_token),
             'secret_key' => $this->getSecretKey($game_data->api_token),
             'player_name' => $user->username,
@@ -170,6 +171,42 @@ class PgSoftGameComponent
         ]);
 
         return $response['data'];
+    }
+
+    public function getGameName()
+    {
+        $game_data = $this->getGameData();
+        $response = Http::asForm()->post($this->getPgSoftAPIDomain($game_data->api_url).'Game/v2/Get', [
+            'operator_token' => $this->getOperatorToken($game_data->api_token),
+            'secret_key' => $this->getSecretKey($game_data->api_token),
+            'currency' => 'THB'
+        ]);
+
+        return $response['data'];
+    }
+
+    public function getReport($user_id)
+    {
+        $response = $this->getUserPlayingPgsoftgame($user_id);
+        $players = [];
+        $hands = 0;
+        $betAmount = 0;
+        $winLossAmount = 0;
+        foreach($response as $key => $res) {
+            $players[$key]['gameName'] = $res->game_name;
+            $players[$key]['hands'] = $res->hands;
+            $players[$key]['betAmount'] = $res->bet_amount;
+            $players[$key]['winLossAmount'] = $res->win_loss_amount;
+            $hands += (int)$res->hands;
+            $betAmount += (float)$res->bet_amount;
+            $winLossAmount += (float)$res->win_loss_amount;
+        }
+
+        $results = $this->groupByGame($players);
+        $by_hands = array_column($results, 'hands');
+        array_multisort($by_hands, SORT_DESC, $results);
+
+        return ['results' => $results, 'hands' => $hands, 'betAmount' => $betAmount, 'winLossAmount' => $winLossAmount];
     }
 
 
@@ -215,5 +252,47 @@ class PgSoftGameComponent
 
     private function getUserOperator($user_id) {
         return UserPgsoftgame::where('user_id', $user_id)->first();
+    }
+
+    private function getUserPlayingPgsoftgame($user_id)
+    {
+        return UserPlayingPgsoftgame::where('user_id', $user_id)->get();
+    }
+
+    private function groupByGame($data)
+    {
+        $group = [];
+        foreach($data as $value) {
+            $group['games'][$value['gameName']][] = $value;
+        }
+
+        return $this->setNewGroupByGame($group);
+    }
+
+    private function setNewGroupByGame($data)
+    {
+        $groupArr = [];
+        if(!empty($data)) {
+            foreach($data['games'] as $key => $game) {
+                $gameName = '';
+                $hands = 0;
+                $betAmount = 0;
+                $winLossAmount = 0;
+                foreach($game as $value) {
+                    $gameName = $value['gameName'];
+                    $hands += (int)$value['hands'];
+                    $betAmount += (float)$value['betAmount'];
+                    $winLossAmount += (float)$value['winLossAmount'];
+                }
+                $groupArr[$key]['gameName'] = $gameName;
+                $groupArr[$key]['hands'] = $hands;
+                $groupArr[$key]['betAmount'] = $betAmount;
+                $groupArr[$key]['winLossAmount'] = $winLossAmount;
+            }
+
+            return $groupArr;
+        }
+
+        return [];
     }
 }

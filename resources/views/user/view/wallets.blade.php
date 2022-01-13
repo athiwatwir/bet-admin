@@ -81,30 +81,26 @@
                             </td>
                         </tr>
 
-                        @foreach($wallets as $key => $is_wallet)
+                        @foreach($wallets as $key => $wallet)
                         <tr class="text-dark">
                             <td>
                                 <p class="mb-0 d-flex">
-                                    กระเป๋าเงินเกม : {{ $is_wallet->game_name }}
+                                    กระเป๋าเงินเกม : 
+                                    <span class="ml-2 text-dark" style="font-weight: 500;">
+                                        {{ $wallet->api_game_name }}
+                                    </span>
                                 </p>
-
-                                <!-- MOBILE ONLY -->
-                                <div class="fs--13 d-block d-xl-none">
-                                    <strong class="text-success">{{ number_format($is_wallet->amount) }}</strong> <small>{{ $is_wallet->currency }}</small>
-                                </div>
-                                <!-- /MOBILE ONLY -->
                             </td>
 
                             <td class="text-center">
                                 <strong class="text-success">
-                                    @if($is_wallet->game_name == 'PG Softgame')
-                                        {{ number_format($pg_wallet, 1) }}
-                                    @endif
-                                </strong> <small>{{ $is_wallet->currency }}</small>
+                                    {{ number_format($wallet->amount, 1) }}
+                                </strong> <small>{{ $wallet->currency }}</small>
                             </td>
 
                             <td class="text-right">
-                                <button data-toggle="modal" data-target="#pgsoftPlayingSummaryModal" class="btn btn-vv-sm btn-secondary">รายละเอียดการเล่นเกม</button>
+                                <button data-toggle="modal" data-target="#{{ $wallet->gamecode }}" class="btn btn-vv-sm btn-secondary fs--14">รายละเอียดการเล่นเกม</button>
+                                <x-game-playing-summary-report userid="{{ $wallet->user_id }}" gamecode="{{ $wallet->gamecode }}" />
                             </td>
 
                         </tr>

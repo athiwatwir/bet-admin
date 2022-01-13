@@ -84,9 +84,15 @@ Route::prefix('v1')->group(function () {
 
     Route::post('test-get-token', [GamesController::class, 'createGameTk']);
 
+
+    // Service For Update Realtime ////////////////////////////////////////////////////////
     Route::prefix('services')->group(function () {
         Route::get('update-game-wallet', [ServicesController::class, 'updateGameWallet']);
+        Route::get('update-pgsoftgame-player-daily-summary', [ServicesController::class, 'updatePgSoftGamePlayerDailySummaryToDB']);
     });
+    // END Service For Update Realtime ////////////////////////////////////////////////////
+
+    
 });
 
 Route::prefix('v2')->group(function () {
@@ -108,7 +114,8 @@ Route::prefix('games')->group(function () {
     Route::middleware(['auth:api'])->group(function () {
         Route::get('call/{gamecode}/{action}/{amount?}', function ($gamecode, $action, $amount = NULL) {
             $accessToken = auth()->user()->token();
-            return (new CoreGame)->checkpoint($accessToken->user_id, $gamecode, $action, $amount);
+            $result = (new CoreGame)->checkpoint($accessToken->user_id, $gamecode, $action, $amount);
+            return response()->json(['data' => $result]);
         });
     });
 });
