@@ -256,6 +256,11 @@
                 </a>
             </li>
             <li class="dropdown-item">
+                <a class="dropdown-link" href="{{ url('/reports/games/index') }}" >
+                    รายงานเกมทั้งหมด
+                </a>
+            </li>
+            <li class="dropdown-item">
                 <a class="dropdown-link" href="{{ url('/reports/pgsoft') }}" >
                     รายงานเกม PG Slot
                 </a>

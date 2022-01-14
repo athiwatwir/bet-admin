@@ -7,17 +7,21 @@ use Illuminate\Support\Facades\Log;
 
 use App\Helpers\CoreGameComponent as CoreGame;
 
-class GameReport extends Component
+class GameReportPlayer extends Component
 {
-    public $reports;
-    public $gamecode;
-    public $items;
+    /**
+     * Create a new component instance.
+     *
+     * @return void
+     */
 
-    public function __construct($userid, $gamecode, $items)
+    public $players;
+    public $gamecode;
+    
+    public function __construct($gamecode)
     {
         $this->gamecode = $gamecode;
-        $this->items = $items;
-        $this->reports = (new CoreGame)->checkpoint($userid, $gamecode, 'get-report');
+        $this->players = (new CoreGame)->checkpoint(NULL, $gamecode, 'get-player');
     }
 
     /**
@@ -29,8 +33,9 @@ class GameReport extends Component
     {
         switch ($this->gamecode) {
             case 'PGGAME' :
-                return 'components.gamereports.pgsoftgame';
+                return view('components.playerreports.pgsoftgame');
                 break;
+            }
         }
-    }
+        
 }

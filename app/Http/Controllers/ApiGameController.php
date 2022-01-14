@@ -219,4 +219,18 @@ class ApiGameController extends Controller
     {
         return ApiGame::where('id', $id)->with(['api_url', 'api_config', 'api_token', 'game_group'])->first();
     }
+
+
+
+    // CALL FUNCTION /////////////////////////////////////////////////////////////////
+
+    public function getAllApiGame()
+    {
+        return ApiGame::withCount('wallet')->orderBy('wallet_count', 'DESC')->get();
+    }
+
+    public function getApiGameByGamecode($gamecode)
+    {
+        return ApiGame::where('gamecode', $gamecode)->first();
+    }
 }

@@ -52,6 +52,9 @@ class CoreGameComponent
             case 'get-report' :
                 return (new PgGameComponent)->getReport($user_id);
                 break;
+            case 'get-player' :
+                return (new PgGameComponent)->getUserPlaying();
+                break;
         }
     }
 

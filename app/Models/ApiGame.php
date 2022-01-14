@@ -37,4 +37,9 @@ class ApiGame extends Model
     {
         return $this->belongsTo(GameGroup::class);
     }
+    
+    public function wallet()
+    {
+        return $this->hasMany(Wallet::class);
+    }
 }

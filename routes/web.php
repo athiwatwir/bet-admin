@@ -132,6 +132,8 @@ Route::middleware(['auth:webadmin'])->group(function () {
     Route::prefix('/reports')->group(function () {
         Route::get('/', [ReportsController::class, 'index'])->name('reports');
         Route::get('/search', [ReportsController::class, 'search']);
+        Route::get('/games/index', [ReportsController::class, 'indexGameReport']);
+        Route::get('/games/view/{gamecode}', [ReportsController::class, 'viewGameReport'])->name('game-view-report');
 
         Route::get('/pgsoft', [ReportsController::class, 'pgsoft']);
         Route::get('/pgsoft/view/{player}', [ReportsController::class, 'pgsoftByPlayer'])->name('player-report');

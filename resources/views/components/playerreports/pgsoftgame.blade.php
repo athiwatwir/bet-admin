@@ -28,7 +28,7 @@
     data-enable-col-sorting="false" 
     data-autofill="false" 
     data-group="false" 
-    data-items-per-page="{{ $items }}" 
+    data-items-per-page="50" 
 
     data-lng-export="<i class='fi fi-squared-dots fs--18 line-height-1'></i>" 
     dara-export-pdf-disable-mobile="true" 
@@ -37,37 +37,39 @@
 >
     <thead>
         <tr class="text-muted fs--13">
-            <th>รายชื่อเกมที่เล่น</th>
-            <th class="text-center">จำนวนการเล่น</th>
-            <th class="text-center">จำนวนเงินเดิมพัน</th>
-            <th class="text-center"><span class="text-success">ชนะ</span> / <span class="text-danger">แพ้</span></th>
+            <th>บัญชีผู้ใช้งาน</th>
+            <th class="text-center" style="line-height: 14px;">จำนวนการเล่น <br/><small>(ทุกเกมรวมกัน)</small></th>
+            <th class="text-center" style="line-height: 14px;">จำนวนเงินเดิมพัน <br/><small>(ทุกเกมรวมกัน)</small></th>
+            <th class="text-center" style="line-height: 14px;"><span class="text-success">ชนะ</span> / <span class="text-danger">แพ้</span> <br/><small>(ทุกเกมรวมกัน)</small></th>
         </tr>
     </thead>
 
     <tbody id="item_list">
-        @foreach ($reports['results'] as $key => $result)
+
+        @foreach ($players as $key => $player)
             <tr>
-                <td><strong class="text-dark">{{ $result['gameName'] }}</strong></td>
+                <td><a href="{{ route('player-report', ['player' => $player['playerName']]) }}"><strong>{{ $player['playerName'] }}</strong></a></td>
 
-                <td class="text-center">{{ number_format($result['hands']) }}</td>
+                <td class="text-center">{{ number_format($player['hands']) }}</td>
 
-                <td class="text-center">{{ number_format($result['betAmount'], 2) }}</td>
+                <td class="text-center">{{ number_format($player['betAmount'], 2) }}</td>
 
                 <td class="text-center">
-                    <strong class="@if($result['winLossAmount'] > 0) text-success @elseif($result['winLossAmount'] < 0) text-danger @endif">
-                    {{ number_format($result['winLossAmount'], 2) }}
+                    <strong class="@if($player['winLossAmount'] > 0) text-success @elseif($player['winLossAmount'] < 0) text-danger @endif">
+                    {{ number_format($player['winLossAmount'], 2) }}
                     </strong>
                 </td>
             </tr>
         @endforeach
+
     </tbody>
 
     <tfoot>
         <tr class="text-muted fs--13">
-            <th>รายชื่อเกมที่เล่น</th>
-            <th class="text-center">จำนวนการเล่น</th>
-            <th class="text-center">จำนวนเงินเดิมพัน</th>
-            <th class="text-center"><span class="text-success">ชนะ</span> / <span class="text-danger">แพ้</span></th>
+            <th>บัญชีผู้ใช้งาน</th>
+            <th class="text-center" style="line-height: 14px;">จำนวนการเล่น <br/><small>(ทุกเกมรวมกัน)</small></th>
+            <th class="text-center" style="line-height: 14px;">จำนวนเงินเดิมพัน <br/><small>(ทุกเกมรวมกัน)</small></th>
+            <th class="text-center" style="line-height: 14px;"><span class="text-success">ชนะ</span> / <span class="text-danger">แพ้</span> <br/><small>(ทุกเกมรวมกัน)</small></th>
         </tr>
     </tfoot>
 

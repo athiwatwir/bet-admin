@@ -11,8 +11,11 @@ use Carbon\Carbon;
 
 use App\Models\Pgsoftgame;
 use App\Models\PlayingTransaction;
+use App\Http\Controllers\UsersController;
+use App\Http\Controllers\ApiGameController;
 
 use App\Helpers\CoreGameComponent as CoreGame;
+use App\Helpers\PgSoftGameComponent as PgSoft;
 
 class ReportsController extends Controller
 {
@@ -25,7 +28,6 @@ class ReportsController extends Controller
     ];
 
     public function index(){
-
         return view('reports.index', ['reportTypes' => $this->ReportTypes]);
     }
 
@@ -42,6 +44,18 @@ class ReportsController extends Controller
         }
 
         return view('reports.index', ['reportTypes' => $this->ReportTypes, 'is_report' => $report, 'start' => $request->startdate, 'end' => $request->enddate, 'results' => $results]);
+    }
+
+    public function indexGameReport()
+    {
+        $games = (new ApiGameController)->getAllApiGame();
+        return view('reports.index_games', ['games' => $games]);
+    }
+
+    public function viewGameReport($gamecode)
+    {
+        $game = (new ApiGameController)->getApiGameByGamecode($gamecode);
+        return view('reports.view_game', ['game' => $game->name, 'gamecode' => $gamecode]);
     }
 
     private function getUserLevel($payment_transaction_id)
@@ -106,6 +120,7 @@ class ReportsController extends Controller
 // PG Soft Game Report ------------------------------------------------------------------------------
     public function pgsoft()
     {
+        // $res = (new PgSoft)->getUserPlaying();
         $res = $this->getPlayingTransaction();
         if(sizeof($res) > 0) {
             $results = $this->groupByName($res);
@@ -119,30 +134,30 @@ class ReportsController extends Controller
 
     public function pgsoftByPlayer($player)
     {
-        $response = $this->getPlayingTransaction();
-        $players = [];
-        $player_id = '';
-        $hands = 0;
-        $betAmount = 0;
-        $winLossAmount = 0;
-        foreach($response as $key => $res) {
-            if($res->username == $player) {
-                $players[$key]['gameName'] = $res->game_name;
-                $players[$key]['hands'] = $res->hands;
-                $players[$key]['betAmount'] = $res->bet_amount;
-                $players[$key]['winLossAmount'] = $res->win_loss_amount;
-                $player_id = $res->user_id;
-                $hands += (int)$res->hands;
-                $betAmount += (float)$res->bet_amount;
-                $winLossAmount += (float)$res->win_loss_amount;
-            }
-        }
+        $user = (new UsersController)->getUserByUsername($player);
+        $response = (new CoreGame)->checkpoint($user[0]->id, 'PGGAME', 'get-report');
+        // $response = $this->getPlayingTransaction();
+        // $players = [];
+        // $player_id = '';
+        // $hands = 0;
+        // $betAmount = 0;
+        // $winLossAmount = 0;
+        // foreach($response['results'] as $key => $res) {
+        //         $players[$key]['gameName'] = $res->game_name;
+        //         $players[$key]['hands'] = $res->hands;
+        //         $players[$key]['betAmount'] = $res->bet_amount;
+        //         $players[$key]['winLossAmount'] = $res->win_loss_amount;
+        //         $player_id = $res->user_id;
+        //         $hands += (int)$res->hands;
+        //         $betAmount += (float)$res->bet_amount;
+        //         $winLossAmount += (float)$res->win_loss_amount;
+        // }
 
-        $results = $this->groupByGame($players);
-        $by_hands = array_column($results, 'hands');
-        array_multisort($by_hands, SORT_DESC, $results);
+        // $results = $this->groupByGame($players);
+        // $by_hands = array_column($results, 'hands');
+        // array_multisort($by_hands, SORT_DESC, $results);
 
-        return view('reports.pgsoft.player', ['results' => $results, 'player' => $player, 'player_id' => $player_id, 'hands' => $hands, 'betAmount' => $betAmount, 'winLossAmount' => $winLossAmount]);
+        return view('reports.pgsoft.player', ['player' => $user[0]->username, 'player_id' => $user[0]->id, 'hands' => $response['hands'], 'betAmount' => $response['betAmount'], 'winLossAmount' => $response['winLossAmount']]);
     }
 
     public function searchPgSoft(Request $request)
@@ -172,10 +187,9 @@ class ReportsController extends Controller
 
     private function getPlayingTransaction()
     {
-        $playing_transaction = DB::table('playing_transactions')
-                                    ->leftJoin('users', 'playing_transactions.user_id', '=', 'users.id')
-                                    ->where('type', 'pg')
-                                    ->select('playing_transactions.*', 'users.username')
+        $playing_transaction = DB::table('user_playing_pgsoftgames')
+                                    ->leftJoin('users', 'user_playing_pgsoftgames.user_id', '=', 'users.id')
+                                    ->select('user_playing_pgsoftgames.*', 'users.username')
                                     ->get();
         return $playing_transaction;
     }

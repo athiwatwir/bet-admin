@@ -216,4 +216,9 @@ class UsersController extends Controller
     {
         return DB::table('users')->where('user_level_id', $level_id)->where('status', 'CO')->where('is_active', 'Y')->get();
     }
+
+    public function getUserByUsername($username)
+    {
+        return DB::table('users')->where('username', $username)->get();
+    }
 }

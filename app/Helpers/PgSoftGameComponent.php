@@ -209,6 +209,20 @@ class PgSoftGameComponent
         return ['results' => $results, 'hands' => $hands, 'betAmount' => $betAmount, 'winLossAmount' => $winLossAmount];
     }
 
+    public function getUserPlaying()
+    {
+        $response = $this->getAllUserPlayingPgsoftgame();
+        if(sizeof($response) > 0) {
+            $results = $this->groupByName($response);
+            $by_bet = array_column($results, 'betAmount');
+            array_multisort($by_bet, SORT_DESC, $results);
+            
+            return $results;
+        }else{
+            return [];
+        }
+    }
+
 
 
 
@@ -259,6 +273,14 @@ class PgSoftGameComponent
         return UserPlayingPgsoftgame::where('user_id', $user_id)->get();
     }
 
+    private function getAllUserPlayingPgsoftgame()
+    {
+        return DB::table('user_playing_pgsoftgames')
+                    ->leftJoin('users', 'user_playing_pgsoftgames.user_id', '=', 'users.id')
+                    ->select('user_playing_pgsoftgames.*', 'users.username')
+                    ->get();
+    }
+
     private function groupByGame($data)
     {
         $group = [];
@@ -294,5 +316,39 @@ class PgSoftGameComponent
         }
 
         return [];
+    }
+
+    private function groupByName($data)
+    {
+        $group = [];
+        foreach($data as $value) {
+            $group['player'][$value->username][] = $value;
+        }
+
+        return $this->setNewGroupByName($group);
+    }
+
+    private function setNewGroupByName($data)
+    {
+        $groupArr = [];
+        foreach($data['player'] as $key => $player) {
+            $playerName = '';
+            $hands = 0;
+            $betAmount = 0;
+            $winLossAmount = 0;
+            foreach($player as $value) {
+                $playerName = $value->username;
+                $hands += (int)$value->hands;
+                $betAmount += (float)$value->bet_amount;
+                $winLossAmount += (float)$value->win_loss_amount;
+                // if($value['playerName'] == 'nauthiz99') Log::debug($winLossAmount);
+            }
+            $groupArr[$key]['playerName'] = $playerName;
+            $groupArr[$key]['hands'] = $hands;
+            $groupArr[$key]['betAmount'] = $betAmount;
+            $groupArr[$key]['winLossAmount'] = $winLossAmount;
+        }
+
+        return $groupArr;
     }
 }
