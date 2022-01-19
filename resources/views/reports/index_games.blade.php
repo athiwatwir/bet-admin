@@ -51,7 +51,7 @@
                     <thead>
                         <tr class="text-muted fs--13">
                             <th>เลือกดูรายงานเกม</th>
-                            <th class="text-center">จำนวนคนเล่น</th>
+                            <th class="text-center">จำนวนกระเป๋าเงิน</th>
                             <th class="w--150 text-center">สถานะ</th>
                         </tr>
                     </thead>
@@ -62,7 +62,7 @@
                         <tr class="text-dark">
 
                             <td style="line-height: 17px;">
-                                <a href="{{ route('game-view-report', ['gamecode' => $game->gamecode]) }}" class="d-flex text-dark" target="_blank">
+                                <a href="{{ route('game-view-report', ['gamecode' => $game->gamecode]) }}" class="d-flex text-dark">
                                     <img src="{{ Request::root() }}/logogames/{{ $game->logo }}" style="width: 60px;">
                                     <div class="ml-3">
                                         <span class="text-dark">{{ $game->name }}</span><br/>
@@ -72,7 +72,11 @@
                             </td>
 
                             <td class="text-center">
-                                {{ $game->wallet_count }}
+                                @if($game->wallet_count <= 0)
+                                    <small class="text-secondary">ยังไม่มีกระเป๋าเงิน</small>
+                                @else
+                                    {{ $game->wallet_count }}
+                                @endif
                             </td>
 
                             <td class="text-center">

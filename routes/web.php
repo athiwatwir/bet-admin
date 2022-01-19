@@ -92,6 +92,8 @@ Route::middleware(['auth:webadmin'])->group(function () {
         Route::post('/edit', [UserLevelController::class, 'update']);
         Route::get('/delete/{id}', [UserLevelController::class, 'delete']);
         Route::get('/active/{id}/{name}', [UserLevelController::class, 'active']);
+
+        Route::Post('/setting-api-game', [UserLevelController::class, 'settingApiGame'])->name('userlevel-setting-api-game');
     });
 
     Route::prefix('/settings')->group(function () {
@@ -132,7 +134,7 @@ Route::middleware(['auth:webadmin'])->group(function () {
     Route::prefix('/reports')->group(function () {
         Route::get('/', [ReportsController::class, 'index'])->name('reports');
         Route::get('/search', [ReportsController::class, 'search']);
-        Route::get('/games/index', [ReportsController::class, 'indexGameReport']);
+        Route::get('/games/index', [ReportsController::class, 'indexGameReport'])->name('report-game-index');
         Route::get('/games/view/{gamecode}', [ReportsController::class, 'viewGameReport'])->name('game-view-report');
 
         Route::get('/pgsoft', [ReportsController::class, 'pgsoft']);

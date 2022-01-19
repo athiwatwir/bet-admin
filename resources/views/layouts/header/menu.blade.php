@@ -260,11 +260,11 @@
                     รายงานเกมทั้งหมด
                 </a>
             </li>
-            <li class="dropdown-item">
+            <!-- <li class="dropdown-item">
                 <a class="dropdown-link" href="{{ url('/reports/pgsoft') }}" >
                     รายงานเกม PG Slot
                 </a>
-            </li>
+            </li> -->
         </ul>
     </li>
 
@@ -316,7 +316,6 @@
                                 </span>
                             </a>
                         </li>
-
                     </ul>
                 </div>
             </div>

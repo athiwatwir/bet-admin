@@ -16,11 +16,11 @@
                             <p><small>จำนวนเงินเดิมพันทั้งหมด :</small> <strong class="text-primary">{{ number_format($betAmount, 2) }}</strong> <small>฿</small> </p>
                             <p><small><span class="text-success">ชนะ</span> / <span class="text-danger">แพ้</span> ทั้งหมด :</small> <strong class="@if($winLossAmount > 0) text-success @elseif($winLossAmount < 0) text-danger @endif my-2">{{ number_format($winLossAmount, 2) }}</strong> <small>฿</small> </p>
                         </div>
-                        <a href="{{ url('/reports/pgsoft') }}" class="btn btn-vv-sm rounded-circle-xs btn-primary btn-pill js-stoppropag"><small><< ย้อนกลับ</small></a>
+                        <a href="{{ route('game-view-report', ['gamecode' => $gamecode]) }}" class="btn btn-vv-sm rounded-circle-xs btn-primary btn-pill js-stoppropag"><small><< ย้อนกลับ</small></a>
                     </div>
 
                     <div class="col-md-8">
-                        <x-game-report userid="{{ $player_id }}" gamecode="PGGAME" items="50" />
+                        <x-game-report userid="{{ $player_id }}" gamecode="{{ $gamecode }}" items="50" />
                     </div>
                 </div>
         

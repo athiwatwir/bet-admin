@@ -123,6 +123,11 @@
                                 <a class="text-truncate mr-2" href="#!" title="แก้ไข" data-toggle="modal" data-target="#editUserLevel" onClick="setDataUserLevel('{{$default->id}}', '{{$default->name}}', {{$default->limit_deposit}}, {{$default->limit_withdraw}}, {{$default->limit_transfer}}, '{{$default->isdefault}}')">
                                     <i class="fi fi-pencil"></i>
                                 </a>
+
+                                <a class="text-truncate mr-2 text-dark" href="#!" title="ตั้งค่าการเชื่อมต่อเกม" data-toggle="modal" data-target="#api-game_{{ $default->id }}">
+                                    <i class="fas fa-plug"></i>
+                                </a>
+                                <x-user-level-setting-api-game id="api-game_{{ $default->id }}" name="{{ $default->name }}" />
                             </td>
                         </tr>
                     @foreach ($levels as $key => $level)
@@ -163,32 +168,37 @@
                                 <a class="text-truncate mr-2" href="#!" title="แก้ไข" data-toggle="modal" data-target="#editUserLevel" onClick="setDataUserLevel('{{$level->id}}', '{{$level->name}}', {{$level->limit_deposit}}, {{$level->limit_withdraw}}, {{$level->limit_transfer}}, '{{$level->isdefault}}')">
                                     <i class="fi fi-pencil"></i>
                                 </a>
-                                @if($level->isdefault == 'N')
-                                    <a class="text-truncate mr-2" href="/user-levels/active/{{ $level->id }}/{{ $level->name }}">
-                                        @if($level->isactive == 'Y')
-                                            <span class="text-success" title="ปิดการใช้งาน"><i class="fi fi-eye"></i></span>
-                                        @else
-                                            <span class="text-danger" title="เปิดการใช้งาน"><i class="fi fi-eye-disabled"></i></span>
-                                        @endif
-                                    </a>
+
+                                <a class="text-truncate mr-2 text-dark" href="#!" title="ตั้งค่าการเชื่อมต่อเกม" data-toggle="modal" data-target="#api-game_{{ $level->id }}">
+                                    <i class="fas fa-plug"></i>
+                                </a>
+                                <x-user-level-setting-api-game id="api-game_{{ $level->id }}" name="{{ $level->name }}" />
+
+                                <a class="text-truncate mr-2" href="/user-levels/active/{{ $level->id }}/{{ $level->name }}">
+                                    @if($level->isactive == 'Y')
+                                        <span class="text-success" title="ปิดการใช้งาน"><i class="fi fi-eye"></i></span>
+                                    @else
+                                        <span class="text-danger" title="เปิดการใช้งาน"><i class="fi fi-eye-disabled"></i></span>
+                                    @endif
+                                </a>
+                            
+                                <a  href="#!" 
+                                    class="text-truncate js-ajax-confirm" 
+                                    data-href="/user-levels/delete/{{ $level->id }}"
+                                    data-ajax-confirm-body="<center>ยืนยันการลบกลุ่มลูกค้า {{ $level->name }} ?<br/>
+                                                    สมาชิกที่อยู่ในกลุ่มนี้จะถูกย้ายไปยัง กลุ่มค่าเริ่มต้น ทั้งหมด<br/>
+                                                    ยืนยันการลบ ?" 
+
+                                    data-ajax-confirm-btn-yes-class="btn-sm btn-danger" 
+                                    data-ajax-confirm-btn-yes-text="ลบข้อมูล" 
+                                    data-ajax-confirm-btn-yes-icon="fi fi-check" 
+
+                                    data-ajax-confirm-btn-no-class="btn-sm btn-light" 
+                                    data-ajax-confirm-btn-no-text="ยกเลิก" 
+                                    data-ajax-confirm-btn-no-icon="fi fi-close">
+                                    <i class="fi fi-thrash text-danger"></i>
+                                </a>
                                 
-                                    <a  href="#!" 
-                                        class="text-truncate js-ajax-confirm" 
-                                        data-href="/user-levels/delete/{{ $level->id }}"
-                                        data-ajax-confirm-body="<center>ยืนยันการลบกลุ่มลูกค้า {{ $level->name }} ?<br/>
-                                                        สมาชิกที่อยู่ในกลุ่มนี้จะถูกย้ายไปยัง กลุ่มค่าเริ่มต้น ทั้งหมด<br/>
-                                                        ยืนยันการลบ ?" 
-
-                                        data-ajax-confirm-btn-yes-class="btn-sm btn-danger" 
-                                        data-ajax-confirm-btn-yes-text="ลบข้อมูล" 
-                                        data-ajax-confirm-btn-yes-icon="fi fi-check" 
-
-                                        data-ajax-confirm-btn-no-class="btn-sm btn-light" 
-                                        data-ajax-confirm-btn-no-text="ยกเลิก" 
-                                        data-ajax-confirm-btn-no-icon="fi fi-close">
-                                        <i class="fi fi-thrash text-danger"></i>
-                                    </a>
-                                @endif
                             </td>
                         </tr>
                     @endforeach
@@ -222,6 +232,13 @@
         display: none;
     }
 </style>
+
+<script>
+    function setApiGameData(name) {
+        let x = document.querySelector('#is_test')
+        console.log(x)
+    }
+</script>
 @endsection
 
 @section('modal')

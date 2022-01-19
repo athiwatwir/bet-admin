@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 
 use App\Models\UserLevel;
 use App\Models\User;
+use App\Models\UserLevelApiGame;
 
 class UserLevelController extends Controller
 {
@@ -124,5 +125,29 @@ class UserLevelController extends Controller
     public function getUserLevelById($id)
     {
         return UserLevel::find($id);
+    }
+
+    public function settingApiGame(Request $request)
+    {
+        $this->beforeSettingApiGame($request->userlevel_id);
+
+        foreach($request->api_game_id as $game) {
+            UserLevelApiGame::updateOrCreate(
+                [
+                    'user_level_id' => $request->userlevel_id,
+                    'api_game_id' => $game
+                ],
+                [
+                    'isactive' => 'Y'
+                ]
+            );
+        }
+
+        return redirect()->back();
+    }
+
+    private function beforeSettingApiGame($userlevel_id)
+    {
+        UserLevelApiGame::where('user_level_id', $userlevel_id)->update(['isactive' => 'N']);
     }
 }

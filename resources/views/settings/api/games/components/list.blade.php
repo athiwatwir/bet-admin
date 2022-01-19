@@ -38,6 +38,7 @@
     <thead>
         <tr class="text-muted fs--13">
             <th>เกม</th>
+            <th class="text-center">จำนวนกระเป๋าเกม</th>
             <th class="w--150 text-center">สถานะ</th>
             <th class="w--150 text-center">จัดการ</th>
         </tr>
@@ -54,6 +55,14 @@
                     <span class="text-dark">{{ $game->name }}</span><br/>
                     <small class="text-secondary fs--11">รหัสเกม : {{ $game->gamecode }}</small>
                 </div>
+            </td>
+            
+            <td class="text-center">
+                @if($game->wallet_count <= 0)
+                    <small class="text-secondary">ยังไม่มีกระเป๋าเงิน</small>
+                @else
+                    {{ $game->wallet_count }}
+                @endif
             </td>
 
             <td class="text-center">

@@ -55,8 +55,14 @@ ul.list-style-none {
 .modal-size-50 {
     max-width: 50%;
 }
+.modal-size-40 {
+    max-width: 40%;
+}
+.modal-size-30 {
+    max-width: 30%;
+}
 @media only screen and (max-width: 600px) {
-    .modal-size-60, .modal-size-50 {
+    .modal-size-60, .modal-size-50, .modal-size-40, .modal-size-30 {
         max-width: 100%;
     }
     .text-mobile {

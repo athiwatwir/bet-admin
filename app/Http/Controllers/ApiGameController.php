@@ -212,7 +212,11 @@ class ApiGameController extends Controller
 
     private function getAllApiGames()
     {
-        return ApiGame::where('status', 'CO')->with(['api_url', 'api_config', 'api_token', 'game_group'])->get();
+        return ApiGame::where('status', 'CO')
+                    ->withCount('wallet')
+                    ->with(['api_url', 'api_config', 'api_token', 'game_group'])
+                    ->orderBy('wallet_count', 'DESC')
+                    ->get();
     }
 
     private function getApiGameById($id)

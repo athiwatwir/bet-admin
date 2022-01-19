@@ -92,6 +92,10 @@ Route::prefix('v1')->group(function () {
     });
     // END Service For Update Realtime ////////////////////////////////////////////////////
 
+
+
+    // WM-CASINO CALLBACK /////////////////////////////////////////////////////////////////
+    Route::post('wm-prod/call-back', [GamesController::class, 'wmCallBack']);
     
 });
 

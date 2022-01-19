@@ -134,8 +134,9 @@ class ReportsController extends Controller
 
     public function pgsoftByPlayer($player)
     {
+        $gamecode = 'PGGAME';
         $user = (new UsersController)->getUserByUsername($player);
-        $response = (new CoreGame)->checkpoint($user[0]->id, 'PGGAME', 'get-report');
+        $response = (new CoreGame)->checkpoint($user[0]->id, $gamecode, 'get-report');
         // $response = $this->getPlayingTransaction();
         // $players = [];
         // $player_id = '';
@@ -157,7 +158,7 @@ class ReportsController extends Controller
         // $by_hands = array_column($results, 'hands');
         // array_multisort($by_hands, SORT_DESC, $results);
 
-        return view('reports.pgsoft.player', ['player' => $user[0]->username, 'player_id' => $user[0]->id, 'hands' => $response['hands'], 'betAmount' => $response['betAmount'], 'winLossAmount' => $response['winLossAmount']]);
+        return view('reports.players.pgsoftgame', ['player' => $user[0]->username, 'player_id' => $user[0]->id, 'gamecode' => $gamecode, 'hands' => $response['hands'], 'betAmount' => $response['betAmount'], 'winLossAmount' => $response['winLossAmount']]);
     }
 
     public function searchPgSoft(Request $request)

@@ -101,5 +101,12 @@ class GamesController extends Controller
         return response()->json(['token' => $token], 200);
     }
 
+
+
+    // WM CASINO CALLBACK Temporary
+    public function wmCallBack(Request $request)
+    {
+        return response()->json(['data' => 'Hello!!!'], 200);
+    }
     
 }
