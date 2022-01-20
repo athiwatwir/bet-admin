@@ -230,6 +230,8 @@
                         <input type="hidden" name="id" value="{{ $ubank->id }}">
                     @endif
 
+                    <input type="hidden" name="user_id" value="{{ $profile->id }}">
+
                     <div id="is-edit-bank-btn" class="form-group row" style="display: none;">
                         <div class="col-md-12 text-right">
                             <button type="submit" class="btn btn-vv-sm btn-primary"><small><i class="fi fi-check"></i> ยืนยัน</small></button>

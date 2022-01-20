@@ -156,4 +156,9 @@ class GameGroupsController extends Controller
     {
         return GameGroup::where('is_active', 'Y')->get();
     }
+
+    public function getGameGroupWithApiGame()
+    {
+        return GameGroup::with('api_game')->where('is_active', 'Y')->get();
+    }
 }

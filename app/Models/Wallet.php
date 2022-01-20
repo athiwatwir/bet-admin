@@ -12,7 +12,7 @@ class Wallet extends Model
     use HasFactory, Notifiable, Uuids;
 
     protected $fillable = [
-        'user_id', 'game_id', 'amount', 'currency', 'is_default', 'status'
+        'user_id', 'api_game_id', 'amount', 'currency', 'is_default', 'status'
     ];
 
     protected $hidden = [

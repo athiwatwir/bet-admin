@@ -143,7 +143,7 @@ class UserLevelController extends Controller
             );
         }
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'แก้ไขการเชื่อมต่อเกมเรียบร้อยแล้ว');
     }
 
     private function beforeSettingApiGame($userlevel_id)

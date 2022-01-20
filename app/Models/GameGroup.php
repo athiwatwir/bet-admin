@@ -17,4 +17,9 @@ class GameGroup extends Model
     protected $hidden = [
         'created_at', 'updated_at'
     ];
+
+    public function api_game()
+    {
+        return $this->hasMany(ApiGame::class);
+    }
 }

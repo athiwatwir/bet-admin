@@ -17,6 +17,8 @@ use App\Http\Controllers\UserLevelController;
 use App\Http\Controllers\BankGroupController;
 use App\Http\Controllers\ReportsController;
 
+use App\Models\UserBanking;
+
 use App\Helpers\PgSoftGameComponent as PgSoft;
 use App\Helpers\CoreGameComponent as CoreGame;
 
@@ -147,13 +149,20 @@ class UsersController extends Controller
             'account_name.required' => 'กรุณาระบุชื่อบัญชี',
             'account_number.required' => 'กรุณาระบุเลขบัญชี',
         ]);
-
-        $ubank = DB::table('user_bankings')->where('id', $request->id)
-                ->update([
-                    'bank_id' => $request->banks,
-                    'bank_account_name' => $request->account_name,
-                    'bank_account_number' => $request->account_number
-                ]);
+        
+        $ubank = UserBanking::updateOrCreate(
+            [
+                'id' => $request->id,
+                'user_id' => $request->user_id
+            ],
+            [
+                'bank_id' => $request->banks,
+                'bank_account_name' => $request->account_name,
+                'bank_account_number' => $request->account_number,
+                'is_active' => 'Y',
+                'status' => 'CO'
+            ]
+        );
 
         if($ubank) return redirect()->back()->with('success', 'แก้ไขธนาคารของผู้ใช้งานเรียบร้อยแล้ว');
 

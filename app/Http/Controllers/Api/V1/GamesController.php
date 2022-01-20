@@ -23,10 +23,10 @@ class GamesController extends Controller
                     ->get();
 
         foreach($groups as $key => $group) {
-            $games = DB::table('games')
+            $games = DB::table('api_games')
                         ->where('game_group_id', $group->id)
-                        ->where('is_active', 'Y')
-                        ->select('id', 'name', 'logo')
+                        ->where('isactive', 'Y')
+                        ->select('id', 'name', 'gamecode', 'logo')
                         ->get();
                         
             $groups[$key]->games = $games;
@@ -85,7 +85,7 @@ class GamesController extends Controller
     {
         $accessToken = auth()->user()->token();
         $playGame = DB::table('games')->find($id, ['url', 'token']);
-        $wallet = DB::table('wallets')->where('game_id', $id)->where('user_id', $accessToken->user_id)->first();
+        $wallet = DB::table('wallets')->where('api_game_id', $id)->where('user_id', $accessToken->user_id)->first();
         $is_get_game_wallet = isset($wallet) ? true : false;
         return response()->json(['playgame' => $playGame, 'is_wallet' => $is_get_game_wallet], 200);
     }

@@ -230,11 +230,16 @@ class ApiGameController extends Controller
 
     public function getAllApiGame()
     {
-        return ApiGame::withCount('wallet')->orderBy('wallet_count', 'DESC')->get();
+        return ApiGame::withCount('wallet')->with('game_group')->orderBy('wallet_count', 'DESC')->get();
     }
 
     public function getApiGameByGamecode($gamecode)
     {
         return ApiGame::where('gamecode', $gamecode)->first();
+    }
+
+    public function GetAllApiGameByGameGroup()
+    {
+        return ApiGame::with('game_group')->get();
     }
 }

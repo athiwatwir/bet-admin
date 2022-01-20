@@ -14,6 +14,9 @@ use App\Models\Pgsoftgame;
 use App\Models\User;
 use App\Models\PaymentTransactionLog;
 use App\Models\BankGroup;
+use App\Models\ApiGame;
+
+use App\Helpers\CoreGameComponent as CoreGame;
 
 class WalletsController extends Controller
 {
@@ -26,11 +29,6 @@ class WalletsController extends Controller
                                 ->first();
     }
 
-    private function transaction()
-    {
-
-    }
-
 
     public function userWallets(Request $request)
     {
@@ -38,22 +36,12 @@ class WalletsController extends Controller
         $wallet = $this->defaultWallet();
 
         $wallets = Wallet::where('user_id', '=', $accessToken->user_id)
-                            ->leftJoin('games', 'wallets.game_id', '=', 'games.id')
+                            ->leftJoin('api_games', 'wallets.api_game_id', '=', 'api_games.id')
                             ->where('wallets.is_default', '=', 'N')
                             ->where('wallets.status', '!=', 'DL')
-                            ->select(['wallets.id', 'games.name as game_name', 'wallets.amount', 'wallets.currency'])
+                            ->select(['wallets.id', 'api_games.name as game_name', 'api_games.gamecode', 'wallets.amount', 'wallets.currency'])
                             ->orderBy('wallets.created_at', 'desc')
                             ->get();
-        
-        // $chkwallet = is_array($wallets) ? $wallets : '';
-
-        // $c_bank_accounts = DB::table('c_bank_accounts')
-        //                     ->join('banks', 'c_bank_accounts.bank_id', '=', 'banks.id')
-        //                     ->where('c_bank_accounts.is_active', 'Y')
-        //                     ->where('c_bank_accounts.status', 'CO')
-        //                     ->select(['c_bank_accounts.id', 'c_bank_accounts.account_name', 'c_bank_accounts.account_number',
-        //                                 'banks.name as bank_name'])
-        //                     ->get();
 
         $bank_list = $this->getUserBankGroupList($accessToken->user_id);
 
@@ -97,7 +85,7 @@ class WalletsController extends Controller
     {
         $accessToken = auth()->user()->token();
 
-        $walletDupplicate = $this->walletDupplicate($accessToken->user_id, $request->game_id);
+        $walletDupplicate = $this->walletDupplicate($accessToken->user_id, $request->api_game_id);
 
         if(!$walletDupplicate) {
 
@@ -110,7 +98,7 @@ class WalletsController extends Controller
 
                 $wallet = Wallet::create([
                     "user_id" => $accessToken->user_id,
-                    "game_id" => $request->game_id,
+                    "api_game_id" => $request->api_game_id,
                     "amount" => $amount,
                     "currency" => $default_wallet->currency,
                     "is_default" => "N",
@@ -118,9 +106,8 @@ class WalletsController extends Controller
                 ]);
 
                 if($amount > 0) {
-                    if($request->game_id == 22) { // pgsoftgame game_id = 22
-                        $this->transferIn($amount, $accessToken->user_id); //tranfer to pgsoftgame
-                    }
+                    
+                    (new CoreGame)->checkpoint($accessToken->user_id, $request->gamecode, 'transfer-in', $amount);
 
                     $transId = Str::uuid();
                     $trans = DB::table('payment_transactions')
@@ -166,9 +153,9 @@ class WalletsController extends Controller
         }
     }
 
-    private function walletDupplicate($user, $game)
+    private function walletDupplicate($user, $api_game_id)
     {
-        $wallet = Wallet::where('user_id', $user)->where('game_id', $game)->get();
+        $wallet = Wallet::where('user_id', $user)->where('api_game_id', $api_game_id)->get();
         return sizeof($wallet) > 0 ? true : false;
     }
 
@@ -192,10 +179,10 @@ class WalletsController extends Controller
             if($default_wallet->amount >= $request->amount) {
                 $default_wallet_amount = $default_wallet->amount - $request->amount;
 
-                $tranIn = $this->transferIn($request->amount, $accessToken->user_id);
+                $tranIn = (new CoreGame)->checkpoint($accessToken->user_id, $request->gamecode, 'transfer-in', $request->amount);
 
-                if($tranIn['error'] == null) {
-                    $wallet = Wallet::find($request->id);
+                if($tranIn != null) {
+                    $wallet = Wallet::find($request->wallet_id);
 
                     $is_amount = $wallet->amount + $request->amount;
 
@@ -237,7 +224,7 @@ class WalletsController extends Controller
                     return response()->json(['status' => 404], 404);
                 }
                 
-                return response()->json(['message' => $tranIn['error']['message']], 400);
+                return response()->json(['message' => 'เกิดข้อผิดพลาด...', 'status' => 400], 400);
 
             }else{
                 return response()->json(['status' => 301], 301);
@@ -257,9 +244,10 @@ class WalletsController extends Controller
             if($from_wallet->amount >= $request->amount) {
                 $from_wallet_amount = $from_wallet->amount - $request->amount;
 
-                $tranOut = $this->transferOut($request->amount, $accessToken->user_id);
+                // $tranOut = $this->transferOut($request->amount, $accessToken->user_id);
+                $tranOut = (new CoreGame)->checkpoint($accessToken->user_id, $request->gamecode, 'transfer-out', $request->amount);
 
-                if($tranOut['error'] == null) {
+                if($tranOut != null) {
                     $wallet = Wallet::find($request->to);
                     $is_amount = $wallet->amount + $request->amount;
                     $transId = Str::uuid();
@@ -301,7 +289,7 @@ class WalletsController extends Controller
                     }
                 }
 
-                return response()->json(['message' => $tranOut['error']['message']], 400);
+                return response()->json(['message' => 'เกิดข้อผิดพลาด...', 'status' => 400], 400);
 
             }else{
                 return response()->json(['status' => 301], 301);
@@ -504,14 +492,15 @@ class WalletsController extends Controller
     public function getUserWallet_v2(Request $request, $game)
     {
         $accessToken = auth()->user()->token();
-        $gameid = $this->getGameId($game);
-        $wallet = DB::table('wallets')->where('user_id', $accessToken->user_id)->where('game_id', $gameid[0]->id)->get();
+        $apigameid = $this->getApiGameIdByGameCode($game);
+        $wallet = DB::table('wallets')->where('user_id', $accessToken->user_id)->where('api_game_id', $apigameid->id)->get();
         return response()->json(['data' => $wallet[0]->amount], 200);
     }
 
-    private function getGameId($game)
+    private function getApiGameIdByGameCode($gamecode)
     {
-        return DB::table('games')->where('name', $game)->get();
+        // return DB::table('api_game_id')->where('gamecode', $game)->get();
+        return ApiGame::where('gamecode', $gamecode)->first();
     }
 
     public function getPlayerSummary()

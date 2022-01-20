@@ -34,8 +34,8 @@ class PaymentTransactionController extends Controller
                     ->leftJoin('wallets as to_wallet', 'payment_transactions.to_wallet_id', '=', 'to_wallet.id')
                     ->leftJoin('banks as ubank', 'user_bankings.bank_id', '=', 'ubank.id')
                     ->leftJoin('banks as cbank', 'c_bank_accounts.bank_id', '=', 'cbank.id')
-                    ->leftJoin('games as from_game', 'from_wallet.game_id', '=', 'from_game.id')
-                    ->leftJoin('games as to_game', 'to_wallet.game_id', '=', 'to_game.id')
+                    ->leftJoin('api_games as from_game', 'from_wallet.api_game_id', '=', 'from_game.id')
+                    ->leftJoin('api_games as to_game', 'to_wallet.api_game_id', '=', 'to_game.id')
                     ->leftJoin('payment_transaction_logs', 'payment_transactions.id', '=', 'payment_transaction_logs.payment_transaction_id')
                     ->leftJoin('staffs as is_admin', 'payment_transaction_logs.admin_id', '=', 'is_admin.id')
                     ->select('payment_transactions.*', 
@@ -93,8 +93,8 @@ class PaymentTransactionController extends Controller
                     ->leftJoin('wallets as to_wallet', 'payment_transactions.to_wallet_id', '=', 'to_wallet.id')
                     ->leftJoin('banks as ubank', 'user_bankings.bank_id', '=', 'ubank.id')
                     ->leftJoin('banks as cbank', 'c_bank_accounts.bank_id', '=', 'cbank.id')
-                    ->leftJoin('games as from_game', 'from_wallet.game_id', '=', 'from_game.id')
-                    ->leftJoin('games as to_game', 'to_wallet.game_id', '=', 'to_game.id')
+                    ->leftJoin('api_games as from_game', 'from_wallet.api_game_id', '=', 'from_game.id')
+                    ->leftJoin('api_games as to_game', 'to_wallet.api_game_id', '=', 'to_game.id')
                     ->where('payment_transactions.code', 'ADJUST')
                     ->where('payment_transactions.status', 'DR')
                     ->select('payment_transactions.*', 
@@ -125,8 +125,8 @@ class PaymentTransactionController extends Controller
                     ->leftJoin('wallets as to_wallet', 'payment_transactions.to_wallet_id', '=', 'to_wallet.id')
                     ->leftJoin('banks as ubank', 'user_bankings.bank_id', '=', 'ubank.id')
                     ->leftJoin('banks as cbank', 'c_bank_accounts.bank_id', '=', 'cbank.id')
-                    ->leftJoin('games as from_game', 'from_wallet.game_id', '=', 'from_game.id')
-                    ->leftJoin('games as to_game', 'to_wallet.game_id', '=', 'to_game.id')
+                    ->leftJoin('api_games as from_game', 'from_wallet.api_game_id', '=', 'from_game.id')
+                    ->leftJoin('api_games as to_game', 'to_wallet.api_game_id', '=', 'to_game.id')
                     ->leftJoin('payment_transaction_logs', 'payment_transactions.id', '=', 'payment_transaction_logs.payment_transaction_id')
                     ->leftJoin('staffs as is_admin', 'payment_transaction_logs.admin_id', '=', 'is_admin.id')
                     ->where('payment_transactions.code', $code)
@@ -236,8 +236,8 @@ class PaymentTransactionController extends Controller
                 ->leftJoin('wallets as to_wallet', 'payment_transactions.to_wallet_id', '=', 'to_wallet.id')
                 ->leftJoin('banks as ubank', 'user_bankings.bank_id', '=', 'ubank.id')
                 ->leftJoin('banks as cbank', 'c_bank_accounts.bank_id', '=', 'cbank.id')
-                ->leftJoin('games as from_game', 'from_wallet.game_id', '=', 'from_game.id')
-                ->leftJoin('games as to_game', 'to_wallet.game_id', '=', 'to_game.id')
+                ->leftJoin('api_games as from_game', 'from_wallet.api_game_id', '=', 'from_game.id')
+                ->leftJoin('api_games as to_game', 'to_wallet.api_game_id', '=', 'to_game.id')
                 ->where('payment_transactions.user_id', $id)
                 ->select('payment_transactions.*', 
                         'users.username', 'users.name', 'users.currency', 'admin.username as by_admin',
@@ -306,8 +306,8 @@ class PaymentTransactionController extends Controller
                     ->leftJoin('wallets as to_wallet', 'payment_transactions.to_wallet_id', '=', 'to_wallet.id')
                     ->leftJoin('banks as ubank', 'user_bankings.bank_id', '=', 'ubank.id')
                     ->leftJoin('banks as cbank', 'c_bank_accounts.bank_id', '=', 'cbank.id')
-                    ->leftJoin('games as from_game', 'from_wallet.game_id', '=', 'from_game.id')
-                    ->leftJoin('games as to_game', 'to_wallet.game_id', '=', 'to_game.id')
+                    ->leftJoin('api_games as from_game', 'from_wallet.api_game_id', '=', 'from_game.id')
+                    ->leftJoin('api_games as to_game', 'to_wallet.api_game_id', '=', 'to_game.id')
                     ->where('payment_transactions.id', $id)
                     ->select('payment_transactions.*', 
                             'users.id as user_id', 'users.username', 'users.name', 'users.currency', 'admin.username as by_admin',

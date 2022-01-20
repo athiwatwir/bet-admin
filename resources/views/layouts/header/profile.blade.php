@@ -63,7 +63,14 @@
             {{ __('ออกจากระบบ') }}
         </a> -->
 
-        <a class="dropdown-item" href="{{ route('admin-logout') }}">
+        <a href="{{ route('admin-logout') }}"
+            class="js-ajax-confirm dropdown-item"
+            data-ajax-confirm-btn-yes-class="btn-sm btn-secondary" 
+            data-ajax-confirm-body="ออกจากระบบ?" 
+            data-ajax-confirm-btn-yes-text="ออกจากระบบ" 
+            data-ajax-confirm-btn-yes-icon="fi fi-check" 
+            data-ajax-confirm-btn-no-text="ยกเลิก" 
+            data-ajax-confirm-type="secondary">
             {{ __('ออกจากระบบ') }}
         </a>
 
