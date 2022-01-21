@@ -39,7 +39,7 @@ class WalletsController extends Controller
                             ->leftJoin('api_games', 'wallets.api_game_id', '=', 'api_games.id')
                             ->where('wallets.is_default', '=', 'N')
                             ->where('wallets.status', '!=', 'DL')
-                            ->select(['wallets.id', 'api_games.name as game_name', 'api_games.gamecode', 'wallets.amount', 'wallets.currency'])
+                            ->select(['wallets.id', 'wallets.api_game_id', 'api_games.name as game_name', 'api_games.gamecode', 'wallets.amount', 'wallets.currency'])
                             ->orderBy('wallets.created_at', 'desc')
                             ->get();
 
@@ -68,7 +68,7 @@ class WalletsController extends Controller
     private function getUserBankGroupList($id)
     {
         $user = User::find($id);
-        $group = BankGroup::where('id', $user->bank_group_id)->withCount('banks')->first();
+        $group = BankGroup::where('id', $user->bank_group_id)->first();
         $bank_groups = [];
         foreach($group->banks as $key => $bank) {
             $bank_name = DB::table('banks')->find($bank->bank_id);

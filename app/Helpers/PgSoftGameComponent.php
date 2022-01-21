@@ -92,7 +92,8 @@ class PgSoftGameComponent
             'currency' => $user->currency
         ]);
 
-        return $user_pg->operator_player_session;
+        $url = 'https://'.$game_data->url.'/'.$user_pg->operator_player_session;
+        return $url;
     }
 
     public function transferIn($user_id, $amount) {
