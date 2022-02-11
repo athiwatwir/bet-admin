@@ -2,7 +2,8 @@
 
 namespace App\Helpers;
 
-use App\Helpers\PgSoftGameComponent as PgGameComponent;
+use App\Helpers\PgSoftGameComponent as PgGame;
+use App\Helpers\CasinoGameComponent as CasinoGame;
 
 class CoreGameComponent
 {
@@ -13,61 +14,79 @@ class CoreGameComponent
                 $response = $this->pgGameAction($user_id, $action, $amount);
                 return $response;
                 break;
-            case 'CASINOGAME' :
-                $response = $this->casinoGameAction($gamecode, $action);
-                return response()->json(['data' => $response]);
+            case 'WMGAME' :
+                $response = $this->casinoGameAction($user_id, $action, $amount);
+                return $response;
                 break;
         }
     }
 
     private function pgGameAction($user_id, $action, $amount) {
         switch ($action) {
+            case 'hello' :
+                return (new PgGame)->hello();
+                break;
             case 'create-player' :
-                return (new PgGameComponent)->createPlayer($user_id);
+                return (new PgGame)->createPlayer($user_id);
                 break;
             case 'delete-player' :
-                return (new PgGameComponent)->deletePlayer($user_id);
+                return (new PgGame)->deletePlayer($user_id);
                 break;
             case 'suspend-player' :
-                return (new PgGameComponent)->suspendPlayer($user_id);
+                return (new PgGame)->suspendPlayer($user_id);
                 break;
             case 'resume-player' :
-                return (new PgGameComponent)->resumePlayer($user_id);
+                return (new PgGame)->resumePlayer($user_id);
                 break;
             case 'player-status' :
-                return (new PgGameComponent)->checkPlayerStatus($user_id);
+                return (new PgGame)->checkPlayerStatus($user_id);
                 break;
             case 'login-to-game' :
-                return (new PgGameComponent)->loginToGame($user_id);
+                return (new PgGame)->loginToGame($user_id);
                 break;
             case 'transfer-in' :
-                return (new PgGameComponent)->transferIn($user_id, $amount);
+                return (new PgGame)->transferIn($user_id, $amount);
                 break;
             case 'transfer-out' :
-                return (new PgGameComponent)->transferOut($user_id, $amount);
+                return (new PgGame)->transferOut($user_id, $amount);
                 break;
             case 'get-balance' :
-                return (new PgGameComponent)->getBalance($user_id);
+                return (new PgGame)->getBalance($user_id);
                 break;
             case 'get-report' :
-                return (new PgGameComponent)->getReport($user_id);
+                return (new PgGame)->getReport($user_id);
                 break;
             case 'get-player' :
-                return (new PgGameComponent)->getUserPlaying();
+                return (new PgGame)->getUserPlaying();
                 break;
         }
     }
 
-    private function casinoGameAction($gamecode, $action) {
+    private function casinoGameAction($user_id, $action, $amount) {
         switch ($action) {
+            case 'hello' :
+                return (new CasinoGame)->hello();
+                break;
+            case 'create-player' :
+                return (new CasinoGame)->createPlayer($user_id);
+                break;
             case 'login-to-game' :
-                return 'data casino game response get login';
+                return (new CasinoGame)->loginToGame($user_id);
+                break;
+            case 'logout-from-game' :
+                return (new CasinoGame)->logoutFromGame($user_id);
+                break;
+            case 'change-password' :
+                return (new CasinoGame)->changePassword($user_id);
+                break;
+            case 'transfer-in' :
+                return (new CasinoGame)->transferIn($user_id, $amount);
+                break;
+            case 'transfer-out' :
+                return (new CasinoGame)->transferOut($user_id, $amount);
                 break;
             case 'get-balance' :
-                return 'data casino game response get balance';
-                break;
-            case 'get-profile' :
-                return 'data casino game response get profile';
+                return (new CasinoGame)->getBalance($user_id);
                 break;
         }
     }

@@ -269,13 +269,11 @@ class PgSoftGameComponent
         return UserPgsoftgame::where('user_id', $user_id)->first();
     }
 
-    private function getUserPlayingPgsoftgame($user_id)
-    {
+    private function getUserPlayingPgsoftgame($user_id) {
         return UserPlayingPgsoftgame::where('user_id', $user_id)->get();
     }
 
-    private function getAllUserPlayingPgsoftgame()
-    {
+    private function getAllUserPlayingPgsoftgame() {
         return DB::table('user_playing_pgsoftgames')
                     ->leftJoin('users', 'user_playing_pgsoftgames.user_id', '=', 'users.id')
                     ->select('user_playing_pgsoftgames.*', 'users.username')

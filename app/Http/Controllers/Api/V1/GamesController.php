@@ -5,13 +5,18 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use App\Providers\RouteServiceProvider as Route;
-
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
+use App\Providers\RouteServiceProvider as Route;
 use App\Http\Controllers\Api\Games\CoreApiController as CoreApi;
+use App\Http\Controllers\Api\UsersController;
+
+use App\Models\User;
+use App\Models\UserLevel;
+use App\Models\UserLevelApiGame;
+use App\Models\ApiGame;
 
 class GamesController extends Controller
 {
@@ -34,6 +39,33 @@ class GamesController extends Controller
         // Log::debug($groups);
 
         return response()->json(['menugames' => $groups], 200);
+    }
+
+    public function getUserLevelApiGame() {
+        $accessToken = auth()->user()->token();
+        $user = User::find($accessToken->user_id);
+        $user_level = $this->getGames($user->user_level_id);
+
+        return response()->json(['data' => $user_level], 200);
+    }
+
+    private function getGames($userlevel_id)
+    {
+        $games = [];
+        $allGame = ApiGame::withCount('wallet')->with('game_group')->orderBy('wallet_count', 'DESC')->get();
+        foreach($allGame as $game) {
+            $matched = UserLevelApiGame::where('user_level_id', $userlevel_id)->where('api_game_id', $game->id)->first();
+            if(isset($matched)) {
+                if($matched->isactive == 'Y') $ishas = ['id' => $game->id, 'name' => $game->name, 'gamecode' => $game->gamecode, 'isactive' => 1];
+                else $ishas = ['id' => $game->id, 'name' => $game->name, 'gamecode' => $game->gamecode, 'isactive' => 0];
+                array_push($games, $ishas);
+            }else{
+                $ishasnt = ['id' => $game->id, 'name' => $game->name, 'gamecode' => $game->gamecode, 'isactive' => 0];
+                array_push($games, $ishasnt);
+            }
+        }
+        
+        return $games;
     }
 
     public function gameLogin(Request $request, $table)
@@ -104,7 +136,12 @@ class GamesController extends Controller
 
 
     // WM CASINO CALLBACK Temporary
-    public function wmCallBack(Request $request)
+    public function wmCallBackPost(Request $request)
+    {
+        return response()->json(['data' => 'Hello!!!'], 200);
+    }
+
+    public function wmCallBackGet(Request $request)
     {
         return response()->json(['data' => 'Hello!!!'], 200);
     }

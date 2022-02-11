@@ -37,6 +37,10 @@ Route::get('/', function () {
     return view('auth/login');
 })->name('login');
 
+Route::get('/unauthenticated', function () {
+    return view('unauthenticated');
+})->name('unauthenticated');
+
 Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');

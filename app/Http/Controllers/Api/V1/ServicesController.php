@@ -42,10 +42,11 @@ class ServicesController extends Controller
             UserPlayingPgsoftgame::updateOrCreate(
                 [
                     'user_id' => $this->searchUserName($users, $result['playerName']),
-                    'game_name' => $this->searchGameName($games, $result['gameId']),
+                    'gid' => $result['gameId'],
                     'row_version' => date('Y-m-d', $result['rowVersion'] / 1000)
                 ],
                 [
+                    'game_name' => $this->searchGameName($games, $result['gameId']),
                     'hands' => $result['hands'],
                     'bet_amount' => $result['betAmount'],
                     'win_loss_amount' => $result['winLossAmount'],

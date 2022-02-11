@@ -139,4 +139,8 @@ class UsersController extends Controller
         
         return response()->json(['status' => 401], 401);
     }
+
+    public function getUserByUserId($user_id) {
+        return User::find($user_id);
+    }
 }

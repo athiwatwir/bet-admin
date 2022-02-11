@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\V1\LogsController;
 use App\Http\Controllers\Api\V1\ServicesController;
 
 use App\Http\Controllers\Api\V2\PgSoftGameController;
+use App\Http\Controllers\Api\V2\WMGameController;
 
 use App\Http\Controllers\Api\V3\PaymentTransactionPromotionController;
 
@@ -74,6 +75,8 @@ Route::prefix('v1')->group(function () {
             Route::get('login/{table}', [GamesController::class, 'gameLogin']);
             Route::get('wallet/{game}', [WalletsController::class, 'getUserWallet_v2']);
 
+            Route::get('user-level', [GamesController::class, 'getUserLevelApiGame']);
+
             Route::get('/pgsoft/player-summary', [WalletsController::class, 'getPlayerSummary']);
         });
 
@@ -89,13 +92,15 @@ Route::prefix('v1')->group(function () {
     Route::prefix('services')->group(function () {
         Route::get('update-game-wallet', [ServicesController::class, 'updateGameWallet']);
         Route::get('update-pgsoftgame-player-daily-summary', [ServicesController::class, 'updatePgSoftGamePlayerDailySummaryToDB']);
+
     });
     // END Service For Update Realtime ////////////////////////////////////////////////////
 
 
 
     // WM-CASINO CALLBACK /////////////////////////////////////////////////////////////////
-    Route::post('wm-prod/call-back', [GamesController::class, 'wmCallBack']);
+    Route::post('wm-prod/call-back', [GamesController::class, 'wmCallBackPost']);
+    Route::get('wm-prod/call-back', [GamesController::class], 'wmCallBackGet');
     
 });
 
@@ -106,6 +111,10 @@ Route::prefix('v2')->group(function () {
         // Route::get('player-daily-summary', [PgSoftGameController::class, 'saveToDB']);
         Route::get('update-player-daily-summary', [PgSoftGameController::class, 'saveToDB']);
     });
+
+    Route::prefix('wmgame')->group(function () {
+        Route::get('test-wm-hello', [WMGameController::class, 'testWMHello']);
+    });
 });
 
 Route::prefix('v3')->group(function () {
@@ -114,8 +123,8 @@ Route::prefix('v3')->group(function () {
     });
 });
 
-Route::prefix('games')->group(function () {
-    Route::middleware(['auth:api'])->group(function () {
+Route::middleware(['auth:api'])->group(function () {
+    Route::prefix('games')->group(function () {
         Route::get('call/{gamecode}/{action}/{amount?}', function ($gamecode, $action, $amount = NULL) {
             $accessToken = auth()->user()->token();
             $result = (new CoreGame)->checkpoint($accessToken->user_id, $gamecode, $action, $amount);

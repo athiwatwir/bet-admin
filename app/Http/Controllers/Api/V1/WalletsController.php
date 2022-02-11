@@ -86,70 +86,75 @@ class WalletsController extends Controller
         $accessToken = auth()->user()->token();
 
         $walletDupplicate = $this->walletDupplicate($accessToken->user_id, $request->api_game_id);
+        $isApiGame = $this->checkApiGame($request->api_game_id);
+        
+        if($isApiGame) {
+            if(!$walletDupplicate) {
 
-        if(!$walletDupplicate) {
+                $amount = $request->amount == null ? 0 : $request->amount;
 
-            $amount = $request->amount == null ? 0 : $request->amount;
+                $default_wallet = $this->defaultWallet();
 
-            $default_wallet = $this->defaultWallet();
+                if($default_wallet->amount >= $amount) {
+                    $is_amount = $amount != 0 ? $default_wallet->amount - $amount : $default_wallet->amount;
 
-            if($default_wallet->amount >= $amount) {
-                $is_amount = $amount != 0 ? $default_wallet->amount - $amount : $default_wallet->amount;
+                    $wallet = Wallet::create([
+                        "user_id" => $accessToken->user_id,
+                        "api_game_id" => $request->api_game_id,
+                        "amount" => $amount,
+                        "currency" => $default_wallet->currency,
+                        "is_default" => "N",
+                        "status" => 'CO',
+                    ]);
 
-                $wallet = Wallet::create([
-                    "user_id" => $accessToken->user_id,
-                    "api_game_id" => $request->api_game_id,
-                    "amount" => $amount,
-                    "currency" => $default_wallet->currency,
-                    "is_default" => "N",
-                    "status" => 'CO',
-                ]);
+                    if($amount > 0) {
+                        
+                        (new CoreGame)->checkpoint($accessToken->user_id, $request->gamecode, 'transfer-in', $amount);
 
-                if($amount > 0) {
-                    
-                    (new CoreGame)->checkpoint($accessToken->user_id, $request->gamecode, 'transfer-in', $amount);
+                        $transId = Str::uuid();
+                        $trans = DB::table('payment_transactions')
+                            ->insert([
+                                'id' => $transId,
+                                'user_id' => $accessToken->user_id,
+                                'from_wallet_id' => $default_wallet->id,
+                                'to_wallet_id' => $wallet->id,
+                                'action_date' => date('Y-m-d H:i:s'),
+                                'code' => 'TRANSFER',
+                                'amount' => $amount,
+                                'status' => 'CO',
+                                'created_at' => date('Y-m-d H:i:s'),
+                                'updated_at' => date('Y-m-d H:i:s'),
+                            ]);
 
-                    $transId = Str::uuid();
-                    $trans = DB::table('payment_transactions')
-                        ->insert([
-                            'id' => $transId,
-                            'user_id' => $accessToken->user_id,
-                            'from_wallet_id' => $default_wallet->id,
-                            'to_wallet_id' => $wallet->id,
-                            'action_date' => date('Y-m-d H:i:s'),
-                            'code' => 'TRANSFER',
-                            'amount' => $amount,
-                            'status' => 'CO',
-                            'created_at' => date('Y-m-d H:i:s'),
-                            'updated_at' => date('Y-m-d H:i:s'),
-                        ]);
-
-                    if($trans) {
-                        PaymentTransactionLog::create([
-                            'payment_transaction_id' => $transId,
-                            'user_id' => $accessToken->user_id,
-                            'from_wallet_id' => $default_wallet->id,
-                            'to_wallet_id' => $wallet->id,
-                            'code' => 'TRANSFER',
-                            'amount' => $amount,
-                            'status' => 'CO'
-                        ]);
+                        if($trans) {
+                            PaymentTransactionLog::create([
+                                'payment_transaction_id' => $transId,
+                                'user_id' => $accessToken->user_id,
+                                'from_wallet_id' => $default_wallet->id,
+                                'to_wallet_id' => $wallet->id,
+                                'code' => 'TRANSFER',
+                                'amount' => $amount,
+                                'status' => 'CO'
+                            ]);
+                        }
                     }
+
+                    if($wallet){
+                        Wallet::find($default_wallet->id)->update(['amount' => $is_amount]);
+
+                        return response()->json(['status' => 200], 200);
+                    }
+
+                    return response()->json(['status' => 404, 'error' => 'เกิดข้อผิดพลาด...กรุณาลองใหม่'], 404);
+
+                }else{
+                    return response()->json(['status' => 404, 'error' => 'เงินในกระเป๋าหลักไม่เพียงพอ...กรุณาเพิ่มเงิน หรือ โยกย้ายมาจากเกมอื่น'], 404);
                 }
-
-                if($wallet){
-                    Wallet::find($default_wallet->id)->update(['amount' => $is_amount]);
-
-                    return response()->json(['status' => 200], 200);
-                }
-
-                return response()->json(['status' => 404], 404);
-
             }else{
-                return response()->json(['status' => 301], 301);
+                return response()->json(['status' => 404, 'error' => 'กระเป๋าเงินเกมส์ไม่อนุญาตให้ซ้ำกัน...กรุณาตรวจสอบ'], 404);
             }
         }else{
-            return response()->json(['status' => 404], 404);
+            return response()->json(['status' => 404, 'error' => 'เกมที่คุณเลือกไม่มีอยู่...'], 404);
         }
     }
 
@@ -157,6 +162,11 @@ class WalletsController extends Controller
     {
         $wallet = Wallet::where('user_id', $user)->where('api_game_id', $api_game_id)->get();
         return sizeof($wallet) > 0 ? true : false;
+    }
+
+    private function checkApiGame($api_game_id) {
+        $api_game = ApiGame::find($api_game_id);
+        return isset($api_game) ? true : false;
     }
 
     private function getUserData($id)
