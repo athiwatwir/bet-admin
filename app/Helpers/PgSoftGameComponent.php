@@ -92,7 +92,9 @@ class PgSoftGameComponent
             'currency' => $user->currency
         ]);
 
-        $url = 'https://'.$game_data->url.'/'.$user_pg->operator_player_session;
+        $url = null;
+
+        if($response['error'] == null) $url = 'https://'.$game_data->url.'/'.$user_pg->operator_player_session;
         return $url;
     }
 
