@@ -78,6 +78,8 @@ Route::prefix('v1')->group(function () {
             Route::get('user-level', [GamesController::class, 'getUserLevelApiGame']);
 
             Route::get('/pgsoft/player-summary', [WalletsController::class, 'getPlayerSummary']);
+            Route::get('player-summary', [WalletsController::class, 'getPlayerSummary2']);
+            Route::get('player-summaries/{gamecode}', [WalletsController::class, 'getPlayerSummary3']);
         });
 
         Route::prefix('logs')->group(function () {
@@ -92,6 +94,7 @@ Route::prefix('v1')->group(function () {
     Route::prefix('services')->group(function () {
         Route::get('update-game-wallet', [ServicesController::class, 'updateGameWallet']);
         Route::get('update-pgsoftgame-player-daily-summary', [ServicesController::class, 'updatePgSoftGamePlayerDailySummaryToDB']);
+        Route::get('update-wmcasino-player-daily-summary', [ServicesController::class, 'updateWMCasinoPlayerDailySummaryToDB']);
 
     });
     // END Service For Update Realtime ////////////////////////////////////////////////////
@@ -114,6 +117,12 @@ Route::prefix('v2')->group(function () {
 
     Route::prefix('wmgame')->group(function () {
         Route::get('test-wm-hello', [WMGameController::class, 'testWMHello']);
+        Route::post('test-member-register', [WMGameController::class, 'testMemberRegister']);
+        Route::post('test-signing-game', [WMGameController::class, 'testSigninGame']);
+        Route::post('test-logout-game', [WMGameController::class, 'testLogoutGame']);
+        Route::post('test-change-balance', [WMGameController::class, 'testChangeBalance']);
+        Route::post('test-get-balance', [WMGameController::class, 'testGetBalance']);
+        Route::post('test-get-report', [WMGameController::class, 'testReport']);
     });
 });
 

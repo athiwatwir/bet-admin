@@ -10,12 +10,16 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 use App\Helpers\PgSoftGameComponent as PgGameComponent;
+use App\Helpers\CasinoGameComponent as WMCasinoComponent;
 use App\Helpers\CoreGameComponent as CoreGame;
+use App\Helpers\GameCodeComponent as GameCode;
 
 use App\Models\User;
 use App\Models\Wallet;
 use App\Models\UserLog;
 use App\Models\UserPlayingPgsoftgame;
+use App\Models\UserPlayingWmcasino;
+use App\Models\ApiGame;
 
 class ServicesController extends Controller
 {
@@ -57,10 +61,67 @@ class ServicesController extends Controller
         return response()->json(['data' => 'done!', 'error' => null], 200);
     }
 
+    public function updateWMCasinoPlayerDailySummaryToDB() {
+        $getApiGame = ApiGame::where('gamecode', GameCode::WMGAME)->first();
+        $getUsers = Wallet::where('api_game_id', $getApiGame->id)->get();
+
+        foreach($getUsers as $user) {
+            $results = (new WMCasinoComponent)->getReport($user->user_id);
+            $winLoss = 0;
+            $hands = 0;
+            $bet_amount = 0;
+            $game = '';
+            $gid = '';
+            $lastplay = '';
+            $groups = $this->setGroup($results);
+
+            if($groups != '') {
+                foreach($groups as $values) {
+                    foreach($values as $value) {
+                        $winLoss+=$value['winLoss'];
+                        $hands++;
+                        $bet_amount+=$value['waterbet'];
+                        $game = $value['betResult'];
+                        $gid = $value['gid'];
+                        $lastplay = $value['betTime'];
+                    }
+
+                    UserPlayingWmcasino::updateOrCreate(
+                        [
+                            'user_id' => $user->user_id,
+                            'gid' => $gid,
+                            'game_name' => $game
+                        ],
+                        [
+                            'hands' => $hands,
+                            'bet_amount' => $bet_amount,
+                            'win_loss_amount' => $winLoss,
+                            'lastplay' => $lastplay
+                        ]
+                    );
+
+                }
+            }
+            return response()->json(['data' => 'done!', 'error' => null], 200);
+        }
+        
+    }
+
 
 
 
     // Private Function ////////////////////////////////////////////////////////////////////////////
+
+    private function setGroup($datas) {
+        $group = array();
+        if($datas != null) {
+            foreach($datas as $data) {
+                $group[$data['betResult']][] = $data;
+            }
+            return $group;
+        }
+        return false;
+    }
 
     private function searchUserName($users, $username)
     {

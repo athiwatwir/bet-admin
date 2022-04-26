@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Helpers\GameCodeComponent as GameCode;
 use App\Helpers\PgSoftGameComponent as PgGame;
 use App\Helpers\CasinoGameComponent as CasinoGame;
 
@@ -10,11 +11,11 @@ class CoreGameComponent
     public function checkpoint($user_id, $gamecode, $action, $amount = null)
     {
         switch ($gamecode) {
-            case 'PGGAME' :
+            case GameCode::PGGAME :
                 $response = $this->pgGameAction($user_id, $action, $amount);
                 return $response;
                 break;
-            case 'WMGAME' :
+            case GameCode::WMGAME :
                 $response = $this->casinoGameAction($user_id, $action, $amount);
                 return $response;
                 break;
@@ -68,7 +69,7 @@ class CoreGameComponent
                 return (new CasinoGame)->hello();
                 break;
             case 'create-player' :
-                return (new CasinoGame)->createPlayer($user_id);
+                (new CasinoGame)->createPlayer($user_id);
                 break;
             case 'login-to-game' :
                 return (new CasinoGame)->loginToGame($user_id);
@@ -87,6 +88,9 @@ class CoreGameComponent
                 break;
             case 'get-balance' :
                 return (new CasinoGame)->getBalance($user_id);
+                break;
+            case 'get-report' :
+                return (new CasinoGame)->getReport($user_id);
                 break;
         }
     }

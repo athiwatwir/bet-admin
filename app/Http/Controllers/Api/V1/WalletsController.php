@@ -15,7 +15,10 @@ use App\Models\User;
 use App\Models\PaymentTransactionLog;
 use App\Models\BankGroup;
 use App\Models\ApiGame;
+use App\Models\UserPlayingPgsoftgame;
+use App\Models\UserPlayingWmcasino;
 
+use App\Helpers\GameCodeComponent as GameCode;
 use App\Helpers\CoreGameComponent as CoreGame;
 
 class WalletsController extends Controller
@@ -107,9 +110,11 @@ class WalletsController extends Controller
                         "status" => 'CO',
                     ]);
 
+                    (new CoreGame)->checkpoint($accessToken->user_id, $request->game_code, 'create-player');
+
                     if($amount > 0) {
                         
-                        (new CoreGame)->checkpoint($accessToken->user_id, $request->gamecode, 'transfer-in', $amount);
+                        (new CoreGame)->checkpoint($accessToken->user_id, $request->game_code, 'transfer-in', $amount);
 
                         $transId = Str::uuid();
                         $trans = DB::table('payment_transactions')
@@ -542,6 +547,70 @@ class WalletsController extends Controller
         // Log::debug($results);
 
         return response()->json(['results' => $results, 'hands' => $hands, 'betAmount' => $betAmount, 'winLossAmount' => $winLossAmount]);
+    }
+
+    public function getPlayerSummary2()
+    {
+        $accessToken = auth()->user()->token();
+        $wallets = Wallet::where('is_default', 'N')->where('user_id', $accessToken->user_id)->get();
+        $byGamecode = [];
+        foreach($wallets as $wallet) {
+            $game = ApiGame::find($wallet->api_game_id);
+            $playing_transaction = $this->playingTransaction($game->gamecode, $accessToken->user_id);
+            $players = [];
+            $results = [];
+            if(sizeof($playing_transaction) > 0) {
+                foreach($playing_transaction as $key => $res) {
+                    $players[$key]['gameName'] = $res->game_name;
+                    $players[$key]['gameCode'] = $game->gamecode;
+                    $players[$key]['hands'] = $res->hands;
+                    $players[$key]['betAmount'] = $res->bet_amount;
+                    $players[$key]['winLossAmount'] = $res->win_loss_amount;
+                }
+                
+                // $results = $this->groupByGameCode($players);
+            }
+
+            // Log::debug($players);
+            array_push($byGamecode, $players);
+        }
+        // Log::debug($byGamecode);
+        // Log::debug($this->groupByGameCode($byGamecode));
+        return response()->json(['results' => $byGamecode], 200);
+    }
+
+    public function getPlayerSummary3($gamecode) {
+        $accessToken = auth()->user()->token();
+        $playing_transaction = $this->playingTransaction($gamecode, $accessToken->user_id);
+        $players = [];
+        $results = [];
+
+        if(sizeof($playing_transaction) > 0) {
+            foreach($playing_transaction as $key => $res) {
+                $players[$key]['gameName'] = $res->game_name;
+                $players[$key]['hands'] = $res->hands;
+                $players[$key]['betAmount'] = $res->bet_amount;
+                $players[$key]['winLossAmount'] = $res->win_loss_amount;
+            }
+
+            $results = $this->groupByGame($players);
+        }
+
+        return response()->json(['results' => $results], 200);
+    }
+
+    private function playingTransaction($gamecode, $user_id) {
+        if($gamecode == GameCode::WMGAME) return UserPlayingWmcasino::where('user_id', $user_id)->get();
+        if($gamecode == GameCode::PGGAME) return UserPlayingPgsoftgame::where('user_id', $user_id)->get();
+    }
+
+    private function groupByGameCode($data) {
+        $group = [];
+        foreach($data as $value) {
+            $group['code'][$value['gameCode']][] = $value;
+        }
+
+        return $group;
     }
 
     private function groupByGame($data)
