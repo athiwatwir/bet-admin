@@ -16,7 +16,7 @@
                         </div>
                         <div class="col-12 col-lg-8">
                             
-                            <div class="form-label-group">
+                            <div class="form-label-group mt-3">
                                 <input placeholder="ชื่อเกม" id="name" name="name" type="text" value="" class="form-control" required autocomplete="off">
                                 <label for="name">ชื่อเกม</label>
                             </div>
@@ -26,10 +26,10 @@
                                 <label for="code-input">รหัสเกม <small>(ภาษาอังกฤษตัวใหญ่ทั้งหมด)</small></label>
                             </div>
 
-                            <div class="form-label-group mt-3">
+                            <!-- <div class="form-label-group mt-3">
                                 <input placeholder="ลิงค์เกม" id="url-input" name="link" type="text" value="" class="form-control" required autocomplete="off">
                                 <label for="url-input">ลิงค์เกม</label>
-                            </div>
+                            </div> -->
 
                             <div class="form-label-group mt-3">
                                 <select placeholder="กลุ่มเกม" id="group-input" name="group" class="form-control" required>
@@ -39,6 +39,11 @@
                                     @endforeach
                                 <select>
                                 <label for="group-input">กลุ่มเกม</label>
+                            </div>
+
+                            <div class="form-label-group mt-3">
+                                <textarea placeholder="รายละเอียด" id="desc-input" name="description" type="text" value="" class="form-control" required autocomplete="off"></textarea>
+                                <label for="code-input">รายละเอียดเกี่ยวกับเกม</label>
                             </div>
 
                         </div>

@@ -40,7 +40,7 @@ class ApiGameController extends Controller
                 'game_group_id' => $request->group,
                 'name' => $request->name, 
                 'gamecode' => $request->code,
-                'url' => $request->link,
+                'description' => $request->description,
                 'logo' => $fileName
             ]);
             $this->create_url($game->id, $request->url);
@@ -78,8 +78,7 @@ class ApiGameController extends Controller
             $game->update([
                 'game_group_id' => $request->edit_game_group,
                 'name' => $request->edit_game_name, 
-                'gamecode' => $request->edit_game_code,
-                'url' => $request->edit_game_url
+                'description' => $request->edit_game_desc
             ]);
 
             if(isset($request->edit_game_logo)) {

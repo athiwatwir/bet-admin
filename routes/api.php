@@ -47,6 +47,7 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::get('game/demo/{table}', [GamesController::class, 'gameDemo']);
+    Route::get('game/description/{id}', [GamesController::class, 'gameDescription']);
 
     Route::middleware(['auth:api'])->group(function () {
         Route::get('logout', [PassportAuthController::class, 'logout']);

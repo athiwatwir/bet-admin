@@ -115,11 +115,16 @@ class GamesController extends Controller
 
     public function playGame(Request $request, $id)
     {
-        $accessToken = auth()->user()->token();
-        // $playGame = DB::table('games')->find($id, ['url', 'token']);
-        $wallet = DB::table('wallets')->where('api_game_id', $id)->where('user_id', $accessToken->user_id)->first();
-        $is_get_game_wallet = isset($wallet) ? true : false;
-        return response()->json(['is_wallet' => $is_get_game_wallet], 200);
+        $game = ApiGame::find($id, ['maintenance']);
+        if($game->maintenance == 'N') {
+            $accessToken = auth()->user()->token();
+            // $playGame = DB::table('games')->find($id, ['url', 'token']);
+            $wallet = DB::table('wallets')->where('api_game_id', $id)->where('user_id', $accessToken->user_id)->first();
+            $is_get_game_wallet = isset($wallet) ? true : false;
+            return response()->json(['is_wallet' => $is_get_game_wallet, 'maintenance' => false], 200);
+        }else if($game->maintenance == 'Y') {
+            return response()->json(['maintenance' => true], 200);
+        }
     }
 
     public function gameDemo(Request $request, $table) {
@@ -131,6 +136,11 @@ class GamesController extends Controller
     {
         $token = auth()->pgsoftgame()->createToken('PgsoftgameAuthApp')->accessToken;
         return response()->json(['token' => $token], 200);
+    }
+
+    public function gameDescription($id) {
+        $desc = ApiGame::find($id, ['logo', 'description']);
+        return response()->json(['data' => $desc], 200);
     }
 
 

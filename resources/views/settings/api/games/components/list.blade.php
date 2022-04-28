@@ -89,7 +89,7 @@
                     class="js-ajax-confirm text-danger" 
                     data-href="{{ route('role-delete', ['id' => $game->id]) }}"
                     data-ajax-confirm-body="<center>
-                                                <h4 class='mb-2'>ยืนยันการลบตำแหน่งผู้ดูแลระบบ ? </h4>
+                                                <h4 class='mb-2'>ยืนยันการลบเกม ? </h4>
                                                 {{ $game->name }}
                                             </center>" 
 

@@ -11,7 +11,7 @@ class ApiGame extends Model
     use HasFactory, Uuids;
 
     protected $fillable = [
-        'game_group_id', 'name', 'gamecode', 'url', 'logo', 'isactive', 'status'
+        'game_group_id', 'name', 'gamecode', 'logo', 'description', 'isactive', 'maintenance', 'status'
     ];
 
     protected $hidden = [

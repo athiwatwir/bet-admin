@@ -21,6 +21,7 @@ use App\Http\Controllers\StaffRolesController;
 use App\Http\Controllers\AdjustController;
 use App\Http\Controllers\ApiSettingController;
 use App\Http\Controllers\ApiGameController;
+use App\Http\Controllers\MaintenanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -130,6 +131,15 @@ Route::middleware(['auth:webadmin'])->group(function () {
                 Route::post('/add-token', [ApiGameController::class, 'addToken'])->name('setting-api-game-add-api-token');
             });
             Route::get('/user-level', [ApiSettingController::class, 'userLevelIndex'])->name('setting-api-userlevel-index');
+        });
+
+        Route::prefix('/maintenance')->group(function () {
+            Route::prefix('/games')->group(function () {
+                Route::get('/', [MaintenanceController::class, 'index'])->name('setting-maintenance-game-index');
+                Route::post('/game-maintenance-create', [MaintenanceController::class, 'store'])->name('setting-maintenance-game-create');
+                Route::get('/game-maintenance-delete/{id}', [MaintenanceController::class, 'delete'])->name('setting-maintenance-game-delete');
+                Route::get('/game-maintenance-complete/{id}', [MaintenanceController::class, 'complete'])->name('setting-maintenance-game-complete');
+            });
         });
     });
 

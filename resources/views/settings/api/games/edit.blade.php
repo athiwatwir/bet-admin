@@ -35,20 +35,20 @@
                                             </div>
                                         
                                             @csrf
-                                            <div class="form-label-group mb-4 mt-3">
+                                            <div class="form-label-group mt-3">
                                                 <input placeholder="ชื่อเกม" id="edit-game-name" name="edit_game_name" type="text" class="form-control" value="{{ $game->name }}" disabled required autocomplete="off">
                                                 <label>ชื่อเกม</label>
                                             </div>
 
-                                            <div class="form-label-group mb-4">
-                                                <input placeholder="รหัสเกม" id="edit-game-code" name="edit_game_code" type="text" class="form-control" value="{{ $game->gamecode }}" disabled required autocomplete="off">
+                                            <div class="form-label-group mt-3">
+                                                <input placeholder="รหัสเกม" type="text" class="form-control" value="{{ $game->gamecode }}" disabled required autocomplete="off">
                                                 <label>รหัสเกม</label>
                                             </div>
 
-                                            <div class="form-label-group mb-4">
+                                            <!-- <div class="form-label-group mb-4">
                                                 <input placeholder="ลิงค์เกม" id="edit-game-url" name="edit_game_url" type="text" class="form-control" value="{{ $game->url }}" disabled required autocomplete="off">
                                                 <label>ลิงค์เกม</label>
-                                            </div>
+                                            </div> -->
 
                                             <div class="form-label-group mt-3">
                                                 <select placeholder="กลุ่มเกม" id="edit-game-group" name="edit_game_group" class="form-control select-disabled" required disabled>
@@ -58,6 +58,12 @@
                                                 <select>
                                                 <label for="group-input">กลุ่มเกม</label>
                                             </div>
+
+                                            <div class="form-label-group mt-3">
+                                                <textarea placeholder="รายละเอียด" id="desc-input" name="edit_game_desc" type="text" value="" class="form-control" required disabled autocomplete="off">{{ $game->description }}</textarea>
+                                                <label for="code-input">รายละเอียดเกี่ยวกับเกม</label>
+                                            </div>
+
                                         </div>
                                     </div>
 
@@ -145,28 +151,24 @@
 <script>
     const GAME_EDIT_BTN = document.querySelector('#game-name-edit-btn')
     const GAME_NAME = document.querySelector('#edit-game-name')
-    const GAME_CODE = document.querySelector('#edit-game-code')
-    const GAME_URL = document.querySelector('#edit-game-url')
     const GAME_LOGO = document.querySelector('#edit-game-logo')
     const GAME_GROUP = document.querySelector('#edit-game-group')
+    const GAME_DESC = document.querySelector('#desc-input')
     const GAME_NAME_SAVE = document.querySelector('#game-name-save-btn')
     const GAME_NAME_CANCEL = document.querySelector('#game-name-cancel-btn')
     let old_game_name = ''
-    let old_game_code = ''
-    let old_game_url = ''
     let old_game_logo = ''
     let old_game_group = ''
+    let old_game_desc = ''
 
     GAME_EDIT_BTN.addEventListener('click', () => {
         GAME_NAME.removeAttribute('disabled')
-        GAME_CODE.removeAttribute('disabled')
-        GAME_URL.removeAttribute('disabled')
         GAME_LOGO.removeAttribute('disabled')
         GAME_GROUP.removeAttribute('disabled')
+        GAME_DESC.removeAttribute('disabled')
         old_game_name = GAME_NAME.value
-        old_game_code = GAME_CODE.value
-        old_game_url = GAME_URL.value
         old_game_group = GAME_GROUP.value
+        old_game_desc = GAME_DESC.value
         old_game_logo = document.querySelector('#simple-edit-logo').src
         this.setAttributeGameEditBtn('none', 'initial')
         GAME_LOGO.style.display = 'initial'
@@ -175,22 +177,16 @@
 
     GAME_NAME_CANCEL.addEventListener('click', () => {
         GAME_NAME.setAttribute('disabled', 'true')
-        GAME_CODE.setAttribute('disabled', 'true')
-        GAME_URL.setAttribute('disabled', 'true')
         GAME_LOGO.setAttribute('disabled', 'true')
         GAME_GROUP.setAttribute('disabled', 'true')
+        GAME_DESC.setAttribute('disabled', 'true')
         GAME_NAME.value = old_game_name
-        GAME_CODE.value = old_game_code
-        GAME_URL.value = old_game_url
         GAME_GROUP.value = old_game_group
+        GAME_DESC.value = old_game_desc
         document.querySelector('#simple-edit-logo').src = old_game_logo
         this.setAttributeGameEditBtn('initial', 'none')
         GAME_LOGO.style.display = 'none'
         document.querySelector('#nottice-game-logo').style.display = 'none'
-    })
-
-    GAME_CODE.addEventListener('keyup', () => {
-        GAME_CODE.value = GAME_CODE.value.replace(/[^A-Za-z]/ig, '').toUpperCase()
     })
 
     GAME_LOGO.addEventListener('change', () => {
