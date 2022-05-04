@@ -201,7 +201,7 @@
                         </a>
                     </li>
                     <li class="dropdown-item">
-                        <a class="dropdown-link" href="{{ route('setting-maintenance-game-index') }}" >
+                        <a class="dropdown-link" href="{{ route('setting-maintenance-index') }}" >
                             ปรับปรุงระบบ
                         </a>
                     </li>

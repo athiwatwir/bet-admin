@@ -11,7 +11,7 @@ class Maintenance extends Model
     use HasFactory, Uuids;
 
     protected $fillable = [
-        'api_game_id', 'startdate', 'enddate', 'description', 'status', 'now'
+        'api_game_id', 'transaction', 'secretkey', 'startdate', 'enddate', 'description', 'status', 'now'
     ];
 
     protected $hidden = [

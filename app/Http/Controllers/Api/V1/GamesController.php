@@ -17,6 +17,7 @@ use App\Models\User;
 use App\Models\UserLevel;
 use App\Models\UserLevelApiGame;
 use App\Models\ApiGame;
+use App\Models\Maintenance;
 
 class GamesController extends Controller
 {
@@ -123,7 +124,8 @@ class GamesController extends Controller
             $is_get_game_wallet = isset($wallet) ? true : false;
             return response()->json(['is_wallet' => $is_get_game_wallet, 'maintenance' => false], 200);
         }else if($game->maintenance == 'Y') {
-            return response()->json(['maintenance' => true], 200);
+            $mainten = Maintenance::where('api_game_id', $id)->where('status', 'DR')->where('now', true)->first();
+            return response()->json(['maintenance' => true, 'startdate' => $mainten->startdate, 'enddate' => $mainten->enddate, 'description' => $mainten->description], 200);
         }
     }
 

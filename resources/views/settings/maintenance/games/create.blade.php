@@ -48,10 +48,10 @@
 
 
 <script>
-    const mainten_now = document.querySelector('#game-maintent-now')
+    const game_mainten_now = document.querySelector('#game-maintent-now')
 
-    mainten_now.addEventListener('change', () => {
-        if(mainten_now.checked) {
+    game_mainten_now.addEventListener('change', () => {
+        if(game_mainten_now.checked) {
             document.querySelector('#game-startdate').disabled = true
             document.querySelector('#game-startdate').required = false
         }else{

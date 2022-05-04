@@ -134,11 +134,25 @@ Route::middleware(['auth:webadmin'])->group(function () {
         });
 
         Route::prefix('/maintenance')->group(function () {
+            Route::get('/', [MaintenanceController::class, 'index'])->name('setting-maintenance-index');
+            Route::get('/maintenance-delete/{id}', [MaintenanceController::class, 'delete'])->name('setting-maintenance-delete');
             Route::prefix('/games')->group(function () {
-                Route::get('/', [MaintenanceController::class, 'index'])->name('setting-maintenance-game-index');
-                Route::post('/game-maintenance-create', [MaintenanceController::class, 'store'])->name('setting-maintenance-game-create');
-                Route::get('/game-maintenance-delete/{id}', [MaintenanceController::class, 'delete'])->name('setting-maintenance-game-delete');
-                Route::get('/game-maintenance-complete/{id}', [MaintenanceController::class, 'complete'])->name('setting-maintenance-game-complete');
+                Route::get('/game-maintenance-edit/{id}', [MaintenanceController::class, 'gameEdit'])->name('setting-maintenance-game-edit');
+                Route::post('/game-maintenance-create', [MaintenanceController::class, 'gameStore'])->name('setting-maintenance-game-create');
+                Route::post('/game-maintenance-update', [MaintenanceController::class, 'gameUpdate'])->name('setting-maintenance-game-update');
+                Route::get('/game-maintenance-complete/{id}', [MaintenanceController::class, 'gameComplete'])->name('setting-maintenance-game-complete');
+            });
+            Route::prefix('/transaction')->group(function () {
+                Route::post('/maintenance-create', [MaintenanceController::class, 'transactionStore'])->name('setting-maintenance-transaction-create');
+                Route::get('/maintenance-edit/{id}', [MaintenanceController::class, 'transactionEdit'])->name('setting-maintenance-transaction-edit');
+                Route::post('/maintenance-update', [MaintenanceController::class, 'transactionUpdate'])->name('setting-maintenance-transaction-update');
+                Route::get('/maintenance-complete/{id}', [MaintenanceController::class, 'transactionComplete'])->name('setting-maintenance-transaction-complete');
+            });
+            Route::prefix('/website')->group(function () {
+                Route::post('/maintenance-create', [MaintenanceController::class, 'websiteStore'])->name('setting-maintenance-website-create');
+                Route::get('/maintenance-edit/{id}', [MaintenanceController::class, 'websiteEdit'])->name('setting-maintenance-website-edit');
+                Route::post('/maintenance-update', [MaintenanceController::class, 'websiteUpdate'])->name('setting-maintenance-website-update');
+                Route::get('/maintenance-complete/{id}', [MaintenanceController::class, 'websiteComplete'])->name('setting-maintenance-website-complete');
             });
         });
     });

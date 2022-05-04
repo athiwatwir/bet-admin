@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\V1\PaymentTransactionsController;
 use App\Http\Controllers\Api\V1\GamesController;
 use App\Http\Controllers\Api\V1\LogsController;
 use App\Http\Controllers\Api\V1\ServicesController;
+use App\Http\Controllers\Api\V1\MaintenanceController;
 
 use App\Http\Controllers\Api\V2\PgSoftGameController;
 use App\Http\Controllers\Api\V2\WMGameController;
@@ -86,9 +87,12 @@ Route::prefix('v1')->group(function () {
         Route::prefix('logs')->group(function () {
             Route::post('user-activities', [LogsController::class, 'userLogs']);
         });
+
+        Route::get('transaction-maintenance', [MaintenanceController::class, 'transactionMaintenance']);
     });
 
     Route::post('test-get-token', [GamesController::class, 'createGameTk']);
+    Route::get('website-maintenance', [MaintenanceController::class, 'websiteMaintenance']);
 
 
     // Service For Update Realtime ////////////////////////////////////////////////////////

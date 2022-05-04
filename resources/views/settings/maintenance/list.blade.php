@@ -37,7 +37,7 @@
 >
     <thead>
         <tr class="text-muted fs--13">
-            <th>รายการจาก</th>
+            <th>รายการปิดปรับปรุง</th>
             <th class="text-center">ตั้งแต่วันที่</th>
             <th class="w--150 text-center">ถึงวันที่</th>
             <th class="w--150 text-center">จัดการ</th>
@@ -50,7 +50,19 @@
         <tr class="text-dark">
 
             <td class="d-flex" style="line-height: 17px;">
-                {{ $mainten->api_game->name }}
+                @if(isset($mainten->api_game))
+                    {{ $mainten->api_game->name }}
+                @elseif(isset($mainten->transaction))
+                    @if($mainten->transaction == 'deposit')
+                        ฝากเงิน
+                    @elseif($mainten->transaction == 'withdraw')
+                        ถอนเงิน
+                    @elseif($mainten->transaction == 'deposit-withdraw')
+                        ฝาก - ถอน
+                    @endif
+                @else
+                    เว็บไซต์ : [ {{ $mainten->secretkey }} ]
+                @endif
             </td>
             
             <td class="text-center">
@@ -67,7 +79,13 @@
                 @if($mainten->now)
                     <a	href="#!" 
                         class="js-ajax-confirm text-success" 
-                        data-href="{{ route('setting-maintenance-game-complete', ['id' => $mainten->id]) }}"
+                        @if(isset($mainten->api_game_id))
+                            data-href="{{ route('setting-maintenance-game-complete', ['id' => $mainten->id]) }}"
+                        @elseif(isset($mainten->transaction))
+                            data-href="{{ route('setting-maintenance-transaction-complete', ['id' => $mainten->id]) }}"
+                        @else
+                            data-href="{{ route('setting-maintenance-website-complete', ['id' => $mainten->id]) }}"
+                        @endif
                         data-ajax-confirm-body="<center>
                                                     <h4 class='mb-2'>ปรับปรุงเรียบร้อย ? </h4>
                                                 </center>" 
@@ -85,14 +103,24 @@
                     </a>
                 @endif
 
-                <a class="text-truncate mr-2 text-primary" href="#" title="แก้ไข">
-                    <i class="fi fi-pencil"></i>
-                </a>
+                @if(isset($mainten->api_game))
+                    <a class="text-truncate mr-2 text-primary" href="{{ route('setting-maintenance-game-edit', ['id' => $mainten->id]) }}" title="แก้ไข">
+                        <i class="fi fi-pencil"></i>
+                    </a>
+                @elseif(isset($mainten->transaction))
+                    <a class="text-truncate mr-2 text-primary" href="{{ route('setting-maintenance-transaction-edit', ['id' => $mainten->id]) }}" title="แก้ไข">
+                        <i class="fi fi-pencil"></i>
+                    </a>
+                @else
+                    <a class="text-truncate mr-2 text-primary" href="{{ route('setting-maintenance-website-edit', ['id' => $mainten->id]) }}" title="แก้ไข">
+                        <i class="fi fi-pencil"></i>
+                    </a>
+                @endif
 
                 @if(!$mainten->now)
                     <a	href="#!" 
                         class="js-ajax-confirm text-danger" 
-                        data-href="{{ route('setting-maintenance-game-delete', ['id' => $mainten->id]) }}"
+                        data-href="{{ route('setting-maintenance-delete', ['id' => $mainten->id]) }}"
                         data-ajax-confirm-body="<center>
                                                     <h4 class='mb-2'>ยืนยันการลบ ? </h4>
                                                 </center>" 

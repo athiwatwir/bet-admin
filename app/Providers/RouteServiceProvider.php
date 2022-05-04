@@ -23,6 +23,8 @@ class RouteServiceProvider extends ServiceProvider
 
     public const PGSOFT_API = 'http://127.0.0.1:3000/api/v1/dev';
 
+    public const CLIENT_API = 'http://127.0.0.1:5000';
+
     public const SMS_URL = 'https://thsms.com/api/send-sms';
     public const SMS_BEARER = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC90aHNtcy5jb21cL2FwaS1rZXkiLCJpYXQiOjE2MzUzMjQ1NTgsIm5iZiI6MTYzNTMyNDU1OCwianRpIjoiWWh0WklvMlRubjdVN0x1WiIsInN1YiI6NTYxMiwicHJ2IjoiMjNiZDVjODk0OWY2MDBhZGIzOWU3MDFjNDAwODcyZGI3YTU5NzZmNyJ9.LSpnCWEHU4C1q6Qgyz1c_go5KviZBI4UrN9zFQkI4yo';
 
