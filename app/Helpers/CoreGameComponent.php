@@ -92,6 +92,9 @@ class CoreGameComponent
             case 'get-report' :
                 return (new CasinoGame)->getReport($user_id);
                 break;
+            case 'get-player' :
+                return (new CasinoGame)->getUserPlaying();
+                break;
         }
     }
 }

@@ -48,7 +48,7 @@
 
         @foreach ($players as $key => $player)
             <tr>
-                <td><a href="{{ route('player-pgsoft-report', ['player' => $player['playerName']]) }}"><strong>{{ $player['playerName'] }}</strong></a></td>
+                <td><a href="{{ route('player-wmgame-report', ['player' => $player['playerName']]) }}"><strong>{{ $player['playerName'] }}</strong></a></td>
 
                 <td class="text-center">{{ number_format($player['hands']) }}</td>
 

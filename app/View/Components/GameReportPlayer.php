@@ -22,6 +22,7 @@ class GameReportPlayer extends Component
     {
         $this->gamecode = $gamecode;
         $this->players = (new CoreGame)->checkpoint(NULL, $gamecode, 'get-player');
+        Log::debug($this->players);
     }
 
     /**
@@ -34,6 +35,9 @@ class GameReportPlayer extends Component
         switch ($this->gamecode) {
             case 'PGGAME' :
                 return view('components.playerreports.pgsoftgame');
+                break;
+            case 'WMGAME' :
+                return view('components.playerreports.wmgame');
                 break;
             }
         }

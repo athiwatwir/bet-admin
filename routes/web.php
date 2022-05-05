@@ -166,8 +166,10 @@ Route::middleware(['auth:webadmin'])->group(function () {
         Route::get('/games/view/{gamecode}', [ReportsController::class, 'viewGameReport'])->name('game-view-report');
 
         Route::get('/pgsoft', [ReportsController::class, 'pgsoft']);
-        Route::get('/pgsoft/view/{player}', [ReportsController::class, 'pgsoftByPlayer'])->name('player-report');
+        Route::get('/pgsoft/view/{player}', [ReportsController::class, 'pgsoftByPlayer'])->name('player-pgsoft-report');
         Route::get('/pgsoft/search', [ReportsController::class, 'searchPgSoft']);
+
+        Route::get('/wmgame/view/{player}', [ReportsController::class, 'wmgameByPlayer'])->name('player-wmgame-report');
     });
 
     Route::get('/banks', [BanksController::class, 'index'])->name('banks');

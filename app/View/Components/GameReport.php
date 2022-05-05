@@ -31,6 +31,9 @@ class GameReport extends Component
             case 'PGGAME' :
                 return 'components.gamereports.pgsoftgame';
                 break;
+            case 'WMGAME' :
+                return 'components.gamereports.wmgame';
+                break;
         }
     }
 }

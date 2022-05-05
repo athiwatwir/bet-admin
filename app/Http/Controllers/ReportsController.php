@@ -132,6 +132,13 @@ class ReportsController extends Controller
         }
     }
 
+    public function wmgameByPlayer($player) {
+        $gamecode = 'WMGAME';
+        $user = (new UsersController)->getUserByUsername($player);
+        $response = (new CoreGame)->checkpoint($user[0]->id, $gamecode, 'get-report');
+        return view('reports.players.wmgame', ['player' => $user[0]->username, 'player_id' => $user[0]->id, 'gamecode' => $gamecode, 'hands' => $response['hands'], 'betAmount' => $response['betAmount'], 'winLossAmount' => $response['winLossAmount']]);
+    }
+
     public function pgsoftByPlayer($player)
     {
         $gamecode = 'PGGAME';
