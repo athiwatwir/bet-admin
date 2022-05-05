@@ -66,7 +66,7 @@ class ServicesController extends Controller
         $getUsers = Wallet::where('api_game_id', $getApiGame->id)->get();
 
         foreach($getUsers as $user) {
-            $results = (new WMCasinoComponent)->getReport($user->user_id);
+            $results = (new WMCasinoComponent)->getReportToDB($user->user_id);
             $winLoss = 0;
             $hands = 0;
             $bet_amount = 0;

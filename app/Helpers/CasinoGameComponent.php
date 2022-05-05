@@ -110,22 +110,22 @@ class CasinoGameComponent
         return $response['result'];
     }
 
-    // public function getReport($user_id) {
-    //     $date_now = date('Ymd');
-    //     $game_data = $this->getGameData();
-    //     $user = $this->getUserData($user_id);
+    public function getReportToDB($user_id) {
+        $date_now = date('Ymd');
+        $game_data = $this->getGameData();
+        $user = $this->getUserData($user_id);
 
-    //     $response = Http::asForm()->post($this->getGateway($game_data->api_url).'?cmd=GetDateTimeReport&vendorId='.$this->getVendorId($game_data->api_token).'&signature='.$this->getSignature($game_data->api_token), [
-    //             'user' => $user->username,
-    //             'startTime' => $date_now.'000000',
-    //             'endTime' => $date_now.'235959',
-    //             'timetype' => 1,
-    //             'datatype' => 0,
-    //             'timestamp' => time()
-    //         ]);
+        $response = Http::asForm()->post($this->getGateway($game_data->api_url).'?cmd=GetDateTimeReport&vendorId='.$this->getVendorId($game_data->api_token).'&signature='.$this->getSignature($game_data->api_token), [
+                'user' => $user->username,
+                'startTime' => $date_now.'000000',
+                'endTime' => $date_now.'235959',
+                'timetype' => 1,
+                'datatype' => 0,
+                'timestamp' => time()
+            ]);
 
-    //     return $response['result'];
-    // }
+        return $response['result'];
+    }
 
     public function getReport($user_id)
     {
