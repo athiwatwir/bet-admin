@@ -39,7 +39,7 @@
                         @endif
                     </label>
                 </p>
-                <p class="mb-4">ตำแหน่ง : XXXXXX</p>
+                <p class="mb-4">ตำแหน่ง : {{ $profile->staff_role }}</p>
                 @if($profile->id != Auth::id())
                 <p class="mb-0">
                     <a	href="#!" 

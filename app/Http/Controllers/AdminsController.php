@@ -31,7 +31,7 @@ class AdminsController extends Controller
                     ->orderBy('created_at', 'desc')
                     ->paginate(10);
 
-        $role = $this->staffRole();
+        $roles = $this->staffRole();
 
         $inactive = [];
         $active = [];
@@ -39,9 +39,14 @@ class AdminsController extends Controller
         foreach ($admins as $key => $admin) {
             if($admin->is_active == 'N') array_push($inactive, $admin);
             if($admin->is_active == 'Y') array_push($active, $admin);
+            foreach($roles as $role) {
+                if($admin->staff_role_id == $role->id) {
+                    $admins[$key]['staff_role'] = $role->name;
+                }
+            }
         }
 
-        return view('admin.index', ['admins' => $admins, 'inactive' => $inactive, 'active' => $active, 'deleted' => $deleted, 'roles' => $role]);
+        return view('admin.index', ['admins' => $admins, 'inactive' => $inactive, 'active' => $active, 'deleted' => $deleted, 'roles' => $roles]);
     }
 
     private function staffRole()
@@ -52,6 +57,12 @@ class AdminsController extends Controller
     public function view(Request $request)
     {
         $admin = DB::table('staffs')->find($request->id);
+        $roles = $this->staffRole();
+        foreach($roles as $role) {
+            if($admin->staff_role_id == $role->id) {
+                $admin->staff_role = $role->name;
+            }
+        }
         return view('admin.view', ['profile' => $admin, 'username' => $request->username]);
     }
 

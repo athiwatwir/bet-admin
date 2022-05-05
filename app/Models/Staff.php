@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Traits\Uuids;
 use Illuminate\Support\Facades\Hash;
+use App\Models\StaffRole;
 
 class Staff extends Authenticatable
 {
@@ -30,5 +31,9 @@ class Staff extends Authenticatable
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = Hash::make($value);
+    }
+
+    public function staff_role() {
+        return $this->belongTo(StaffRole::class);
     }
 }

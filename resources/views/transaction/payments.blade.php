@@ -101,24 +101,24 @@
                                             <td style="line-height: 17px;">
                                                 <p class="mb-0">
                                                     @if($trans->code == 'DEPOSIT')
-                                                        <span class="badge badge-success font-weight-normal fs--16">
+                                                        <span class="badge badge-success font-weight-normal fs--14">
                                                             เติมเงิน
                                                         </span>
                                                     @elseif($trans->code == 'WITHDRAW')
-                                                        <span class="badge badge-danger font-weight-normal fs--16">
+                                                        <span class="badge badge-danger font-weight-normal fs--14">
                                                             ถอนเงิน
                                                         </span>
                                                     @elseif($trans->code == 'TRANSFER')
-                                                        <span class="badge badge-warning font-weight-normal fs--16">
+                                                        <span class="badge badge-warning font-weight-normal fs--14">
                                                             โอนเงินในระบบ
                                                         </span>
                                                     @elseif($trans->code == 'ADJUST')
                                                         @if($trans->code_status == 'Promo')
-                                                            <span class="badge badge-pink font-weight-normal fs--16">
+                                                            <span class="badge badge-pink font-weight-normal fs--14">
                                                                 โปรโมชั่น
                                                             </span>
                                                         @else
-                                                            <span class="badge badge-primary font-weight-normal fs--16">
+                                                            <span class="badge badge-primary font-weight-normal fs--14">
                                                                 ปรับเปลี่ยน
                                                             </span>
                                                         @endif
@@ -129,7 +129,7 @@
                                                 @endif
                                             </td>
 
-                                            <td class="text-center" style="line-height: 16px;">
+                                            <td class="text-center" style="line-height: 18px; font-size: 14px;">
                                                 @if($trans->code_status == 'Promo')
                                                     {{ $trans->description }}
                                                 @else
@@ -138,12 +138,12 @@
                                                 @endif
                                             </td>
 
-                                            <td class="text-center" style="line-height: 15px; font-size: 13px;">
+                                            <td class="text-center" style="line-height: 18px; font-size: 13px;">
                                                 {{ date('d-m-Y', strtotime($trans->action_date)) }}<br/>
                                                 <small>{{ date('H:i:s', strtotime($trans->action_date)) }}</small>
                                             </td>
 
-                                            <td class="text-center" style="line-height: 16px;">
+                                            <td class="text-center" style="line-height: 10px;">
                                                 @if($trans->code == 'ADJUST')
                                                     @if($trans->code_status == 'Promo')
                                                         <small>
@@ -169,6 +169,7 @@
                                                         </small>
                                                     @endif
                                                 @else
+                                                    <span class="fs--14" style="line-height: 16px;">
                                                     @if($trans->code == 'DEPOSIT')
                                                         {{ $trans->cbank_name }}<br/>
                                                         <small>{{ $trans->account_name }}</small><br/>
@@ -194,6 +195,7 @@
                                                             @endif
                                                         </small>
                                                     @endif
+                                                    </span>
                                                 @endif
                                             </td>
 

@@ -88,6 +88,7 @@
     @if(session('_p')['payment_transaction'])
     <li class="nav-item dropdown">
         <a href="#" class="nav-link nav-link-caret-hide dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="mainNavFeatures">
+            <x-notification-transaction-pending position="main" />
             <i class="fas fa-comments-dollar float-start m-0 mt-1"></i>
             <span>การเงิน</span> 
         </a>
@@ -115,6 +116,7 @@
                         </li>
                         <li class="dropdown-item text-wrap">
                             <a href="{{ url('/transaction/deposit') }}" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
+                                <x-notification-transaction-pending position="deposit" />
                                 <i class="fas fa-hand-holding-medical float-start fs--25 mt--n2"></i>
                                 <span class="h5-xs d-block fs--18">คำร้องการฝากเงิน</span>
                                 <span class="fs--11 text-muted text-uppercase">
@@ -133,6 +135,7 @@
                         </li>
                         <li class="dropdown-item text-wrap">
                             <a href="{{ url('/transaction/withdraw') }}" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
+                                <x-notification-transaction-pending position="withdraw" />
                                 <i class="fas fa-hand-holding-usd float-start fs--25 mt--n2"></i>
                                 <span class="h5-xs d-block fs--18">การถอนเงิน</span>
                                 <span class="fs--11 text-muted text-uppercase">
@@ -143,9 +146,9 @@
                         <li class="dropdown-item text-wrap">
                             <a href="{{ url('/transaction/adjust') }}" class="dropdown-link text-dark transition-hover-start p-3 line-height-1">
                                 <i class="fas fa-comment-dollar float-start fs--25 mt--n2"></i>
-                                <span class="h5-xs d-block fs--18">Adjust</span>
+                                <span class="h5-xs d-block fs--18">ปรับเปลี่ยนยอดเงิน</span>
                                 <span class="fs--11 text-muted text-uppercase">
-                                    Adjust 
+                                    ปรับเปลี่ยนยอดเงินสมาชิก 
                                 </span>
                             </a>
                         </li>
@@ -372,6 +375,7 @@
     @if(session('_p')['adjust'])
     <li class="nav-item dropdown">
         <a href="{{ route('adjust-index') }}" class="nav-link">
+            <x-notification-adjust-pending />
             <i class="fi fi-shield-ok float-start m-0"></i>
             <span>ADJUST FOR ADMIN</span> 
         </a>

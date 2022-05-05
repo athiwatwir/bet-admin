@@ -106,7 +106,7 @@
                             </td>
 
                             <td class="text-center">
-                                Role--0
+                                {{ $admin->staff_role }}
                             </td>
 
                             <td class="text-center">
