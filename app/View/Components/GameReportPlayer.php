@@ -22,7 +22,6 @@ class GameReportPlayer extends Component
     {
         $this->gamecode = $gamecode;
         $this->players = (new CoreGame)->checkpoint(NULL, $gamecode, 'get-player');
-        Log::debug($this->players);
     }
 
     /**

@@ -29,7 +29,10 @@ class GameSummary extends Component
     {
         switch ($this->gamecode) {
             case 'PGGAME' :
-                return 'components.gamesummary.pgsoftgame';
+                return view('components.gamesummary.pgsoftgame');
+                break;
+            case 'WMGAME' :
+                return view('components.gamesummary.wmgame');
                 break;
         }
     }
